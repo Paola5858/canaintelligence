@@ -8,6 +8,8 @@ Data de referência dos resultados: 29/10/2026.
 | --- | --- | --- | --- | --- |
 | `tests/test_data_contract.py` | 47 | 47 | 0 | Sim |
 | `tests/test_model_structure.py` | 31 | 31 | 0 | Sim |
+| `tests/test_report_structure.py` | 43 | 43 | 0 | Sim |
+| Total automatizado | 121 | 121 | 0 | Sim |
 | Verificação no Power BI Desktop | 0 | 0 | 0 | **Não** |
 | Execução de DAX | 0 | 0 | 0 | **Não** |
 | Renderização de visuais | 0 | 0 | 0 | **Não** |
@@ -53,6 +55,20 @@ Não substitui abrir o projeto, mas pega os erros que impedem a abertura.
 | Guardas | Média genérica exige indicador único e agregação aprovada, comparação temporal devolve vazio quando não há período |
 | Formatos | Percentual direto em `0.00"%"`, UMIDADE_LAB em `0.0%`, ATR em `0.00" kg/t"` |
 | Fonte | Caminho centralizado no parâmetro, nenhum caminho absoluto cravado em consulta |
+
+## Suite de estrutura do relatório
+
+Confere a camada que o Power BI lê primeiro.
+
+| Grupo | O que verifica |
+| --- | --- |
+| Cadeia de abertura | `.pbip` declara a pasta do relatório, `definition.pbir` aponta para o modelo, `definition.pbism` existe |
+| Páginas | Seis páginas na ordem, toda página da ordem tem pasta e toda pasta está na ordem, sem repetição |
+| Metadados de página | `name` igual ao nome da pasta, página em 1440 x 810, schema declarado |
+| Nomes | Ordem exata: Visão geral, Evolução, Fontes, Indicadores, Qualidade, Detalhes |
+| Tema | Tema personalizado declarado como SharedResources, base Fluent2 presente, ambos os arquivos existem em disco |
+| Conteúdo do tema | Nome correto, paleta com oito cores começando no verde cana, verde floresta presente, sombra desligada, fundo marfim, classes de texto definidas |
+| Documentação | Toda página do projeto aparece na especificação de visuais |
 
 ## O que não foi executado e por quê
 

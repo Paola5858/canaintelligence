@@ -15,6 +15,7 @@ Fonte única de dados: `data/Base_Usina_PowerBI_Final_v4.xlsx`. Todas as contage
 | Tema visual | Implementado em `CanaIntelligence.json` |
 | Testes de dados | 47 verificações, todas aprovadas |
 | Testes de estrutura do modelo | 31 verificações, todas aprovadas |
+| Testes de estrutura do relatório | 43 verificações, todas aprovadas |
 | Visuais nativos | Não implementados. Ver a seção de limitações |
 
 As páginas existem, mas estão vazias de visuais. Cada visual tem posição, campos, medida e regra de cor definidos em [docs/VISUAL_SPECIFICATION.md](docs/VISUAL_SPECIFICATION.md), pronto para ser montado no Desktop em poucos minutos por página.
@@ -59,10 +60,11 @@ O caminho fica em um único lugar: `dashboard_cana.SemanticModel/definition/expr
 python tests/run_tests.py
 ```
 
-Duas suites:
+Três suites:
 
 - `tests/test_data_contract.py`: confere a planilha contra as regras do modelo (contagens, chaves, escalas, duplicidades, pendência de TC).
 - `tests/test_model_structure.py`: confere o TMDL (relacionamentos resolvem, medidas referenciadas existem, formatos percentuais corretos, caminho centralizado).
+- `tests/test_report_structure.py`: confere a cadeia de abertura do PBIP, a ligação entre páginas e a declaração do tema.
 
 Para gerar o inventário da planilha:
 

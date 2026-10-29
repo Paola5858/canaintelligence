@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SUITES = [
     ("Contrato de dados", ROOT / "tests" / "test_data_contract.py"),
     ("Estrutura do modelo", ROOT / "tests" / "test_model_structure.py"),
+    ("Estrutura do relatorio", ROOT / "tests" / "test_report_structure.py"),
 ]
 
 

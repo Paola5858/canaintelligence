@@ -16,7 +16,7 @@ O projeto tem quatro compromissos, nesta ordem:
 - Planilha `data/Base_Usina_PowerBI_Final_v4.xlsx` com 6 abas, 19.532 medições e 23 indicadores.
 - Projeto PBIP `dashboard_cana.pbip` com modelo semântico em TMDL e relatório.
 - Seis páginas definidas, um tema visual próprio e 55 medidas.
-- Duas suites de teste executáveis, com 78 verificações no total.
+- Três suites de teste executáveis, com 121 verificações no total.
 
 ## Escopo funcional
 
