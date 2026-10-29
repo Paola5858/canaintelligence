@@ -1,0 +1,169 @@
+table Fato_Medicoes
+	lineageTag: 9d4f7e20-5b3c-4a91-9c72-01b0c3000001
+
+	column ID_Registro
+		dataType: int64
+		formatString: 0
+		lineageTag: 9d4f7e20-5b3c-4a91-9c72-01b0c3000002
+		summarizeBy: none
+		sourceColumn: ID_Registro
+		description: Identificador unico da medicao na base de origem. Liga ao historico em Auditoria_Dados.
+
+		annotation SummarizationSetBy = Automatic
+
+	column Data
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 9d4f7e20-5b3c-4a91-9c72-01b0c3000003
+		summarizeBy: none
+		sourceColumn: Data
+		description: Data da medicao. Relaciona com Dim_Calendario[Data].
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Safra
+		dataType: string
+		lineageTag: 9d4f7e20-5b3c-4a91-9c72-01b0c3000004
+		summarizeBy: none
+		sourceColumn: Safra
+		description: Safra informada pela origem. Nesta base existe um unico valor, 2026/2027.
+
+		annotation SummarizationSetBy = Automatic
+
+	column Fonte
+		dataType: string
+		lineageTag: 9d4f7e20-5b3c-4a91-9c72-01b0c3000005
+		summarizeBy: none
+		sourceColumn: Fonte
+		description: Frente de colheita ou Laboratorio que originou a medicao.
+
+		annotation SummarizationSetBy = Automatic
+
+	column Grupo_Fonte
+		dataType: string
+		lineageTag: 9d4f7e20-5b3c-4a91-9c72-01b0c3000006
+		summarizeBy: none
+		sourceColumn: Grupo_Fonte
+
+		annotation SummarizationSetBy = Automatic
+
+	column Indicador_Codigo
+		dataType: string
+		lineageTag: 9d4f7e20-5b3c-4a91-9c72-01b0c3000007
+		summarizeBy: none
+		sourceColumn: Indicador_Codigo
+		description: Codigo do indicador. Relaciona com Dim_Indicador[Codigo].
+
+		annotation SummarizationSetBy = Automatic
+
+	column Valor
+		dataType: double
+		lineageTag: 9d4f7e20-5b3c-4a91-9c72-01b0c3000008
+		summarizeBy: none
+		sourceColumn: Valor
+		description: Valor armazenado na unidade do indicador. Nao somar entre indicadores diferentes. PC e ArCana ja estao em escala percentual; UMIDADE_LAB esta em fracao decimal.
+
+		annotation SummarizationSetBy = User
+
+	column Valor_Original
+		dataType: double
+		lineageTag: 9d4f7e20-5b3c-4a91-9c72-01b0c3000009
+		summarizeBy: none
+		sourceColumn: Valor_Original
+		description: Valor antes da normalizacao de escala. Preserva a rastreabilidade de PC e ArCana.
+
+		annotation SummarizationSetBy = User
+
+	column Ajuste_Aplicado
+		dataType: string
+		lineageTag: 9d4f7e20-5b3c-4a91-9c72-01b0c3000010
+		summarizeBy: none
+		sourceColumn: Ajuste_Aplicado
+		description: Regra de escala aplicada na origem. Nenhum quando o valor foi preservado.
+
+		annotation SummarizationSetBy = Automatic
+
+	column Duplicidade_Exata
+		dataType: string
+		lineageTag: 9d4f7e20-5b3c-4a91-9c72-01b0c3000011
+		summarizeBy: none
+		sourceColumn: Duplicidade_Exata
+		description: Marca registros identicos que foram mantidos de proposito, sem remocao.
+
+		annotation SummarizationSetBy = Automatic
+
+	column Linha_Origem
+		dataType: int64
+		lineageTag: 9d4f7e20-5b3c-4a91-9c72-01b0c3000012
+		summarizeBy: none
+		sourceColumn: Linha_Origem
+		description: Linha da planilha de origem, para rastreabilidade.
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status_Validacao
+		dataType: string
+		lineageTag: 9d4f7e20-5b3c-4a91-9c72-01b0c3000013
+		summarizeBy: none
+		sourceColumn: Status_Validacao
+		description: Validado, Normalizado ou Pendente. Pendente nao significa erro, significa regra tecnica nao confirmada.
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fato_Medicoes = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook ( File.Contents ( CaminhoDaBase ), null, true ),
+				    TabelaFonte = Fonte{[Item = "tbl_Fato_Medicoes", Kind = "Table"]}[Data],
+				    TiposAtribuidos = Table.TransformColumnTypes (
+				        TabelaFonte,
+				        {
+				            { "ID_Registro", Int64.Type },
+				            { "Data", type date },
+				            { "Ano", Int64.Type },
+				            { "Mes", Int64.Type },
+				            { "Mes_Nome", type text },
+				            { "Trimestre", type text },
+				            { "AnoMes", type text },
+				            { "Dia_Semana", type text },
+				            { "Safra", type text },
+				            { "Fonte", type text },
+				            { "Grupo_Fonte", type text },
+				            { "Indicador", type text },
+				            { "Indicador_Codigo", type text },
+				            { "Grupo_Indicador", type text },
+				            { "Unidade", type text },
+				            { "Valor", type number },
+				            { "Valor_Original", type number },
+				            { "Ajuste_Aplicado", type text },
+				            { "Duplicidade_Exata", type text },
+				            { "Linha_Origem", Int64.Type },
+				            { "Status_Validacao", type text }
+				        },
+				        "pt-BR"
+				    ),
+				    ColunasSelecionadas = Table.SelectColumns (
+				        TiposAtribuidos,
+				        {
+				            "ID_Registro",
+				            "Data",
+				            "Safra",
+				            "Fonte",
+				            "Grupo_Fonte",
+				            "Indicador_Codigo",
+				            "Valor",
+				            "Valor_Original",
+				            "Ajuste_Aplicado",
+				            "Duplicidade_Exata",
+				            "Linha_Origem",
+				            "Status_Validacao"
+				        }
+				    ),
+				    LinhasValidas = Table.SelectRows ( ColunasSelecionadas, each [ID_Registro] <> null and [Indicador_Codigo] <> null )
+				in
+				    LinhasValidas
+
+	annotation PBI_ResultType = Table

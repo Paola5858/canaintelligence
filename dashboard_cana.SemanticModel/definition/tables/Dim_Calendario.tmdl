@@ -1,0 +1,114 @@
+table Dim_Calendario
+	dataCategory: Time
+	lineageTag: 5c1d9a70-3c1e-4a6f-9a7f-01b0c1000001
+
+	column Data
+		dataType: dateTime
+		isKey
+		formatString: dd/mm/yyyy
+		lineageTag: 5c1d9a70-3c1e-4a6f-9a7f-01b0c1000002
+		summarizeBy: none
+		sourceColumn: Data
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Ano
+		dataType: int64
+		formatString: 0
+		lineageTag: 5c1d9a70-3c1e-4a6f-9a7f-01b0c1000003
+		summarizeBy: none
+		sourceColumn: Ano
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mes
+		dataType: int64
+		formatString: 0
+		lineageTag: 5c1d9a70-3c1e-4a6f-9a7f-01b0c1000004
+		summarizeBy: none
+		sourceColumn: Mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column Numero_Mes
+		dataType: int64
+		formatString: 0
+		lineageTag: 5c1d9a70-3c1e-4a6f-9a7f-01b0c1000005
+		summarizeBy: none
+		sourceColumn: Numero_Mes
+		description: Número do mes, usado para ordenar Nome_Mes.
+
+		annotation SummarizationSetBy = Automatic
+
+	column Nome_Mes
+		dataType: string
+		lineageTag: 5c1d9a70-3c1e-4a6f-9a7f-01b0c1000006
+		summarizeBy: none
+		sourceColumn: Nome_Mes
+		sortByColumn: Numero_Mes
+		description: Nome do mes em portugues, ordenado por Numero_Mes e nunca alfabeticamente.
+
+		annotation SummarizationSetBy = Automatic
+
+	column Trimestre
+		dataType: string
+		lineageTag: 5c1d9a70-3c1e-4a6f-9a7f-01b0c1000007
+		summarizeBy: none
+		sourceColumn: Trimestre
+
+		annotation SummarizationSetBy = Automatic
+
+	column Dia
+		dataType: int64
+		formatString: 0
+		lineageTag: 5c1d9a70-3c1e-4a6f-9a7f-01b0c1000008
+		summarizeBy: none
+		sourceColumn: Dia
+
+		annotation SummarizationSetBy = Automatic
+
+	column Dia_Semana
+		dataType: string
+		lineageTag: 5c1d9a70-3c1e-4a6f-9a7f-01b0c1000009
+		summarizeBy: none
+		sourceColumn: Dia_Semana
+
+		annotation SummarizationSetBy = Automatic
+
+	column AnoMes
+		dataType: string
+		lineageTag: 5c1d9a70-3c1e-4a6f-9a7f-01b0c1000010
+		summarizeBy: none
+		sourceColumn: AnoMes
+		description: Ano e mes no formato AAAA-MM, para rotulos e ordenacao.
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Calendario = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook ( File.Contents ( CaminhoDaBase ), null, true ),
+				    TabelaFonte = Fonte{[Item = "tbl_Dim_Calendario", Kind = "Table"]}[Data],
+				    TiposAtribuidos = Table.TransformColumnTypes (
+				        TabelaFonte,
+				        {
+				            { "Data", type date },
+				            { "Ano", Int64.Type },
+				            { "Mes", Int64.Type },
+				            { "Numero_Mes", Int64.Type },
+				            { "Nome_Mes", type text },
+				            { "Trimestre", type text },
+				            { "Dia", Int64.Type },
+				            { "Dia_Semana", type text },
+				            { "AnoMes", type text }
+				        },
+				        "pt-BR"
+				    ),
+				    LinhasValidas = Table.SelectRows ( TiposAtribuidos, each [Data] <> null )
+				in
+				    LinhasValidas
+
+	annotation PBI_ResultType = Table
