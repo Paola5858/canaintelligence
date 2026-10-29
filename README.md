@@ -12,7 +12,7 @@ Fonte única de dados: `data/Base_Usina_PowerBI_Final_v4.xlsx`. Todas as contage
 | Relatório abre no Power BI Desktop | Sim, aberto e carregado em 29/10/2026 |
 | Modelo semântico em TMDL | Implementado, 6 tabelas e 55 medidas |
 | Relacionamentos | 2, ambos de um para muitos e filtro simples |
-| Páginas do relatório | 6 criadas, sem visuais |
+| Páginas do relatório | 6 criadas. Visão geral tem visuais gerados e verificados; as outras cinco estão sem visuais |
 | Tema visual | Implementado em `CanaIntelligence.json` |
 | Testes de dados | 47 verificações, todas aprovadas |
 | Testes de estrutura do modelo | 31 verificações, todas aprovadas |
