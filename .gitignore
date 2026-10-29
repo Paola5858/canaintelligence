@@ -1,0 +1,31 @@
+# Power BI
+*.pbix
+*.pbit
+*.pbids
+# Cache local do Power BI Desktop (não faz parte do projeto PBIP)
+dashboard_cana.SemanticModel/.pbi/
+dashboard_cana.Report/.pbi/
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+*.abf
+
+# Dados de origem
+# A planilha é dado operacional da usina: não versionar. Veja data/README.md.
+data/*.xlsx
+data/*.xls
+data/*.csv
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+scripts/output/
+
+# Sistema e editores
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode/settings.json
+*.log
