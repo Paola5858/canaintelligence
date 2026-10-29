@@ -2,7 +2,33 @@
 
 Inventário de cada visual das seis páginas, com a pergunta que ele responde, os campos, as medidas, a posição em pixels e a regra de cor.
 
-**Estado da implementação:** as seis páginas existem no projeto, mas estão sem visuais. Este documento é o contrato para montá-los no Power BI Desktop. Escrever o JSON dos visuais sem uma instância do Desktop para serializar e validar produz arquivos que o Power BI descarta na abertura, e um relatório que não abre é pior que um relatório vazio. O passo a passo está em [RUNBOOK.md](RUNBOOK.md).
+## Estado da implementação
+
+| Página | Estado |
+| --- | --- |
+| Visão geral | **Implementada em JSON** e verificada no Desktop em 29/10/2026 |
+| Evolução, Fontes, Indicadores, Qualidade, Detalhes | Sem visuais |
+
+A página 1 foi gerada por `scripts/build_visuals_page1.py`, que escreve um `visual.json` por visual em `definition/pages/<pagina>/visuals/<id>/`. O schema usado é `visualContainer/1.4.0` e ele é aceito pelo Desktop.
+
+O que está funcionando com dado real, confirmado na sessão do app:
+
+- Cartões com 274, 23, 8 e 11/12/2026.
+- Gráfico de linhas da Acidez Total plotando a série, com tooltip mostrando 9,58 mg/L em 05/07/2026.
+- Barras horizontais de cobertura por fonte, com as 8 fontes.
+- Segmentação de período em faixa de datas e duas segmentações em lista.
+- Cabeçalho em caixa de texto com a marca e o nome da página.
+
+### Limites encontrados ao escrever PBIR na mão
+
+1. **Unidades de exibição não são configuráveis por JSON nesta versão.** Cinco variações foram testadas no cartão de `Registros Validados` (`labels.displayUnits`, `calloutValue.displayUnits`, `values.displayUnits`, com literais `1D`, `1L` e `'None'`) e nenhuma alterou o resultado: 16.823 continua aparecendo como "17 Mil". O mesmo vale para rótulo de dados do gráfico de barras, que mostra "1,5 Mil". Correção manual, uma vez por visual: Formatar visual, Valor da chamada, Unidades de exibição, Nenhuma.
+2. **Segmentação em lista suspensa não fecha por JSON.** As propriedades `mode` nos objetos `data` e `general` não foram aplicadas; a segmentação renderiza como lista. Solução provisória: listas com altura suficiente para mostrar os itens. Ajuste fino no Desktop: Formatar visual, Configurações da segmentação, Estilo, Lista suspensa.
+3. **O cartão moderno (`cardVisual`) não renderizou** com o mesmo binding que o cartão clássico aceita. Ficou no clássico.
+4. **Aplicar formato por visual é pouco confiável.** Título e subtítulo funcionaram em `visualContainerObjects`; propriedades dentro de `objects` tiveram efeito inconsistente. Por isso o grosso do estilo vive no tema.
+
+Conclusão do piloto: gerar visuais por JSON funciona e vale a pena para posição, campos e título, que é o que dá trabalho de refazer. Acabamento fino de formatação continua sendo trabalho de Desktop, e está listado como passo manual.
+
+O passo a passo está em [RUNBOOK.md](RUNBOOK.md#montar-os-visuais).
 
 Página de 1440 x 810 px. Todas as posições abaixo usam esse sistema.
 
