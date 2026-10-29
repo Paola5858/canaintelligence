@@ -16,7 +16,15 @@ Como abrir, atualizar, validar e dar manutenção no projeto.
 4. Verifique se as seis páginas aparecem nesta ordem: Visão geral, Evolução, Fontes, Indicadores, Qualidade, Detalhes.
 5. Abra a exibição de modelo e confirme os dois relacionamentos: `Dim_Calendario[Data]` para `Fato_Medicoes[Data]` e `Dim_Indicador[Codigo]` para `Fato_Medicoes[Indicador_Codigo]`.
 
-Se o Desktop recusar o arquivo, o erro estará no TMDL. O primeiro suspeito é formatação de propriedade com aspas, que já foi checada por teste, e o segundo é a ordem de declaração de coluna e partição. Rode `python tests/test_model_structure.py` antes de editar nada.
+Se o Desktop recusar o arquivo, não adivinhe. Rode o validador, que usa o mesmo parser do Power BI:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/validate_tmdl.ps1
+```
+
+Ele imprime a mensagem exata do parser, com arquivo e linha. Regra aprendida na prática: descrição de coluna ou de medida é comentário `///` acima da declaração, nunca `description:` dentro do bloco. Ver [DATA_MODEL.md](DATA_MODEL.md).
+
+Nunca commitar sem esse validador passando.
 
 ## Atualizar o caminho da planilha
 

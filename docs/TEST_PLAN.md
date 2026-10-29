@@ -9,8 +9,9 @@ Data de referência dos resultados: 29/10/2026.
 | `tests/test_data_contract.py` | 47 | 47 | 0 | Sim |
 | `tests/test_model_structure.py` | 31 | 31 | 0 | Sim |
 | `tests/test_report_structure.py` | 43 | 43 | 0 | Sim |
-| Total automatizado | 121 | 121 | 0 | Sim |
-| Verificação no Power BI Desktop | 0 | 0 | 0 | **Não** |
+| `tests/test_tmdl_parser.py` (parser oficial do Power BI) | 1 | 1 | 0 | Sim |
+| Total automatizado | 122 | 122 | 0 | Sim |
+| Abertura do relatório no Power BI Desktop | 0 | 0 | 0 | **Não** |
 | Execução de DAX | 0 | 0 | 0 | **Não** |
 | Renderização de visuais | 0 | 0 | 0 | **Não** |
 
@@ -70,13 +71,37 @@ Confere a camada que o Power BI lê primeiro.
 | Conteúdo do tema | Nome correto, paleta com oito cores começando no verde cana, verde floresta presente, sombra desligada, fundo marfim, classes de texto definidas |
 | Documentação | Toda página do projeto aparece na especificação de visuais |
 
+## Validação com o parser oficial do Power BI
+
+`scripts/validate_tmdl.ps1` carrega a assembly `Microsoft.PowerBI.Tabular.dll` que vem com o Power BI Desktop, chama `TmdlSerializer.DeserializeModelFromFolder` sobre a pasta `definition` e reporta o resultado real.
+
+Esse teste existe porque os testes estáticos não pegavam o defeito que mais importa: sintaxe que o parser recusa. Foi ele que reproduziu o erro de abertura relatado em 29/10/2026.
+
+Resultado atual:
+
+```text
+PARSE OK
+  Auditoria_Dados    | colunas=11 medidas=0
+  Dim_Calendario     | colunas=9  medidas=0
+  Dim_Indicador      | colunas=10 medidas=0
+  Fato_Medicoes      | colunas=12 medidas=0
+  Pendencias_Validacao | colunas=5 medidas=0
+  Resumo_Qualidade   | colunas=7  medidas=0
+  _Medidas           | colunas=1  medidas=55
+  relacao: Fato_Medicoes[Data] -> Dim_Calendario[Data]
+  relacao: Fato_Medicoes[Indicador_Codigo] -> Dim_Indicador[Codigo]
+Total: 7 tabelas, 55 medidas, 2 relacionamentos
+```
+
+O teste valida estrutura do modelo, não semântica de DAX. Expressão DAX com erro de lógica ou de tipo continua dependendo de execução no Desktop.
+
 ## O que não foi executado e por quê
 
-### Abertura no Power BI Desktop
+### Abertura completa no Power BI Desktop
 
-O Power BI Desktop está instalado nesta máquina, na versão da Microsoft Store. Não houve execução assistida que permitisse abrir o projeto e ler a tela de erro, e por isso a abertura não é declarada como aprovada.
+O modelo semântico agora deserializa no parser oficial, o que cobre a maior parte do risco de abertura. O que continua sem validação por app é a camada do relatório: `report.json`, `page.json` e o tema personalizado são lidos pelo Power BI por outro caminho, que não tem parser exposto para execução em linha de comando.
 
-Passo manual: abrir `dashboard_cana.pbip` e confirmar que as 6 páginas aparecem na ordem, sem aviso de modelo corrompido.
+Passo manual: abrir `dashboard_cana.pbip` e confirmar que as 6 páginas aparecem na ordem, com o tema aplicado e sem aviso de arquivo inválido.
 
 ### Execução de medidas DAX
 
@@ -135,3 +160,5 @@ Não executadas, porque os visuais ainda não existem no projeto. Ver checklist 
 | Teste de estrutura | Acusava espaço na indentação dentro de expressão M, que é legítimo | Passou a checar só linha que começa com espaço |
 | Teste de estrutura | Cobrava origem Excel da tabela `_Medidas`, que é sintética | Exceção documentada no teste |
 | Catálogo de medidas | Três medidas com numeração de pasta inconsistente | Renumeração de 00 a 06 |
+| Abertura no Power BI Desktop (29/10/2026) | `description:` usado como linha de propriedade em coluna e em medida. O TMDL recusa a chave inteira e o projeto não abre. Erro reproduzido localmente com `TmdlSerializer.DeserializeModelFromFolder` | As 45 descrições viraram comentários `///` acima de cada declaração, que é a forma da propriedade embutida |
+| Teste de estrutura | Cobrava `description:` dentro do bloco da medida, que é justamente o formato inválido | Passou a exigir comentário `///` antes da declaração e a proibir a chave antiga |

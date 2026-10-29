@@ -160,11 +160,24 @@ check("Toda medida referenciada entre colchetes existe", not unknown_refs, ", ".
 missing_folder = [m for m, i in measures.items() if "displayFolder:" not in i["dax"]]
 check("Toda medida tem pasta de exibicao", not missing_folder, ", ".join(missing_folder[:8]))
 
+# Em TMDL, description e comentario de documentacao `///` acima da declaracao,
+# nao linha de propriedade. Ver docs/DATA_MODEL.md.
+com_doc: set[str] = set()
+for nome, tabela in tables.items():
+    linhas = tabela["text"].split("\n")
+    for indice, linha in enumerate(linhas):
+        if linha.startswith("\tmeasure '"):
+            anterior = linhas[indice - 1] if indice > 0 else ""
+            if anterior.startswith("\t/// "):
+                com_doc.add(linha[len("\tmeasure '"):].split("'")[0])
+
 critical = [m for m in measures if m.startswith(("Quantidade de Registros", "Registros Pendentes",
                                                  "Valor Medio do Indicador", "Media do Periodo Anterior",
                                                  "PC Medio", "Umidade Laboratorio Media", "ATR Medio"))]
-missing_desc = [m for m in critical if "description:" not in measures[m]["dax"]]
-check("Medidas criticas tem descricao", not missing_desc, ", ".join(missing_desc))
+missing_desc = [m for m in critical if m not in com_doc]
+check("Medidas criticas tem descricao em comentario de documentacao", not missing_desc, ", ".join(missing_desc))
+check("Nenhuma medida usa a propriedade description, que o TMDL recusa",
+      "description:" not in read(TABLES_DIR / "_Medidas.tmdl"))
 
 # 7. Guardas de semantica --------------------------------------------------
 guard_ok = "HASONEVALUE" in measures["Valor Medio do Indicador"]["dax"]

@@ -32,23 +32,23 @@ table Dim_Calendario
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Número do mes, usado para ordenar Nome_Mes.
 	column Numero_Mes
 		dataType: int64
 		formatString: 0
 		lineageTag: 5c1d9a70-3c1e-4a6f-9a7f-01b0c1000005
 		summarizeBy: none
 		sourceColumn: Numero_Mes
-		description: Número do mes, usado para ordenar Nome_Mes.
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Nome do mes em portugues, ordenado por Numero_Mes e nunca alfabeticamente.
 	column Nome_Mes
 		dataType: string
 		lineageTag: 5c1d9a70-3c1e-4a6f-9a7f-01b0c1000006
 		summarizeBy: none
 		sourceColumn: Nome_Mes
 		sortByColumn: Numero_Mes
-		description: Nome do mes em portugues, ordenado por Numero_Mes e nunca alfabeticamente.
 
 		annotation SummarizationSetBy = Automatic
 
@@ -77,12 +77,12 @@ table Dim_Calendario
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Ano e mes no formato AAAA-MM, para rotulos e ordenacao.
 	column AnoMes
 		dataType: string
 		lineageTag: 5c1d9a70-3c1e-4a6f-9a7f-01b0c1000010
 		summarizeBy: none
 		sourceColumn: AnoMes
-		description: Ano e mes no formato AAAA-MM, para rotulos e ordenacao.
 
 		annotation SummarizationSetBy = Automatic
 

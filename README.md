@@ -8,7 +8,8 @@ Fonte única de dados: `data/Base_Usina_PowerBI_Final_v4.xlsx`. Todas as contage
 
 | Item | Estado |
 | --- | --- |
-| Projeto PBIP abre no Power BI Desktop | Não validado nesta máquina por falta de execução assistida |
+| Modelo semântico aceito pelo parser oficial | Sim, 7 tabelas, 55 medidas, 2 relacionamentos |
+| Relatório abre no Power BI Desktop | Não validado. Depende de abertura manual |
 | Modelo semântico em TMDL | Implementado, 6 tabelas e 55 medidas |
 | Relacionamentos | 2, ambos de um para muitos e filtro simples |
 | Páginas do relatório | 6 criadas, sem visuais |
@@ -60,11 +61,18 @@ O caminho fica em um único lugar: `dashboard_cana.SemanticModel/definition/expr
 python tests/run_tests.py
 ```
 
-Três suites:
+Quatro suites:
 
 - `tests/test_data_contract.py`: confere a planilha contra as regras do modelo (contagens, chaves, escalas, duplicidades, pendência de TC).
 - `tests/test_model_structure.py`: confere o TMDL (relacionamentos resolvem, medidas referenciadas existem, formatos percentuais corretos, caminho centralizado).
 - `tests/test_report_structure.py`: confere a cadeia de abertura do PBIP, a ligação entre páginas e a declaração do tema.
+- `tests/test_tmdl_parser.py`: deserializa o modelo com o parser TMDL oficial que vem com o Power BI Desktop. É o único teste que prova que o projeto realmente abre.
+
+Para rodar só o validador do modelo:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/validate_tmdl.ps1
+```
 
 Para gerar o inventário da planilha:
 

@@ -8,24 +8,24 @@ table _Medidas
 		sourceColumn: Placeholder
 		isHidden
 
+	/// Total de medicoes carregadas da fato. Uma linha equivale a uma medicao.
 	measure 'Quantidade de Registros' = COUNTROWS ( Fato_Medicoes )
 		formatString: #,##0
 		displayFolder: 00 | Base e qualidade
-		description: Total de medicoes carregadas da fato. Uma linha equivale a uma medicao.
 
+	/// Quantidade de codigos de indicador presentes na dimensao. Nao use para inferir qualidade industrial.
 	measure 'Quantidade de Indicadores' = DISTINCTCOUNT ( Dim_Indicador[Codigo] )
 		formatString: #,##0
 		displayFolder: 00 | Base e qualidade
-		description: Quantidade de codigos de indicador presentes na dimensao. Nao use para inferir qualidade industrial.
 
 	measure 'Quantidade de Fontes' = DISTINCTCOUNT ( Fato_Medicoes[Fonte] )
 		formatString: #,##0
 		displayFolder: 00 | Base e qualidade
 
+	/// Dias que possuem pelo menos uma medicao no contexto de filtro.
 	measure 'Dias com Dados' = DISTINCTCOUNT ( Fato_Medicoes[Data] )
 		formatString: #,##0
 		displayFolder: 00 | Base e qualidade
-		description: Dias que possuem pelo menos uma medicao no contexto de filtro.
 
 	measure 'Primeira Data com Dados' = MIN ( Fato_Medicoes[Data] )
 		formatString: dd/mm/yyyy
@@ -35,10 +35,10 @@ table _Medidas
 		formatString: dd/mm/yyyy
 		displayFolder: 00 | Base e qualidade
 
+	/// Medicoes com regra tecnica nao confirmada na origem. Pendencia nao e erro comprovado.
 	measure 'Registros Pendentes' = CALCULATE ( COUNTROWS ( Fato_Medicoes ), Fato_Medicoes[Status_Validacao] = "Pendente" )
 		formatString: #,##0
 		displayFolder: 00 | Base e qualidade
-		description: Medicoes com regra tecnica nao confirmada na origem. Pendencia nao e erro comprovado.
 
 	measure 'Registros Normalizados' = CALCULATE ( COUNTROWS ( Fato_Medicoes ), Fato_Medicoes[Status_Validacao] = "Normalizado" )
 		formatString: #,##0
@@ -60,49 +60,49 @@ table _Medidas
 		formatString: #,##0
 		displayFolder: 00 | Base e qualidade
 
+	/// Medicoes que passaram por divisao por 1.000 ou 10.000 na origem, hoje restritas a PC e ArCana.
 	measure 'Registros com Ajuste de Escala' = CALCULATE ( COUNTROWS ( Fato_Medicoes ), Fato_Medicoes[Ajuste_Aplicado] <> "Nenhum" )
 		formatString: #,##0
 		displayFolder: 00 | Base e qualidade
-		description: Medicoes que passaram por divisao por 1.000 ou 10.000 na origem, hoje restritas a PC e ArCana.
 
+	/// Registros identicos mantidos de proposito. Nao foram removidos por falta de evidencia de erro.
 	measure 'Copias Exatas Preservadas' = CALCULATE ( COUNTROWS ( Fato_Medicoes ), Fato_Medicoes[Duplicidade_Exata] <> "Nao" )
 		formatString: #,##0
 		displayFolder: 00 | Base e qualidade
-		description: Registros identicos mantidos de proposito. Nao foram removidos por falta de evidencia de erro.
 
+	/// Dias corridos entre a primeira e a ultima medicao. Base para medir lacuna de calendario.
 	measure 'Dias no Calendario da Janela' = CALCULATE ( COUNTROWS ( Dim_Calendario ), DATESBETWEEN ( Dim_Calendario[Data], [Primeira Data com Dados], [Ultima Data com Dados] ) )
 		formatString: #,##0
 		displayFolder: 00 | Base e qualidade
-		description: Dias corridos entre a primeira e a ultima medicao. Base para medir lacuna de calendario.
 
 	measure 'Dias sem Medicao' = [Dias no Calendario da Janela] - [Dias com Dados]
 		formatString: #,##0
 		displayFolder: 00 | Base e qualidade
 
+	/// Proporcao de dias da janela que possuem alguma medicao.
 	measure 'Cobertura de Calendario' = DIVIDE ( [Dias com Dados], [Dias no Calendario da Janela] )
 		formatString: 0.0%
 		displayFolder: 00 | Base e qualidade
-		description: Proporcao de dias da janela que possuem alguma medicao.
 
+	/// Numero de leituras do indicador no contexto. Sempre valido, independente da unidade.
 	measure 'Quantidade de Leituras' = COUNTROWS ( Fato_Medicoes )
 		formatString: #,##0
 		displayFolder: 01 | Indicadores
-		description: Numero de leituras do indicador no contexto. Sempre valido, independente da unidade.
 
+	/// Media aritmetica somente quando ha um unico indicador selecionado e a fonte recomenda media aritmetica. Caso contrario retorna vazio, e nao zero.
 	measure 'Valor Medio do Indicador' = IF ( HASONEVALUE ( Dim_Indicador[Codigo] ) && SELECTEDVALUE ( Dim_Indicador[Tipo_Agregacao_Recomendada] ) = "Média Aritmética", AVERAGE ( Fato_Medicoes[Valor] ), BLANK () )
 		formatString: 0.00
 		displayFolder: 01 | Indicadores
-		description: Media aritmetica somente quando ha um unico indicador selecionado e a fonte recomenda media aritmetica. Caso contrario retorna vazio, e nao zero.
 
+	/// Media aritmetica de um unico indicador, inclusive para os que a fonte recomenda ponderar por TC. Nomeada explicitamente como nao ponderada porque a ponderacao esta bloqueada.
 	measure 'Media Aritmetica Nao Ponderada' = IF ( HASONEVALUE ( Dim_Indicador[Codigo] ), AVERAGE ( Fato_Medicoes[Valor] ), BLANK () )
 		formatString: 0.00
 		displayFolder: 01 | Indicadores
-		description: Media aritmetica de um unico indicador, inclusive para os que a fonte recomenda ponderar por TC. Nomeada explicitamente como nao ponderada porque a ponderacao esta bloqueada.
 
+	/// Mediana de um unico indicador. Valida para qualquer unidade, inclusive pH.
 	measure 'Mediana do Indicador' = IF ( HASONEVALUE ( Dim_Indicador[Codigo] ), MEDIAN ( Fato_Medicoes[Valor] ), BLANK () )
 		formatString: 0.00
 		displayFolder: 01 | Indicadores
-		description: Mediana de um unico indicador. Valida para qualquer unidade, inclusive pH.
 
 	measure 'Minimo Observado' = IF ( HASONEVALUE ( Dim_Indicador[Codigo] ), MIN ( Fato_Medicoes[Valor] ), BLANK () )
 		formatString: 0.00
@@ -130,15 +130,15 @@ table _Medidas
 		formatString: 0.00
 		displayFolder: 01 | Indicadores
 
+	/// Pol da Cana em escala percentual direta. 11,71 significa 11,71%, sem multiplicar por 100. Ponderacao por TC indisponivel.
 	measure 'PC Medio' = CALCULATE ( [Media Aritmetica Nao Ponderada], Dim_Indicador[Codigo] = "PC" )
 		formatString: 0.00"%"
 		displayFolder: 01 | Indicadores
-		description: Pol da Cana em escala percentual direta. 11,71 significa 11,71%, sem multiplicar por 100. Ponderacao por TC indisponivel.
 
+	/// Acucares Redutores da Cana em escala percentual direta. Ponderacao por TC indisponivel.
 	measure 'ArCana Medio' = CALCULATE ( [Media Aritmetica Nao Ponderada], Dim_Indicador[Codigo] = "AR" )
 		formatString: 0.00"%"
 		displayFolder: 01 | Indicadores
-		description: Acucares Redutores da Cana em escala percentual direta. Ponderacao por TC indisponivel.
 
 	measure 'Pureza Media' = CALCULATE ( [Media Aritmetica Nao Ponderada], Dim_Indicador[Codigo] = "PUREZA" )
 		formatString: 0.00"%"
@@ -156,10 +156,10 @@ table _Medidas
 		formatString: 0.00"%"
 		displayFolder: 01 | Indicadores
 
+	/// Umidade da cana em escala percentual direta. Nao combinar com UMIDADE_LAB, que e fracao decimal.
 	measure 'Umidade Cana Media' = CALCULATE ( [Media Aritmetica Nao Ponderada], Dim_Indicador[Codigo] = "UMIDADE_CANA" )
 		formatString: 0.00"%"
 		displayFolder: 01 | Indicadores
-		description: Umidade da cana em escala percentual direta. Nao combinar com UMIDADE_LAB, que e fracao decimal.
 
 	measure 'Impureza Mineral Media' = CALCULATE ( [Media Aritmetica Nao Ponderada], Dim_Indicador[Codigo] = "IMP_MIN" )
 		formatString: 0.00"%"
@@ -169,24 +169,24 @@ table _Medidas
 		formatString: 0.00"%"
 		displayFolder: 01 | Indicadores
 
+	/// Acucar Total Recuperavel em kg por tonelada. Ponderacao por TC indisponivel.
 	measure 'ATR Medio' = CALCULATE ( [Media Aritmetica Nao Ponderada], Dim_Indicador[Codigo] = "ATR" )
 		formatString: 0.00" kg/t"
 		displayFolder: 01 | Indicadores
-		description: Acucar Total Recuperavel em kg por tonelada. Ponderacao por TC indisponivel.
 
 	measure 'Acidez Total Media' = CALCULATE ( [Valor Medio do Indicador], Dim_Indicador[Codigo] = "ACIDEZ" )
 		formatString: 0.00" mg/L"
 		displayFolder: 01 | Indicadores
 
+	/// pH e escala logaritmica. A mediana e exibida porque a media logaritmica nao foi homologada para esta base.
 	measure 'pH Mediana' = CALCULATE ( [Mediana do Indicador], Dim_Indicador[Codigo] = "PH" )
 		formatString: 0.00
 		displayFolder: 01 | Indicadores
-		description: pH e escala logaritmica. A mediana e exibida porque a media logaritmica nao foi homologada para esta base.
 
+	/// Armazenada como fracao decimal entre 0 e 1. O formato percentual padrao exibe 0,09 como 9%, sem alterar o valor.
 	measure 'Umidade Laboratorio Media' = CALCULATE ( [Valor Medio do Indicador], Dim_Indicador[Codigo] = "UMIDADE_LAB" )
 		formatString: 0.0%
 		displayFolder: 01 | Indicadores
-		description: Armazenada como fracao decimal entre 0 e 1. O formato percentual padrao exibe 0,09 como 9%, sem alterar o valor.
 
 	measure 'Dias no Periodo Selecionado' = 
 			VAR Inicio = MIN ( Dim_Calendario[Data] )
@@ -196,6 +196,7 @@ table _Medidas
 		formatString: #,##0
 		displayFolder: 02 | Tempo
 
+	/// Mesma duracao em dias imediatamente antes do periodo selecionado. Retorna vazio quando nao ha periodo comparavel.
 	measure 'Media do Periodo Anterior' = 
 			VAR QtdDias = [Dias no Periodo Selecionado]
 			VAR Atual = [Valor Medio do Indicador]
@@ -207,7 +208,6 @@ table _Medidas
 			    )
 		formatString: 0.00
 		displayFolder: 03 | Comparações
-		description: Mesma duracao em dias imediatamente antes do periodo selecionado. Retorna vazio quando nao ha periodo comparavel.
 
 	measure 'Variacao Absoluta vs Periodo Anterior' = 
 			VAR Anterior = [Media do Periodo Anterior]
@@ -216,14 +216,15 @@ table _Medidas
 		formatString: 0.00
 		displayFolder: 03 | Comparações
 
+	/// Retorna vazio quando nao existe periodo anterior ou quando a base de comparacao e zero.
 	measure 'Variacao Percentual vs Periodo Anterior' = 
 			VAR Anterior = [Media do Periodo Anterior]
 			RETURN
 			    IF ( ISBLANK ( Anterior ) || Anterior = 0, BLANK (), DIVIDE ( [Valor Medio do Indicador] - Anterior, Anterior ) )
 		formatString: 0.00%
 		displayFolder: 03 | Comparações
-		description: Retorna vazio quando nao existe periodo anterior ou quando a base de comparacao e zero.
 
+	/// Media das leituras dos ultimos 7 dias do contexto. Nao e previsao.
 	measure 'Media Movel 7 Dias' = 
 			VAR DataFim = MAX ( Dim_Calendario[Data] )
 			RETURN
@@ -234,7 +235,6 @@ table _Medidas
 			    )
 		formatString: 0.00
 		displayFolder: 02 | Tempo
-		description: Media das leituras dos ultimos 7 dias do contexto. Nao e previsao.
 
 	measure 'Frentes com Dado do Indicador' = CALCULATE ( DISTINCTCOUNT ( Fato_Medicoes[Fonte] ), Fato_Medicoes[Grupo_Fonte] = "Frente de colheita" )
 		formatString: #,##0
@@ -254,6 +254,7 @@ table _Medidas
 	measure 'Mensagem Sem Dados' = IF ( COUNTROWS ( Fato_Medicoes ) = 0, "Sem medições no período", BLANK () )
 		displayFolder: 05 | Formatação e UX
 
+	/// Traduz a agregacao recomendada pela fonte para um rotulo que nao promete o que o modelo nao entrega.
 	measure 'Rotulo Agregacao Recomendada' = 
 			VAR Agregacao = SELECTEDVALUE ( Dim_Indicador[Tipo_Agregacao_Recomendada] )
 			RETURN
@@ -264,18 +265,17 @@ table _Medidas
 			        Agregacao
 			    )
 		displayFolder: 05 | Formatação e UX
-		description: Traduz a agregacao recomendada pela fonte para um rotulo que nao promete o que o modelo nao entrega.
 
+	/// Usado para impedir que o indicador TC seja lido como tonelagem ou qualquer grandeza validada.
 	measure 'Aviso Unidade Desconhecida' = IF ( SELECTEDVALUE ( Dim_Indicador[Unidade_Confirmada] ) = "Desconhecida", "Unidade não confirmada", BLANK () )
 		displayFolder: 05 | Formatação e UX
-		description: Usado para impedir que o indicador TC seja lido como tonelagem ou qualquer grandeza validada.
 
 	measure 'Status do Indicador' = SELECTEDVALUE ( Dim_Indicador[Status_Validacao] )
 		displayFolder: 05 | Formatação e UX
 
+	/// Regra aplicada ao registro selecionado, consultada em Auditoria_Dados por ID_Registro.
 	measure 'Regra de Transformacao do Registro' = LOOKUPVALUE ( Auditoria_Dados[Regra_Transformacao], Auditoria_Dados[ID_Registro], SELECTEDVALUE ( Fato_Medicoes[ID_Registro] ) )
 		displayFolder: 06 | Rastreabilidade
-		description: Regra aplicada ao registro selecionado, consultada em Auditoria_Dados por ID_Registro.
 
 	measure 'Fator Aplicado do Registro' = LOOKUPVALUE ( Auditoria_Dados[Fator_Aplicado], Auditoria_Dados[ID_Registro], SELECTEDVALUE ( Fato_Medicoes[ID_Registro] ) )
 		formatString: #,##0

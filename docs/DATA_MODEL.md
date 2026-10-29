@@ -105,6 +105,26 @@ Nenhum valor foi alterado, filtrado ou deduplicado nesse processo. As 19.532 lin
 | `Dim_Indicador` | `Categoria` | "Qualidade da cana" para os 11 códigos medidos nas frentes, "Análise laboratorial" para os 12 do laboratório |
 | `Dim_Indicador` | `Ordem` | Índice de origem, oculto, usado apenas para ordenação estável |
 
+## Descrição de coluna e de medida vai em comentário `///`
+
+O TMDL não aceita `description:` como linha de propriedade. A descrição é uma propriedade embutida no objeto e é escrita como comentário de documentação imediatamente acima da declaração:
+
+```tmdl
+	/// Chave do indicador. Relaciona com Fato_Medicoes[Indicador_Codigo].
+	column Codigo
+		dataType: string
+		isKey
+		sourceColumn: Codigo
+```
+
+Escrever `description: ...` dentro do bloco faz o Power BI Desktop recusar o projeto inteiro com `Unsupported property - description is not a supported property in the current context`. Não é erro de ordem nem de aspas: a chave simplesmente não existe no formato.
+
+O validador do repositório pega esse erro antes de abrir o app:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/validate_tmdl.ps1
+```
+
 ## Comportamento de agregação
 
 `Fato_Medicoes[Valor]` está com `summarizeBy: none`. Essa é uma decisão de segurança, não de estilo: com a soma padrão, qualquer campo arrastado por engano produziria um número somando pH com acidez e ATR. Sem resumo automático, quem monta o visual é obrigado a escolher uma medida.

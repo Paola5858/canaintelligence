@@ -1,13 +1,13 @@
 table Auditoria_Dados
 	lineageTag: e7b1f240-7a5e-4c13-9e94-01b0c6000001
 
+	/// Chave da medicao afetada. Corresponde a Fato_Medicoes[ID_Registro] na origem, sem relacionamento modelado.
 	column ID_Registro
 		dataType: int64
 		formatString: 0
 		lineageTag: e7b1f240-7a5e-4c13-9e94-01b0c6000002
 		summarizeBy: none
 		sourceColumn: ID_Registro
-		description: Chave da medicao afetada. Corresponde a Fato_Medicoes[ID_Registro] na origem, sem relacionamento modelado.
 
 		annotation SummarizationSetBy = Automatic
 

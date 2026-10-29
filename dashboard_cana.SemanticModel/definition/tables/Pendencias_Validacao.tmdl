@@ -33,12 +33,12 @@ table Pendencias_Validacao
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Situacao da pendencia na origem, incluindo quando ja foi resolvida na fato e segue aberta no legado.
 	column Status
 		dataType: string
 		lineageTag: a2d6c950-8b6f-4d24-9fa5-01b0c7000006
 		summarizeBy: none
 		sourceColumn: Status
-		description: Situacao da pendencia na origem, incluindo quando ja foi resolvida na fato e segue aberta no legado.
 
 		annotation SummarizationSetBy = Automatic
 
