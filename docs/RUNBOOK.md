@@ -113,6 +113,28 @@ Quando `P_TC_01` for resolvida:
 5. Atualizar a tabela de pendências e o rodapé do relatório.
 6. Revisar as páginas Visão geral, Evolução, Fontes e Indicadores, que hoje avisam sobre o bloqueio.
 
+### Gerar os visuais das seis páginas
+
+```powershell
+python scripts/build_visuals_page1.py
+python scripts/build_visuals_page2.py
+python scripts/build_visuals_pages.py
+```
+
+O gerador da página 1 limpa a pasta `visuals` antes de escrever, porque a página migrou de grade e um visual removido do código não pode continuar no relatório. Os outros dois reescrevem arquivos com o mesmo nome, sem duplicar.
+
+O segundo script usa `scripts/pbir_lib.py`, confere estouro de página e sobreposição, e falha imprimindo o par de visuais que colidiu. Cada execução reescreve os arquivos com os mesmos nomes, então rodar duas vezes não duplica visual.
+
+O que continua manual no Desktop, depois de gerar:
+
+| Item | Página | Ação |
+| --- | --- | --- |
+| Unidade de exibição | Todas | Formatar visual, Valor da chamada, Unidades de exibição, Nenhuma |
+| Segmentação em lista suspensa | Todas | Configurações da segmentação, Estilo, Lista suspensa |
+| Distribuição | Indicadores | Agrupar dados em `Fato_Medicoes[Valor]`, 14 intervalos iguais |
+| Faixa empilhada | Fontes | Série de mínimo com cor igual ao fundo, série de amplitude por cima |
+| Botão Voltar | Detalhes | Botão com ação de navegação para a página de origem |
+
 ### Problemas comuns
 
 | Sintoma | Causa provável | Ação |

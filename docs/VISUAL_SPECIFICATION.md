@@ -4,12 +4,24 @@ Inventário de cada visual das seis páginas, com a pergunta que ele responde, o
 
 ## Estado da implementação
 
-| Página | Estado |
-| --- | --- |
-| Visão geral | **Implementada em JSON** e verificada no Desktop em 29/10/2026 |
-| Evolução, Fontes, Indicadores, Qualidade, Detalhes | Sem visuais |
+| Página | Desenho no canvas | Visuais em PBIR |
+| --- | --- | --- |
+| Visão geral | Redesenhada | **Migrada para a grade nova em JSON**. A verificação no Desktop de 29/10/2026 foi feita na grade antiga; a versão migrada ainda não foi reaberta |
+| Evolução | Redesenhada | **Implementada em JSON**: cabeçalho, filtros, trilho, série, média mensal e comparação |
+| Fontes | Redesenhada | **Implementada em JSON**, com faixa em duas séries e matriz. A faixa empilhada fica para o Desktop |
+| Indicadores | Redesenhada | Implementada parcialmente: contrato, estatísticas e série. Falta a distribuição, que depende do grupo de faixas |
+| Qualidade | Redesenhada | **Implementada em JSON**: trilho de resumo, dois gráficos e tabela de pendências |
+| Detalhes | Redesenhada | **Implementada em JSON**: trilho de auditoria, contexto e tabela. Falta o botão Voltar |
 
-A página 1 foi gerada por `scripts/build_visuals_page1.py`, que escreve um `visual.json` por visual em `definition/pages/<pagina>/visuals/<id>/`. O schema usado é `visualContainer/1.4.0` e ele é aceito pelo Desktop.
+Todas as páginas são geradas por script, que escreve um `visual.json` por visual em `definition/pages/<pagina>/visuals/<id>/`. O schema usado é `visualContainer/1.4.0` e ele é aceito pelo Desktop.
+
+| Gerador | Páginas | Observação |
+| --- | --- | --- |
+| `scripts/build_visuals_page1.py` | Visão geral | Migrada para a biblioteca e para a grade nova. Limpa a pasta `visuals` antes de gerar, para não deixar arquivo órfão |
+| `scripts/build_visuals_page2.py` | Evolução | Escrito no piloto, com helpers próprios |
+| [scripts/build_visuals_pages.py](scripts/build_visuals_pages.py) | Fontes, Indicadores, Qualidade, Detalhes | Usa `scripts/pbir_lib.py` e confere estouro de página e sobreposição antes de sair |
+
+O verificador de grade roda a cada geração: se um visual sair da página de 1440x810 ou cobrir outro, o script falha e imprime o par. Nenhum visual das páginas 3 a 6 foi gerado fora da grade.
 
 O que está funcionando com dado real, confirmado na sessão do app:
 
@@ -18,6 +30,15 @@ O que está funcionando com dado real, confirmado na sessão do app:
 - Barras horizontais de cobertura por fonte, com as 8 fontes.
 - Segmentação de período em faixa de datas e duas segmentações em lista.
 - Cabeçalho em caixa de texto com a marca e o nome da página.
+
+### Dois desenhos no canvas
+
+O canvas tem dois conjuntos de telas, e eles não são a mesma coisa:
+
+- **Conjunto V2**, seis páginas, é o desenho de referência deste documento. Cada página analítica abre com um trilho de 300px que traz unidade, agregação, leituras e status do indicador. A ideia é impedir leitura errada de escala: PC e ArCana estão em percentual direto, UMIDADE_LAB em fração.
+- **Variante V3**, apenas a Visão geral, inverte a ordem e coloca a cobertura por fonte antes da série, sem trilho, com faixa de contexto horizontal. Serve para comparar arquitetura, não para implementar.
+
+As telas antigas (marcadas `01` a `06`) continuam no canvas como histórico do desenho anterior: abas com sublinhado, painéis de raio 18px e faixa de KPI sem cartão.
 
 ### Limites encontrados ao escrever PBIR na mão
 
@@ -67,26 +88,33 @@ Pergunta da página: qual é a cobertura da base e como o indicador selecionado 
 
 | # | Visual | Tipo nativo | Posição (x,y,w,h) | Campos | Medidas |
 | --- | --- | --- | --- | --- | --- |
-| 1.1 | Cabeçalho | Caixa de texto | 24,24,1392,48 | Marca, título "Visão geral", safra e data de carga | Nenhuma |
+| 1.1 | Cabeçalho | Caixa de texto | 24,24,1392,48 | Marca, título "Visão geral", safra e carga do modelo | Nenhuma |
 | 1.2 | Navegação | Navegador de páginas | 24,80,1392,44 | 6 páginas | Nenhuma |
 | 1.3 | Período | Segmentação de dados (intervalo) | 24,152,320,40 | `Dim_Calendario[Data]` | Nenhuma |
-| 1.4 | Fonte | Segmentação de dados (lista) | 348,152,212,40 | `Fato_Medicoes[Fonte]` | Nenhuma |
-| 1.5 | Limpar filtros | Botão | 1268,152,148,40 | Ação de limpar segmentações | Nenhuma |
-| 1.6 | Cobertura da base | 5 cartões | 24,220,1392,88 | Nenhum | `Dias com Dados`, `Registros Validados`, `Quantidade de Indicadores`, `Quantidade de Fontes`, `Ultima Data com Dados` |
-| 1.7 | Indicador | Segmentação de dados | 24,336,300,40 | `Dim_Indicador[Nome_Original]` | Nenhuma |
-| 1.8 | Contrato do indicador | 4 cartões | 348,336,1068,40 | `Dim_Indicador[Unidade_Confirmada]`, `Status do Indicador` | `Quantidade de Leituras` |
-| 1.9 | Evolução diária | Gráfico de linhas com marcadores | 24,412,896,322 | `Fato_Medicoes[Data]` no eixo | `Media Aritmetica Nao Ponderada` |
-| 1.10 | Cobertura por fonte | Gráfico de barras horizontais | 936,412,480,322 | `Fato_Medicoes[Fonte]` no eixo | `Quantidade de Registros` |
-| 1.11 | Rodapé | Caixa de texto | 24,750,1392,36 | Fonte do arquivo, pendências, link para Qualidade | `Registros Pendentes`, `Indicadores Pendentes` |
+| 1.4 | Fonte | Segmentação de dados (lista) | 360,152,200,44 | `Fato_Medicoes[Fonte]` | Nenhuma |
+| 1.5 | Indicador | Segmentação de dados (lista) | 576,152,320,44 | `Dim_Indicador[Nome_Original]` | Nenhuma |
+| 1.6 | Cobertura da base | 5 cartões abertos | 24,220 até 1413, 120 | Nenhum | `Dias com Dados`, `Registros Validados`, `Quantidade de Indicadores`, `Quantidade de Fontes`, `Ultima Data com Dados` |
+| 1.7 | Trilho do indicador | 4 cartões empilhados | 24,356,300,88 cada, 8px de intervalo | `Dim_Indicador` no cartão de agregação e status | `Quantidade de Leituras`, `Rotulo Agregacao Recomendada`, `Status do Indicador`, `Primeira Data com Dados` |
+| 1.8 | Evolução diária | Gráfico de linhas | 340,356,684,378 | `Fato_Medicoes[Data]` no eixo | `Media Aritmetica Nao Ponderada` |
+| 1.9 | Cobertura por fonte | Gráfico de barras horizontais | 1040,356,376,378 | `Fato_Medicoes[Fonte]` no eixo | `Quantidade de Registros` |
+| 1.10 | Rodapé | Caixa de texto | 24,750,1392,36 | Origem do dado | Nenhuma |
+
+**Altura de 120px na faixa:** o cartão do Desktop escala o valor sozinho. Com 92px o número era cortado na base, confirmado em captura da sessão de 29/10/2026. A fonte do cartão não controla esse dimensionamento.
+
+**Botão Limpar filtros:** previsto no desenho em 1268,152, mas não gerado. Depende de ação de navegador sobre segmentações, que é configuração de Desktop.
+
+**Estado vazio na abertura:** sem indicador selecionado na segmentação, a série diária fica vazia e os cartões de agregação e status mostram "(Em branco)". É consequência das medidas exigirem um indicador único, e não um defeito de layout. Selecionar um indicador preenche os três.
+
+**Unidade no trilho:** o painel único do desenho virou quatro cartões, porque o Power BI não agrupa visuais em contêiner próprio. A unidade aparece no subtítulo do gráfico e no contrato da página Indicadores.
 
 **Pergunta do visual 1.9:** como as leituras se distribuem no tempo e onde existem lacunas.
 **Tooltip:** data, valor em mg/L, quantidade de leituras do dia.
-**Regra de cor:** linha em `#4E7966`. Lacuna aparece como ausência, nunca como linha contínua.
+**Regra de cor:** linha em `#4E7966` com área em `rgba(78,121,102,.075)`. Lacuna aparece como ausência, nunca como linha contínua.
 **Por que linha e não coluna:** são 236 leituras em 244 dias, densidade alta demais para coluna.
 
 **Pergunta do visual 1.10:** quem carrega a base.
 **Tooltip:** fonte, registros, dias com dado.
-**Regra de cor:** verde cana para frentes, sálvia para laboratório.
+**Regra de cor:** verde cana para frentes, sálvia para laboratório. Trilho de 8px em `#EFEDE5`.
 
 ---
 
@@ -97,20 +125,19 @@ Pergunta da página: como o indicador muda no tempo e como o período atual se c
 | # | Visual | Tipo nativo | Posição (x,y,w,h) | Campos | Medidas |
 | --- | --- | --- | --- | --- | --- |
 | 2.1 | Cabeçalho, navegação e filtros | Iguais à página 1 | 24,24 até 24,204 | | |
-| 2.2 | Contexto do indicador | Segmentação e cartões | 24,220,1392,64 | `Dim_Indicador[Nome_Original]`, `Dim_Indicador[Unidade_Confirmada]` | `Quantidade de Leituras`, `Dias com Dado da Fonte`, `Rotulo Agregacao Recomendada`, `Status do Indicador` |
-| 2.3 | Aviso de ponderação | Caixa de texto com ícone | 1160,232,256,40 | Texto fixo condicionado | `Rotulo Agregacao Recomendada` |
-| 2.4 | Série diária | Gráfico de linhas com marcadores | 24,300,1392,266 | `Dim_Calendario[Data]` | `Media Aritmetica Nao Ponderada` |
-| 2.5 | Média mensal | Gráfico de linhas com marcadores | 24,582,896,152 | `Dim_Calendario[Nome_Mes]` ordenado por `Numero_Mes` | `Media Aritmetica Nao Ponderada` |
-| 2.6 | Comparação de períodos | Tabela | 936,582,480,152 | Rótulo de período | `Media do Periodo Anterior`, `Variacao Absoluta vs Periodo Anterior`, `Variacao Percentual vs Periodo Anterior` |
+| 2.2 | Contrato do indicador | Trilho 300x514 | 24,220,300,514 | `Dim_Indicador[Nome_Original]`, `Unidade_Confirmada`, `Status_Validacao`, `Categoria` | `Quantidade de Leituras`, `Frentes com Dado do Indicador`, `Rotulo Agregacao Recomendada` |
+| 2.3 | Série diária | Gráfico de linhas | 340,220,1076,286 | `Dim_Calendario[Data]` | `Media Aritmetica Nao Ponderada` |
+| 2.4 | Média mensal | Gráfico de linhas com marcadores | 340,522,620,212 | `Dim_Calendario[Nome_Mes]` ordenado por `Numero_Mes` | `Media Aritmetica Nao Ponderada` |
+| 2.5 | Comparação de períodos | Tabela | 976,522,440,212 | Rótulo de período | `Media do Periodo Anterior`, `Variacao Absoluta vs Periodo Anterior`, `Variacao Percentual vs Periodo Anterior` |
 
-**Pergunta do visual 2.4:** o indicador tem 237 leituras em 342 dias. Mostrar como pontos evita sugerir continuidade entre leituras distantes.
+**Pergunta do visual 2.3:** o indicador tem 237 leituras em 342 dias para ATR. Mostrar como pontos evita sugerir continuidade entre leituras distantes.
 **Implementação:** gráfico de linhas, marcadores ligados, largura de linha 0 px e transparência da linha em 100%. Eixo y de 100 a 135.
 **Tooltip:** data, valor em kg/t, leituras do dia.
 
-**Pergunta do visual 2.5:** a média mensal se move, e quanto.
+**Pergunta do visual 2.4:** a média mensal se move, e quanto.
 **Regra de eixo:** começa em 105 porque a série é uma linha, não coluna. Linha não codifica magnitude por área, então o eixo truncado não distorce.
 
-**Pergunta do visual 2.6:** o período atual está acima ou abaixo do anterior, e em quanto.
+**Pergunta do visual 2.5:** o período atual está acima ou abaixo do anterior, e em quanto.
 **Regra:** quando não existe período anterior comparável, as três medidas ficam vazias. A tabela mostra "Dados insuficientes" nesse caso, nunca zero.
 
 ---
@@ -122,10 +149,10 @@ Pergunta da página: as frentes de colheita se comportam de forma diferente para
 | # | Visual | Tipo nativo | Posição (x,y,w,h) | Campos | Medidas |
 | --- | --- | --- | --- | --- | --- |
 | 3.1 | Cabeçalho, navegação e filtros | Iguais à página 1 | 24,24 até 24,204 | | |
-| 3.2 | Contexto | Segmentação e cartões | 24,220,1392,64 | `Dim_Indicador[Nome_Original]` | `Frentes com Dado do Indicador`, `Status do Indicador` |
-| 3.3 | Faixa observada | Gráfico de barras empilhadas | 24,300,520,434 | `Fato_Medicoes[Fonte]` | `Minimo Observado` e amplitude calculada |
-| 3.4 | Matriz de comparação | Matriz | 560,300,856,434 | `Fato_Medicoes[Fonte]` | `Quantidade de Leituras`, `Dias com Dado da Fonte`, `Primeiro dado`, `Ultimo dado`, `Minimo Observado`, `Maximo Observado` |
-| 3.5 | Nota do laboratório | Caixa de texto | 24,690,520,32 | Texto fixo | Nenhuma |
+| 3.2 | Contrato do indicador | Trilho 300x514 | 24,220,300,514 | `Dim_Indicador[Nome_Original]`, `Unidade_Confirmada`, `Status_Validacao` | `Frentes com Dado do Indicador`, `Rotulo Agregacao Recomendada` |
+| 3.3 | Faixa observada | Gráfico de barras empilhadas | 340,220,420,514 | `Fato_Medicoes[Fonte]` | `Minimo Observado` e amplitude calculada |
+| 3.4 | Matriz de comparação | Matriz | 776,220,640,514 | `Fato_Medicoes[Fonte]` | `Quantidade de Leituras`, `Dias com Dado da Fonte`, `Minimo Observado`, `Maximo Observado` |
+| 3.5 | Nota do laboratório | Caixa de texto | 24,690,300,32 | Texto fixo | Nenhuma |
 
 **Pergunta do visual 3.3:** onde as frentes se sobrepõem e onde alguma se separa.
 **Por que faixa e não barra de média:** a média ponderada por TC está bloqueada. A faixa mostra mínimo e máximo observados, que são fatos, e deixa visível que as sete frentes se sobrepõem quase inteiras.
@@ -144,13 +171,15 @@ Pergunta da página: qual é o contrato do indicador e como os valores se distri
 | # | Visual | Tipo nativo | Posição (x,y,w,h) | Campos | Medidas |
 | --- | --- | --- | --- | --- | --- |
 | 4.1 | Cabeçalho, navegação e filtros | Iguais à página 1 | 24,24 até 24,204 | | |
-| 4.2 | Contrato | Segmentação e cartões | 24,220,1392,96 | `Dim_Indicador[Codigo]`, `Nome_Padronizado`, `Unidade_Confirmada`, `Descricao_Confirmada`, `Observacoes_Tecnicas` | `Rotulo Agregacao Recomendada`, `Status do Indicador`, `Quantidade de Leituras` |
-| 4.3 | Estatísticas | 5 cartões | 24,332,1392,72 | Nenhum | `Mediana do Indicador`, `Minimo Observado`, `Maximo Observado`, `Quantidade de Leituras` e a medida de média quando aprovada |
-| 4.4 | Série temporal | Gráfico de linhas | 24,420,896,314 | `Dim_Calendario[Data]` | `Media Aritmetica Nao Ponderada` e `Media Movel 7 Dias` |
-| 4.5 | Distribuição | Gráfico de colunas | 936,420,480,314 | Faixa de valor (grupo criado no Desktop) | `Quantidade de Leituras` |
+| 4.2 | Contrato do indicador | Trilho 300x514 | 24,220,300,514 | `Dim_Indicador[Codigo]`, `Nome_Padronizado`, `Unidade_Confirmada`, `Descricao_Confirmada`, `Observacoes_Tecnicas` | `Rotulo Agregacao Recomendada`, `Status do Indicador`, `Quantidade de Leituras` |
+| 4.3 | Estatísticas | 5 células abertas | 340,220,1076,72 | Nenhum | `Mediana do Indicador`, `Media Aritmetica Nao Ponderada`, `Minimo Observado`, `Maximo Observado`, `Quantidade de Leituras` |
+| 4.4 | Série temporal | Gráfico de linhas | 340,308,620,426 | `Dim_Calendario[Data]` | `Media Aritmetica Nao Ponderada` e `Media Movel 7 Dias` |
+| 4.5 | Distribuição | Gráfico de colunas | 976,308,440,426 | Faixa de valor (grupo criado no Desktop) | `Quantidade de Leituras` |
 
 **Pergunta do visual 4.5:** os valores se espalham de que forma.
-**Implementação:** não existe histograma nativo. Criar grupo sobre `Fato_Medicoes[Valor]` em Agrupar dados, com 14 intervalos iguais, e usar esse grupo no eixo do gráfico de colunas.
+**Estado:** o visual **não foi gerado**. O eixo precisa de um grupo de faixas, e grupo não é criado por arquivo de definição nesta versão. O espaço de 976,308,440,426 está reservado no desenho.
+**Implementação:** criar grupo sobre `Fato_Medicoes[Valor]` em Agrupar dados, com 14 intervalos iguais, e usar esse grupo no eixo do gráfico de colunas.
+**Regra de cor:** coluna única em `#4E7966`. Não pintar faixa por posição na distribuição.
 **Regra:** se o indicador selecionado for TC, este visual mostra a contagem por faixa e o aviso de unidade não confirmada, em vez de estatísticas agregadas.
 
 **Tratamento de TC nesta página:** o cartão de média fica vazio, o de mediana também, e aparece a mensagem "Unidade não confirmada" com a referência `P_TC_01`. TC nunca é rotulado como tonelagem.
@@ -166,20 +195,20 @@ Pergunta da página: o que está pendente, onde há lacuna e o que foi preservad
 | # | Visual | Tipo nativo | Posição (x,y,w,h) | Campos | Medidas |
 | --- | --- | --- | --- | --- | --- |
 | 5.1 | Cabeçalho, navegação e filtros | Iguais à página 1, mais filtro de status | 24,24 até 24,204 | | |
-| 5.2 | Resumo | 5 cartões | 24,220,1392,88 | Nenhum | `Quantidade de Registros`, `Registros Pendentes`, `Percentual de Registros Pendentes`, `Registros com Ajuste de Escala`, `Copias Exatas Preservadas` |
-| 5.3 | Registros por mês | Gráfico de colunas | 24,324,896,160 | `Dim_Calendario[Nome_Mes]` | `Quantidade de Registros` |
-| 5.4 | Status de validação | Gráfico de barras horizontais | 936,324,480,160 | `Fato_Medicoes[Status_Validacao]` | `Quantidade de Registros` |
-| 5.5 | Pendências | Tabela | 24,500,1392,234 | `Pendencias_Validacao[ID_Pendencia, Indicador, Problema, Acao_Recomendada, Status]` | Nenhuma |
+| 5.2 | Resumo da base | 6 células em trilho | 24,220,300,514 | Nenhum | `Quantidade de Registros`, `Registros Pendentes`, `Percentual de Registros Pendentes`, `Registros com Ajuste de Escala`, `Copias Exatas Preservadas`, `Dias sem Medicao` |
+| 5.3 | Registros por mês | Gráfico de colunas | 340,220,660,184 | `Dim_Calendario[Nome_Mes]` | `Quantidade de Registros` |
+| 5.4 | Status de validação | Gráfico de barras horizontais | 1016,220,400,184 | `Fato_Medicoes[Status_Validacao]` | `Quantidade de Registros` |
+| 5.5 | Pendências | Tabela | 340,420,1076,314 | `Pendencias_Validacao[ID_Pendencia, Indicador, Problema, Acao_Recomendada, Status]` | Nenhuma |
 
 **Pergunta do visual 5.3:** a coleta é uniforme ao longo do ano.
-**Regra:** colunas a partir de zero. É a leitura que mostra janeiro a março e dezembro com 11 indicadores e cerca de 8 dias, contra abril a novembro com 23 indicadores e mês cheio.
+**Regra:** colunas a partir de zero. É a leitura que mostra janeiro a março e dezembro com 11 indicadores e cerca de 8 dias, contra abril a novembro com 23 indicadores e mês cheio. Sálvia nos meses em que só as frentes mediram, verde cana nos meses com laboratório, com legenda nomeando os dois.
 **Tooltip:** registros, dias com dado, indicadores disponíveis no mês.
 
 **Pergunta do visual 5.4:** como a base se divide entre validado, normalizado e pendente.
 **Regra de cor:** validado `#4E7966`, normalizado `#A8B9A0`, pendente `#C17A4A`. Vermelho não é usado, porque pendência não é erro comprovado.
 
 **Pergunta do visual 5.5:** o que está travado e o que já foi resolvido.
-**Regra:** quatro linhas, texto completo, sem reticências. "Resolvida na Fato, aberta no legado" precisa aparecer inteiro, senão o significado muda.
+**Regra:** quatro linhas, altura de 51px para permitir duas linhas de texto, sem reticências. "Resolvida na fato, aberta no legado" precisa aparecer inteiro, senão o significado muda.
 
 ---
 
@@ -189,17 +218,18 @@ Pergunta da página: qual é o registro exato, seu valor original e a regra apli
 
 | # | Visual | Tipo nativo | Posição (x,y,w,h) | Campos | Medidas |
 | --- | --- | --- | --- | --- | --- |
-| 6.1 | Cabeçalho, navegação e filtros | Iguais à página 1 | 24,24 até 24,204 | | |
-| 6.2 | Contexto | Segmentação e cartões | 24,220,1392,64 | `Dim_Indicador[Nome_Original]`, `Dim_Indicador[Unidade_Confirmada]` | `Registros com Ajuste de Escala`, `Quantidade de Registros`, `Status do Indicador` |
-| 6.3 | Tabela de registros | Tabela | 24,300,1016,434 | `ID_Registro`, `Data`, `Fonte`, `Valor`, `Valor_Original`, `Ajuste_Aplicado`, `Status_Validacao` | Nenhuma |
-| 6.4 | Rastreabilidade | Cartões e caixa de texto | 1056,300,360,434 | `ID_Registro` selecionado | `Valor Original do Registro`, `Fator Aplicado do Registro`, `Regra de Transformacao do Registro`, `Status Anterior do Registro` |
+| 6.1 | Cabeçalho, navegação e filtros | Iguais à página 1, mais botão Voltar | 24,24 até 24,204 | | |
+| 6.2 | Contexto do recorte | 5 células abertas | 340,220,1076,64 | `Dim_Indicador[Nome_Original]`, `Unidade_Confirmada` | `Quantidade de Registros`, `Registros com Ajuste de Escala`, `Status do Indicador` |
+| 6.3 | Registros | Tabela | 340,300,1076,434 | `ID_Registro`, `Data`, `Fonte`, `Valor`, `Valor_Original`, `Ajuste_Aplicado`, `Status_Validacao` | Nenhuma |
+| 6.4 | Rastreabilidade | Trilho 300x514 | 24,220,300,514 | `ID_Registro` selecionado | `Valor Original do Registro`, `Fator Aplicado do Registro`, `Regra de Transformacao do Registro` |
 
 **Pergunta do visual 6.3:** qual linha exata gerou o número que estou olhando.
 **Regra:** ordenar por data decrescente e fonte. Destacar a linha selecionada pela seleção cruzada, não por cor fixa.
 **Coluna de ajuste:** mostrar o texto de `Ajuste_Aplicado`, não um ícone.
 
 **Pergunta do visual 6.4:** de onde veio a transformação desse registro.
-**Regra:** quando o registro não tem linha em `Auditoria_Dados`, as quatro medidas ficam vazias. Não preencher com "sem transformação", porque ausência de auditoria não prova ausência de ajuste.
+**Regra:** quando o registro não tem linha em `Auditoria_Dados`, as medidas ficam vazias. Não preencher com "sem transformação", porque ausência de auditoria não prova ausência de ajuste.
+**Botão Voltar:** visível no cabeçalho. Drill-through sem volta prende o leitor.
 
 ---
 
@@ -213,12 +243,14 @@ Pergunta da página: qual é o registro exato, seu valor original e a regra apli
 | Árvore de decomposição | Nenhuma hierarquia além de ano, mês e dia |
 | Previsão | Não há série longa o suficiente e o brief não pede previsão |
 
-## Diferenças entre o desenho aprovado e a implementação nativa
+## Diferenças entre o desenho e a implementação nativa
 
 | Desenho | Implementação | Motivo |
 | --- | --- | --- |
-| Raio de 18px nos painéis | Raio de 12px no tema | O Power BI não aplica raio maior que 12px em todos os contêineres |
-| Faixa de KPI sem cartão | 5 cartões sem borda | Não existe contêiner de faixa; o efeito é obtido removendo borda e fundo dos cartões |
+| Raio de 24px nos painéis | Raio de 12px no tema | O Power BI não aplica raio maior que 12px em todos os contêineres |
+| Sombra difusa nos painéis | Sem sombra, borda hairline | O Desktop não reproduz a sombra do desenho; a borda mantém a separação |
+| Faixa de KPI como painel único | 5 cartões sem borda e sem fundo | Não existe contêiner de faixa |
+| Trilho do indicador como um painel | Cartões e caixa de texto posicionados no mesmo bloco | O Power BI não agrupa visuais em um contêiner próprio |
 | Marca em SVG | Imagem no cabeçalho | O símbolo é exportado como PNG e inserido como imagem |
 
-O desenho completo está em `.kombai/canvas/cana-intelligence.canvas`, com as seis páginas.
+O desenho de referência está em `.kombai/canvas/cana-intelligence.canvas`, com as seis páginas do conjunto V2, e a variante V3 da Visão geral.

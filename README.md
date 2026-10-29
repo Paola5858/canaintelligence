@@ -12,8 +12,9 @@ Fonte única de dados: `data/Base_Usina_PowerBI_Final_v4.xlsx`. Todas as contage
 | Relatório abre no Power BI Desktop | Sim, aberto e carregado em 29/10/2026 |
 | Modelo semântico em TMDL | Implementado, 6 tabelas e 55 medidas |
 | Relacionamentos | 2, ambos de um para muitos e filtro simples |
-| Páginas do relatório | 6 criadas. Visão geral tem visuais gerados e verificados; as outras cinco estão sem visuais |
-| Tema visual | Implementado em `CanaIntelligence.json` |
+| Páginas do relatório | 6 criadas, todas na grade nova. 77 visuais gerados por script e conferidos pela suíte de grade. O projeto abriu no Desktop em 29/10/2026 com os arquivos já migrados; a composição das páginas ainda não foi conferida visualmente. Indicadores está sem a distribuição |
+| Tema visual | Implementado em `CanaIntelligence.json`, revisado para a grade nova (painel branco, raio 12, borda hairline, coluna e segmentação com padrão) |
+| Desenho do canvas | Seis páginas redesenhadas (conjunto V2) e uma variante V3 da Visão geral. Os 77 visuais em PBIR seguem a grade nova nas seis páginas |
 | Testes de dados | 47 verificações, todas aprovadas |
 | Testes de estrutura do modelo | 31 verificações, todas aprovadas |
 | Testes de estrutura do relatório | 43 verificações, todas aprovadas |
@@ -61,11 +62,13 @@ O caminho fica em um único lugar: `dashboard_cana.SemanticModel/definition/expr
 python tests/run_tests.py
 ```
 
-Quatro suites:
+Seis suites:
 
 - `tests/test_data_contract.py`: confere a planilha contra as regras do modelo (contagens, chaves, escalas, duplicidades, pendência de TC).
 - `tests/test_model_structure.py`: confere o TMDL (relacionamentos resolvem, medidas referenciadas existem, formatos percentuais corretos, caminho centralizado).
 - `tests/test_report_structure.py`: confere a cadeia de abertura do PBIP, a ligação entre páginas e a declaração do tema.
+- `tests/test_report_grid.py`: confere a grade dos 77 visuais nas seis páginas (limite da página, sobreposição, `z` e `tabOrder` únicos, página vazia).
+- `tests/test_report_fields.py`: confere que toda medida e toda coluna citadas nos visuais existem no TMDL e que o `queryRef` bate com o campo.
 - `tests/test_tmdl_parser.py`: deserializa o modelo com o parser TMDL oficial que vem com o Power BI Desktop. É o único teste que prova que o projeto realmente abre.
 
 Para rodar só o validador do modelo:
@@ -94,7 +97,7 @@ python scripts/data_audit.py
 
 ## Limitações conhecidas
 
-1. **Visuais não implementados.** Escrever o JSON de visuais à mão, sem uma instância do Power BI para serializar e validar, produz visuais que não renderizam ou que o Desktop descarta na abertura. As páginas foram criadas vazias de propósito. O passo a passo de montagem está em [docs/RUNBOOK.md](docs/RUNBOOK.md).
+1. **Cobertura de visuais incompleta e não validada no Desktop.** Evolução, Fontes, Qualidade e Detalhes têm visuais gerados por `scripts/build_visuals_page2.py` e [scripts/build_visuals_pages.py](scripts/build_visuals_pages.py). Nenhuma dessas quatro foi aberta no Desktop depois da geração. Indicadores está sem a distribuição, que depende de grupo de faixas, e Detalhes está sem botão Voltar. O projeto abriu no Desktop depois da migração, o que confirma que o arquivo carrega, mas não confirma a composição de cada página. O passo a passo está em [docs/RUNBOOK.md](docs/RUNBOOK.md).
 2. **Validação no Desktop pendente.** O modelo foi checado por testes estáticos e pela leitura da planilha, mas não foi aberto em uma instância do Power BI Desktop neste ambiente. O primeiro passo do runbook é essa abertura.
 3. **Ponderação por TC bloqueada.** A fonte recomenda média ponderada por TC para 10 indicadores, e TC não tem unidade nem regra confirmadas. Nenhuma medida do modelo calcula média ponderada. Onde é preciso mostrar valor, existe média aritmética declarada como não ponderada.
 4. **Safra e ano não são filtros.** A base tem um único valor em cada coluna, `2026/2027` e `2026`. Os filtros ficam como texto no cabeçalho, porque um seletor de valor único não filtra nada.

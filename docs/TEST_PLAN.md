@@ -9,9 +9,11 @@ Data de referência dos resultados: 29/10/2026.
 | `tests/test_data_contract.py` | 47 | 47 | 0 | Sim |
 | `tests/test_model_structure.py` | 31 | 31 | 0 | Sim |
 | `tests/test_report_structure.py` | 43 | 43 | 0 | Sim |
+| `tests/test_report_grid.py` | 394 | 394 | 0 | Sim |
+| `tests/test_report_fields.py` | 200 | 200 | 0 | Sim |
 | `tests/test_tmdl_parser.py` (parser oficial do Power BI) | 1 | 1 | 0 | Sim |
-| Total automatizado | 122 | 122 | 0 | Sim |
-| Abertura do relatório no Power BI Desktop | 1 | 1 | 0 | Sim, em 29/10/2026 |
+| Total automatizado | 716 | 716 | 0 | Sim |
+| Abertura do relatório no Power BI Desktop | 2 | 2 | 0 | Sim, em 29/10/2026 (antes e depois da migração da grade) |
 | Execução de DAX | 0 | 0 | 0 | **Não** |
 | Renderização de visuais | 0 | 0 | 0 | **Não** |
 
@@ -71,6 +73,35 @@ Confere a camada que o Power BI lê primeiro.
 | Conteúdo do tema | Nome correto, paleta com oito cores começando no verde cana, verde floresta presente, sombra desligada, fundo marfim, classes de texto definidas |
 | Documentação | Toda página do projeto aparece na especificação de visuais |
 
+## Suite de grade dos visuais
+
+Existe porque posição de visual não quebra a abertura do arquivo. O Desktop abre, a página renderiza e o gráfico fica em cima do outro. Nenhuma das outras suites olha para isso.
+
+| Grupo | O que verifica |
+| --- | --- |
+| Identidade | Nome do arquivo igual ao nome da pasta, schema declarado, tipo de visual preenchido, nome único na página |
+| Limites | Posição completa e inteira, visual dentro da largura e altura declaradas em `page.json`, sem coordenada negativa |
+| Legibilidade | Largura mínima de 40px e altura mínima de 24px |
+| Empilhamento | `z` único e `tabOrder` único por página |
+| Sobreposição | Nenhum par de visuais se cruza, testado em todos os pares de cada página |
+| Cobertura | Toda página da ordem tem `page.json` e pelo menos um visual |
+
+Resultado atual: 394 verificações, 394 aprovadas, 6 páginas e 77 visuais. O teste não confere se o visual renderiza nem se o campo existe no modelo; isso continua com a suite de estrutura do modelo e com a abertura no Desktop.
+
+## Suite de campos dos visuais
+
+A suíte de grade garante que o visual não se sobrepõe. Esta garante que ele aponta para algo que existe no modelo. Sem isso, o campo ausente só aparece quando o Desktop reclama, ou pior, o visual renderiza vazio sem explicar.
+
+| Grupo | O que verifica |
+| --- | --- |
+| Entidade | Toda tabela citada em `Measure` ou `Column` existe no TMDL |
+| Medida | Toda medida citada existe na tabela citada, lendo `measure` do arquivo `.tmdl` |
+| Coluna | Toda coluna citada existe na tabela citada, lendo `column` do arquivo `.tmdl` |
+| Consistência | O `queryRef` de cada projeção bate com `Tabela.Propriedade` |
+| Cobertura | Existe pelo menos uma referência a campo nos 77 visuais |
+
+Resultado atual: 200 verificações, 200 aprovadas, 77 visuais e 45 referências distintas a campos. O teste não confere tipo, formato nem semântica de DAX.
+
 ## Validação com o parser oficial do Power BI
 
 `scripts/validate_tmdl.ps1` carrega a assembly `Microsoft.PowerBI.Tabular.dll` que vem com o Power BI Desktop, chama `TmdlSerializer.DeserializeModelFromFolder` sobre a pasta `definition` e reporta o resultado real.
@@ -106,7 +137,9 @@ Executada em 29/10/2026, depois das duas correções. Resultado observado na ses
 3. O modelo carrega, as 7 tabelas são avaliadas e as 55 medidas aparecem no painel de dados.
 4. A lista de problemas do relatório fica vazia, depois da correção de `reportVersionAtImport`.
 
-O que o Desktop ainda não confirma por si só: se cada página tem a composição prevista, porque os visuais não foram montados. A abertura prova o arquivo, não o desenho.
+O que o Desktop ainda não confirma por si só: se cada página tem a composição prevista. A abertura prova o arquivo, não o desenho.
+
+Depois da migração da Visão geral para a grade nova, o projeto foi aberto outra vez em 29/10/2026 às 23:33. A janela subiu com o título `dashboard_cana` e a sessão não alterou nenhum arquivo do repositório. A composição da página migrada não foi conferida visualmente por quem escreveu este documento, então ela continua pendente de aceite.
 
 ### Execução de medidas DAX
 
@@ -153,7 +186,20 @@ Não executados. Roteiro para o Desktop:
 
 ### Renderização e interação
 
-Não executadas, porque os visuais ainda não existem no projeto. Ver checklist em [RUNBOOK.md](RUNBOOK.md#checklist-de-aceite-do-relatorio).
+A página Visão geral foi conferida por captura da janela do Desktop em 29/10/2026, às 23:40, com 38% de zoom:
+
+| Observação | Resultado |
+| --- | --- |
+| Faixa de cobertura com 274, 23, 8 e 11/12/2026 | Confere |
+| Valor de registros validados | Aparece abreviado como "17 Mil", por unidade de exibição. Correção manual por visual |
+| Trilho de quatro cartões à esquerda | Confere, sem invadir o gráfico |
+| Série diária e cobertura por fonte lado a lado | Confere, sem encostar |
+| Rodapé com a origem do dado | Confere |
+| Série diária na abertura | Vazia, porque nenhum indicador está selecionado. Preenche ao selecionar |
+| Cartões de agregação e status na abertura | Mostram "(Em branco)" pelo mesmo motivo |
+| Segmentações de fonte e indicador | Renderizam como lista dentro de 44px, com barra de rolagem. Falta o modo lista suspensa |
+
+O que continua sem verificação visual: as páginas Evolução, Fontes, Indicadores, Qualidade e Detalhes. Geometria delas está coberta pela suíte de grade; aparência não. Ver checklist em [RUNBOOK.md](RUNBOOK.md#checklist-de-aceite-do-relatorio).
 
 ## Falhas encontradas durante a construção
 

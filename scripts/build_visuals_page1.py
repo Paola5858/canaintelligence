@@ -1,209 +1,108 @@
-"""Gera os visuais da pagina 1 (Visao geral) no definition do relatorio PBIR.
+"""Gera os visuais da pagina 1 (Visao geral) na grade nova.
 
-Por que um gerador e nao arquivos escritos a mao: as posicoes seguem a grade de
-docs/DESIGN_SYSTEM.md e qualquer ajuste de layout precisa ser refeito nas seis
-paginas. Com o gerador, a grade vive em um lugar so.
+Reescrito sobre scripts/pbir_lib.py: a pagina nasceu no piloto com helpers
+proprios e na grade antiga (cards em y=290, grafico em y=410). Agora usa a mesma
+grade das paginas 2 a 6, com faixa de indicadores em y=220, trilho em x=24 e
+conteudo analitico de 340 a 1416.
+
+O script limpa a pasta visuals antes de gerar. Sem isso, um visual removido do
+codigo continuaria no relatorio como arquivo orfao.
+
+Posicoes e campos: docs/VISUAL_SPECIFICATION.md, pagina 1.
 
 Uso: python scripts/build_visuals_page1.py
 """
 
 from __future__ import annotations
 
-import json
 import sys
-from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-RAIZ = Path(__file__).resolve().parent.parent
-PAGINA = RAIZ / "dashboard_cana.Report" / "definition" / "pages" / "5a36b06c01771dee7876"
-SCHEMA = (
-    "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/"
-    "visualContainer/1.4.0/schema.json"
+from pbir_lib import (  # noqa: E402
+    Pagina,
+    coluna,
+    conferir_dentro_da_pagina,
+    medida,
+    rodape,
+    sem_cromo,
+    titulo,
 )
 
-contador = 0
-gerados: list[tuple[str, str, int, int, int, int]] = []
+PAGINA = "5a36b06c01771dee7876"
 
 
-def lit(valor: str) -> dict:
-    return {"expr": {"Literal": {"Value": valor}}}
+def visao_geral() -> Pagina:
+    p = Pagina("5a36b06c01771dee7876", "Visão geral")
+    p.limpar()
 
+    p.cabecalho_tela()
+    p.filtro_data()
+    p.filtro("Fato_Medicoes", "Fonte", 360, w=200)
+    p.filtro("Dim_Indicador", "Nome_Original", 576, w=320)
 
-def cor(hexadecimal: str) -> dict:
-    return {"solid": {"color": lit("'" + hexadecimal + "'")}}
-
-
-def texto(t: str) -> dict:
-    return lit("'" + t.replace("'", "''") + "'")
-
-
-def inteiro(n: int) -> dict:
-    return lit(f"{n}D")
-
-
-def medida(tabela: str, nome: str) -> dict:
-    return {
-        "field": {"Measure": {"Expression": {"SourceRef": {"Entity": tabela}}, "Property": nome}},
-        "queryRef": f"{tabela}.{nome}",
-        "nativeQueryRef": nome,
-    }
-
-
-def coluna(tabela: str, nome: str) -> dict:
-    return {
-        "field": {"Column": {"Expression": {"SourceRef": {"Entity": tabela}}, "Property": nome}},
-        "queryRef": f"{tabela}.{nome}",
-        "nativeQueryRef": nome,
-        "active": True,
-    }
-
-
-def novo_visual(tipo, x, y, w, h, query_state=None, objects=None, container=None):
-    global contador
-    contador += 1
-    nome = "v" + str(contador).zfill(19)
-    visual = {"visualType": tipo}
-    if query_state is not None:
-        visual["query"] = {"queryState": query_state}
-    visual["drillFilterOtherVisuals"] = True
-    if objects:
-        visual["objects"] = objects
-    if container:
-        visual["visualContainerObjects"] = container
-    dados = {
-        "$schema": SCHEMA,
-        "name": nome,
-        "position": {"x": x, "y": y, "z": 1000 + contador, "width": w, "height": h, "tabOrder": contador},
-        "visual": visual,
-    }
-    pasta = PAGINA / "visuals" / nome
-    pasta.mkdir(parents=True, exist_ok=True)
-    (pasta / "visual.json").write_text(json.dumps(dados, ensure_ascii=False, indent=2), encoding="utf-8")
-    gerados.append((nome, tipo, x, y, w, h))
-
-
-def titulo(titulo_texto, subtitulo_texto=None):
-    container = {
-        "title": [{"properties": {
-            "show": lit("true"),
-            "text": texto(titulo_texto),
-            "fontColor": cor("#25312D"),
-            "alignment": texto("left"),
-        }}]
-    }
-    if subtitulo_texto:
-        container["subTitle"] = [{"properties": {
-            "show": lit("true"),
-            "text": texto(subtitulo_texto),
-            "fontColor": cor("#76817B"),
-            "alignment": texto("left"),
-        }}]
-    return container
-
-
-def sem_cromo():
-    return {
-        "background": [{"properties": {"show": lit("false")}}],
-        "border": [{"properties": {"show": lit("false")}}],
-        "dropShadow": [{"properties": {"show": lit("false")}}],
-    }
-
-
-def cabecalho():
-    return {
-        "general": [{"properties": {"paragraphs": [{
-            "textRuns": [
-                {"value": "CANA INTELLIGENCE", "textStyle": {
-                    "fontSize": "20pt",
-                    "fontFamily": "Segoe UI Semibold",
-                    "color": "#173F35",
-                    "fontWeight": "600",
-                }},
-                {"value": "     Visao geral", "textStyle": {
-                    "fontSize": "12pt",
-                    "fontFamily": "Segoe UI",
-                    "color": "#25312D",
-                }},
-            ],
-            "horizontalTextAlignment": "left",
-        }]}}]
-    }
-
-
-def main() -> int:
-    # 1. cabecalho
-    novo_visual("textbox", 24, 24, 1392, 48, objects=cabecalho(), container=sem_cromo())
-
-    # 2. filtros: data em faixa, fonte e indicador em lista
-    novo_visual("slicer", 24, 152, 320, 40,
-                {"Values": {"projections": [coluna("Dim_Calendario", "Data")]}},
-                container=sem_cromo())
-    novo_visual("slicer", 360, 152, 200, 120,
-                {"Values": {"projections": [coluna("Fato_Medicoes", "Fonte")]}},
-                container=sem_cromo())
-    novo_visual("slicer", 576, 152, 320, 120,
-                {"Values": {"projections": [coluna("Dim_Indicador", "Nome_Original")]}},
-                container=sem_cromo())
-
-    # 3. faixa de cobertura: cinco cartoes abertos, sem borda
-    cartoes = [
-        ("Dias com Dados", 152),
-        ("Registros Validados", 408),
-        ("Quantidade de Indicadores", 664),
-        ("Quantidade de Fontes", 920),
-        ("Ultima Data com Dados", 1176),
+    # 1.6 faixa de cobertura: cinco cartoes abertos, 1392px de largura
+    cobertura = [
+        ("Dias com dados", "Dias com Dados"),
+        ("Registros validados", "Registros Validados"),
+        ("Indicadores", "Quantidade de Indicadores"),
+        ("Fontes", "Quantidade de Fontes"),
+        ("Última medição", "Ultima Data com Dados"),
     ]
-    for nome_medida, x in cartoes:
-        novo_visual(
-            "card", x, 290, 240, 96,
-            {"Values": {"projections": [medida("_Medidas", nome_medida)]}},
-            objects={
-                "labels": [{"properties": {
-                    "fontSize": inteiro(26),
-                    "fontFamily": texto("Segoe UI Semibold"),
-                    "color": cor("#173F35"),
-                }}],
-                "categoryLabels": [{"properties": {
-                    "show": lit("true"),
-                    "fontSize": inteiro(10),
-                    "fontFamily": texto("Segoe UI"),
-                    "color": cor("#76817B"),
-                }}],
-            },
-            container=sem_cromo(),
-        )
+    largura = (1392 - 16 * (len(cobertura) - 1)) // len(cobertura)
+    for i, (rotulo, nome) in enumerate(cobertura):
+        # 120px: o cartao do Desktop escala o valor sozinho e cortava a base em 92px
+        p.cartao(24 + i * (largura + 16), 220, largura, 120, rotulo, "_Medidas", nome, valor_px=18)
 
-    # 4. serie temporal do indicador de laboratorio
-    novo_visual(
-        "lineChart", 24, 410, 896, 322,
+    # 1.8 trilho do indicador
+    p.trilho([
+        ("Leituras", "_Medidas", "Quantidade de Leituras"),
+        ("Agregação", "_Medidas", "Rotulo Agregacao Recomendada"),
+        ("Status do indicador", "_Medidas", "Status do Indicador"),
+        ("Primeira data", "_Medidas", "Primeira Data com Dados"),
+    ], y=356, h=88, gap=8)
+
+    # 1.9 evolucao diaria
+    p.add(
+        "lineChart", 340, 356, 684, 378,
         {
             "Category": {"projections": [coluna("Dim_Calendario", "Data")]},
-            "Y": {"projections": [medida("_Medidas", "Acidez Total Media")]},
+            "Y": {"projections": [medida("_Medidas", "Media Aritmetica Nao Ponderada")]},
         },
-        objects={"labels": [{"properties": {"show": lit("false")}}]},
-        container=titulo("Acidez Total", "Media diaria em mg/L, 236 dias com leitura"),
+        container=titulo("Série diária", "Média aritmética não ponderada do indicador selecionado"),
     )
 
-    # 5. cobertura por fonte
-    novo_visual(
-        "barChart", 936, 410, 480, 322,
+    # 1.10 cobertura por fonte
+    p.add(
+        "barChart", 1040, 356, 376, 378,
         {
             "Category": {"projections": [coluna("Fato_Medicoes", "Fonte")]},
             "Y": {"projections": [medida("_Medidas", "Quantidade de Registros")]},
         },
-        objects={"labels": [{"properties": {
-            "show": lit("true"),
-            "fontSize": inteiro(11),
-            "fontFamily": texto("Segoe UI"),
-            "color": cor("#25312D"),
-        }}]},
         container=titulo("Cobertura por fonte", "Registros de todos os indicadores"),
     )
 
-    print(f"{len(gerados)} visuais gerados em {PAGINA.name}")
-    for nome, tipo, x, y, w, h in gerados:
-        print(f"  {nome} {tipo:<12} {x:>4},{y:<4} {w}x{h}")
+    # 1.10 rodape: origem do dado. Contagens de pendencia ficam no painel de qualidade.
+    p.add("textbox", 24, 750, 1392, 36,
+          objects=rodape("Base_Usina_PowerBI_Final_v4.xlsx · Fato_Medicoes, "
+                         "Dim_Indicador, Dim_Calendario"),
+          container=sem_cromo())
+    return p
+
+
+def main() -> int:
+    pagina = visao_geral()
+    print(pagina.relatorio())
+
+    problemas = conferir_dentro_da_pagina(pagina)
+    if problemas:
+        print("\nPROBLEMAS DE GRADE")
+        for item in problemas:
+            print("  - " + item)
+        return 1
+
+    print("\nPagina na grade nova: faixa em 220 com 120px, trilho e analise de 356 a 734.")
+    print("Pendente no Desktop: formatacao fina (unidade de exibicao, eixos, rotulos).")
     return 0
 
 

@@ -3,36 +3,17 @@
   "name": "v0000000000000000010",
   "position": {
     "x": 24,
-    "y": 410,
+    "y": 356,
     "z": 1010,
-    "width": 896,
-    "height": 322,
+    "width": 300,
+    "height": 88,
     "tabOrder": 10
   },
   "visual": {
-    "visualType": "lineChart",
+    "visualType": "card",
     "query": {
       "queryState": {
-        "Category": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Dim_Calendario"
-                    }
-                  },
-                  "Property": "Data"
-                }
-              },
-              "queryRef": "Dim_Calendario.Data",
-              "nativeQueryRef": "Data",
-              "active": true
-            }
-          ]
-        },
-        "Y": {
+        "Values": {
           "projections": [
             {
               "field": {
@@ -42,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Acidez Total Media"
+                  "Property": "Quantidade de Leituras"
                 }
               },
-              "queryRef": "_Medidas.Acidez Total Media",
-              "nativeQueryRef": "Acidez Total Media"
+              "queryRef": "_Medidas.Quantidade de Leituras",
+              "nativeQueryRef": "Quantidade de Leituras"
             }
           ]
         }
@@ -57,10 +38,66 @@
       "labels": [
         {
           "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "18D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI Semibold'"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#173F35'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryLabels": [
+        {
+          "properties": {
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#76817B'"
+                    }
+                  }
                 }
               }
             }
@@ -82,7 +119,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Acidez Total'"
+                  "Value": "'Leituras'"
                 }
               }
             },
@@ -91,45 +128,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#25312D'"
-                    }
-                  }
-                }
-              }
-            },
-            "alignment": {
-              "expr": {
-                "Literal": {
-                  "Value": "'left'"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "subTitle": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Media diaria em mg/L, 236 dias com leitura'"
-                }
-              }
-            },
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#76817B'"
+                      "Value": "'#173F35'"
                     }
                   }
                 }
