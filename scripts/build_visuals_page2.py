@@ -18,6 +18,8 @@ import json
 import sys
 from pathlib import Path
 
+from pbir_lib import limpar_visuais
+
 sys.stdout.reconfigure(encoding="utf-8")
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -141,6 +143,8 @@ def main() -> int:
         print(f"pagina nao encontrada: {PAGINA}")
         return 1
 
+    limpar_visuais(PAGINA)
+
     # 2.1 cabecalho
     novo_visual("textbox", 24, 24, 1392, 48, objects=cabecalho("Evolução"), container=sem_cromo())
 
@@ -176,19 +180,28 @@ def main() -> int:
         container=titulo("Média mensal", "Média das leituras do mês"),
     )
 
-    # 2.5 comparacao de periodos
-    novo_visual(
-        "tableEx", 976, 522, 440, 212,
-        {
-            "Values": {"projections": [
-                medida("_Medidas", "Media Aritmetica Nao Ponderada"),
-                medida("_Medidas", "Media do Periodo Anterior"),
-                medida("_Medidas", "Variacao Absoluta vs Periodo Anterior"),
-                medida("_Medidas", "Variacao Percentual vs Periodo Anterior"),
-            ]},
-        },
-        container=titulo("Comparação de períodos", "Mesmo número de dias, deslocado"),
-    )
+    # 2.5 comparacao de periodos: tres cartoes, porque quatro colunas de medida
+    # em 440px geravam barra de rolagem horizontal e nenhuma leitura
+    comparacao = [
+        ("Média atual", "Media Aritmetica Nao Ponderada"),
+        ("Média anterior", "Media do Periodo Anterior"),
+        ("Variação %", "Variacao Percentual vs Periodo Anterior"),
+    ]
+    largura_cartao = (440 - 8 * (len(comparacao) - 1)) // len(comparacao)
+    for indice, (rotulo, nome_medida) in enumerate(comparacao):
+        novo_visual(
+            "card", 976 + indice * (largura_cartao + 8), 522, largura_cartao, 212,
+            {"Values": {"projections": [medida("_Medidas", nome_medida)]}},
+            objects={
+                "labels": [{"properties": {
+                    "fontSize": inteiro(18),
+                    "fontFamily": texto("Segoe UI Semibold"),
+                    "color": cor("#173F35"),
+                }}],
+                "categoryLabels": [{"properties": {"show": lit("false")}}],
+            },
+            container=titulo(rotulo),
+        )
 
     # trilho do indicador: quatro cartoes abertos na coluna de 300px
     trilho = [
@@ -199,7 +212,7 @@ def main() -> int:
     ]
     for indice, (rotulo, nome_medida) in enumerate(trilho):
         novo_visual(
-            "card", 24, 220 + indice * 80, 300, 72,
+            "card", 24, 220 + indice * 128, 300, 120,
             {"Values": {"projections": [medida("_Medidas", nome_medida)]}},
             objects={
                 "labels": [{"properties": {
@@ -207,9 +220,31 @@ def main() -> int:
                     "fontFamily": texto("Segoe UI Semibold"),
                     "color": cor("#173F35"),
                 }}],
+                # sem o rotulo de categoria: ele repete o titulo e corta o valor
+                "categoryLabels": [{"properties": {"show": lit("false")}}],
             },
             container=titulo(rotulo),
         )
+
+    # rodape com a origem do dado
+    novo_visual(
+        "textbox", 24, 750, 1392, 36,
+        objects={
+            "general": [{"properties": {"paragraphs": [{
+                "textRuns": [{
+                    "value": ("Base_Usina_PowerBI_Final_v4.xlsx · Fato_Medicoes, "
+                              "Dim_Indicador, Dim_Calendario"),
+                    "textStyle": {
+                        "fontSize": "9pt",
+                        "fontFamily": "Segoe UI",
+                        "color": "#76817B",
+                    },
+                }],
+                "horizontalTextAlignment": "left",
+            }]}}]
+        },
+        container=sem_cromo(),
+    )
 
     print(f"{len(gerados)} visuais gerados em {PAGINA.name} (Evolução)")
     for nome, tipo, x, y, w, h in gerados:

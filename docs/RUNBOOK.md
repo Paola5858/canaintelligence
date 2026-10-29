@@ -121,7 +121,9 @@ python scripts/build_visuals_page2.py
 python scripts/build_visuals_pages.py
 ```
 
-O gerador da página 1 limpa a pasta `visuals` antes de escrever, porque a página migrou de grade e um visual removido do código não pode continuar no relatório. Os outros dois reescrevem arquivos com o mesmo nome, sem duplicar.
+Todos os geradores limpam a pasta `visuals` da página antes de escrever. Sem isso, um visual retirado do código continua no relatório como arquivo órfão, e o efeito é visual: ele se sobrepõe ao novo. Foi assim que a página Qualidade ficou com treze visuais por um tempo.
+
+Feche o Power BI Desktop antes de gerar. O app trava os arquivos e a limpeza falha no meio, deixando a página incompleta.
 
 O segundo script usa `scripts/pbir_lib.py`, confere estouro de página e sobreposição, e falha imprimindo o par de visuais que colidiu. Cada execução reescreve os arquivos com os mesmos nomes, então rodar duas vezes não duplica visual.
 
@@ -145,6 +147,8 @@ O que continua manual no Desktop, depois de gerar:
 | Cartão mostra número gigante | Alguém somou `Valor` sem medida | Usar medida do catálogo, nunca arrastar `Valor` com soma |
 | Percentual aparece 1.171% | Formato padrão aplicado em escala direta | Usar `0.00"%"` na medida |
 | Mês aparece em ordem alfabética | `sortByColumn` perdido | Conferir `Nome_Mes` ordenado por `Numero_Mes` |
+| Número cortado na base do cartão | Altura insuficiente para o valor que o cartão escala sozinho | Usar 120px de altura no cartão com título e desligar o rótulo de categoria |
+| Visual antigo aparece por cima do novo | Arquivo órfão na pasta `visuals` | Rodar o gerador, que limpa a pasta antes de escrever |
 
 ## Git
 

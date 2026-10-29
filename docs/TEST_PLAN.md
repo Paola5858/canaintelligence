@@ -9,10 +9,10 @@ Data de referência dos resultados: 29/10/2026.
 | `tests/test_data_contract.py` | 47 | 47 | 0 | Sim |
 | `tests/test_model_structure.py` | 31 | 31 | 0 | Sim |
 | `tests/test_report_structure.py` | 43 | 43 | 0 | Sim |
-| `tests/test_report_grid.py` | 394 | 394 | 0 | Sim |
-| `tests/test_report_fields.py` | 200 | 200 | 0 | Sim |
+| `tests/test_report_grid.py` | 419 | 419 | 0 | Sim |
+| `tests/test_report_fields.py` | 192 | 192 | 0 | Sim |
 | `tests/test_tmdl_parser.py` (parser oficial do Power BI) | 1 | 1 | 0 | Sim |
-| Total automatizado | 716 | 716 | 0 | Sim |
+| Total automatizado | 733 | 733 | 0 | Sim |
 | Abertura do relatório no Power BI Desktop | 2 | 2 | 0 | Sim, em 29/10/2026 (antes e depois da migração da grade) |
 | Execução de DAX | 0 | 0 | 0 | **Não** |
 | Renderização de visuais | 0 | 0 | 0 | **Não** |
@@ -86,7 +86,9 @@ Existe porque posição de visual não quebra a abertura do arquivo. O Desktop a
 | Sobreposição | Nenhum par de visuais se cruza, testado em todos os pares de cada página |
 | Cobertura | Toda página da ordem tem `page.json` e pelo menos um visual |
 
-Resultado atual: 394 verificações, 394 aprovadas, 6 páginas e 77 visuais. O teste não confere se o visual renderiza nem se o campo existe no modelo; isso continua com a suite de estrutura do modelo e com a abertura no Desktop.
+Resultado atual: 419 verificações, 419 aprovadas, 6 páginas e 82 visuais. O teste não confere se o visual renderiza nem se o campo existe no modelo; isso continua com a suite de estrutura do modelo e com a abertura no Desktop.
+
+O teste já pagou o custo: pegou um visual órfão na página Qualidade, sobra de uma geração anterior em que o trilho tinha seis cartões. O arquivo continuava na pasta e se sobrepunha ao cartão novo. A correção foi fazer todo gerador limpar a pasta `visuals` antes de escrever.
 
 ## Suite de campos dos visuais
 
@@ -100,7 +102,7 @@ A suíte de grade garante que o visual não se sobrepõe. Esta garante que ele a
 | Consistência | O `queryRef` de cada projeção bate com `Tabela.Propriedade` |
 | Cobertura | Existe pelo menos uma referência a campo nos 77 visuais |
 
-Resultado atual: 200 verificações, 200 aprovadas, 77 visuais e 45 referências distintas a campos. O teste não confere tipo, formato nem semântica de DAX.
+Resultado atual: 192 verificações, 192 aprovadas, 82 visuais e 42 referências distintas a campos. O teste não confere tipo, formato nem semântica de DAX.
 
 ## Validação com o parser oficial do Power BI
 
@@ -186,20 +188,35 @@ Não executados. Roteiro para o Desktop:
 
 ### Renderização e interação
 
-A página Visão geral foi conferida por captura da janela do Desktop em 29/10/2026, às 23:40, com 38% de zoom:
+Três páginas foram conferidas por captura da janela do Desktop em 29/10/2026, com o projeto aberto e a página trocada por clique na aba: Visão geral, Evolução e Qualidade.
 
-| Observação | Resultado |
-| --- | --- |
-| Faixa de cobertura com 274, 23, 8 e 11/12/2026 | Confere |
-| Valor de registros validados | Aparece abreviado como "17 Mil", por unidade de exibição. Correção manual por visual |
-| Trilho de quatro cartões à esquerda | Confere, sem invadir o gráfico |
-| Série diária e cobertura por fonte lado a lado | Confere, sem encostar |
-| Rodapé com a origem do dado | Confere |
-| Série diária na abertura | Vazia, porque nenhum indicador está selecionado. Preenche ao selecionar |
-| Cartões de agregação e status na abertura | Mostram "(Em branco)" pelo mesmo motivo |
-| Segmentações de fonte e indicador | Renderizam como lista dentro de 44px, com barra de rolagem. Falta o modo lista suspensa |
+| Página | Observação | Resultado |
+| --- | --- | --- |
+| Visão geral | Faixa com 274, 23, 8 e 11/12/2026 | Confere |
+| Visão geral | Registros validados | "17 Mil", abreviado por unidade de exibição |
+| Visão geral | Trilho, série e cobertura | No lugar, sem sobreposição |
+| Visão geral | Rodapé | Confere |
+| Evolução | Trilho com quatro cartões | Valores inteiros, sem corte |
+| Evolução | Série diária e média mensal | Vazias, porque nenhum indicador está selecionado |
+| Evolução | Comparação de períodos em três cartões | Confere, rótulos em uma linha |
+| Evolução | Rodapé | Confere |
+| Qualidade | Trilho de resumo com quatro cartões | Valores inteiros: 20 Mil, 903, 4,62%, 1.585 |
+| Qualidade | Registros por mês e status de validação | Plotam com dado real, sem filtro de indicador |
+| Qualidade | Tabela de pendências | Renderiza, mas corta o texto e exige rolagem horizontal |
+| Qualidade | Rodapé | Confere |
 
-O que continua sem verificação visual: as páginas Evolução, Fontes, Indicadores, Qualidade e Detalhes. Geometria delas está coberta pela suíte de grade; aparência não. Ver checklist em [RUNBOOK.md](RUNBOOK.md#checklist-de-aceite-do-relatorio).
+### Defeitos encontrados e corrigidos nesta revisão
+
+| Defeito | Causa | Correção |
+| --- | --- | --- |
+| Números cortados na base dos cartões, nas três páginas | O cartão do Desktop escala o valor sozinho, e a altura de 72 a 92px não deixava área. O rótulo de categoria repetia o título e consumia mais espaço | `categoryLabels` desligado e altura mínima de 120px no cartão com título. Na Visão geral o trilho passou de quatro cartões de 88px para três de 112px |
+| Rodapé ausente em cinco páginas | Só a Visão geral havia recebido o rodapé | `rodape_tela()` na biblioteca, chamado por todos os geradores |
+| Comparação de períodos ilegível | Quatro colunas de medida em 440px geravam rolagem horizontal e nenhum valor | Três cartões de 141x212, com rótulos curtos |
+| Visual órfão na Qualidade | O gerador não limpava a pasta `visuals`, e o sexto cartão antigo continuava lá | Todo gerador limpa a pasta antes de escrever. A suíte de grade reprovou o caso |
+
+### O que continua pendente de verificação visual
+
+Fontes, Indicadores e Detalhes nunca foram abertas. Geometria está coberta pela suíte de grade, aparência não. Ver checklist em [RUNBOOK.md](RUNBOOK.md#checklist-de-aceite-do-relatorio).
 
 ## Falhas encontradas durante a construção
 

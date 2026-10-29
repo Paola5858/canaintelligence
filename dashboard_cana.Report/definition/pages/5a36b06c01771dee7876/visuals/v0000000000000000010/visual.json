@@ -6,7 +6,7 @@
     "y": 356,
     "z": 1010,
     "width": 300,
-    "height": 88,
+    "height": 112,
     "tabOrder": 10
   },
   "visual": {
@@ -72,32 +72,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "10D"
-                }
-              }
-            },
-            "fontFamily": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Segoe UI'"
-                }
-              }
-            },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#76817B'"
-                    }
-                  }
+                  "Value": "false"
                 }
               }
             }

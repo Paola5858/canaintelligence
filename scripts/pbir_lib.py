@@ -133,16 +133,44 @@ def rotulo_cartao(valor_px: int = 26) -> dict:
             "fontFamily": texto("Segoe UI Semibold"),
             "color": cor("#173F35"),
         }}],
+        # show=false: o rotulo ja vem do titulo do visual. Ligado, ele repete o
+        # nome da medida embaixo do numero e espreme o valor ate cortar.
         "categoryLabels": [{"properties": {
-            "show": lit("true"),
-            "fontSize": inteiro(10),
-            "fontFamily": texto("Segoe UI"),
-            "color": cor("#76817B"),
+            "show": lit("false"),
         }}],
     }
 
 
 # ------------------------------------------------------------------ pagina
+
+def limpar_visuais(pasta_pagina: Path) -> int:
+    """Apaga os visuais gerados de uma pagina.
+
+    O OneDrive marca pasta sincronizada como somente leitura, e ai rmtree falha
+    com PermissionError. O tratador tira o atributo e repete.
+    """
+    import os
+    import shutil
+    import stat
+
+    def tratar(func, caminho, _excecao):
+        try:
+            if os.path.isdir(caminho):
+                os.chmod(caminho, stat.S_IWRITE)
+            func(caminho)
+        except OSError:
+            pass
+
+    pasta = pasta_pagina / "visuals"
+    removidos = 0
+    if pasta.exists():
+        for filho in pasta.iterdir():
+            if filho.is_dir():
+                shutil.rmtree(filho, onerror=tratar)
+                if not filho.exists():
+                    removidos += 1
+    return removidos
+
 
 class Pagina:
     """Escreve visuais em definition/pages/<id>/visuals/<nome>/visual.json."""
@@ -186,37 +214,18 @@ class Pagina:
     # atalhos que todo gerador usa -------------------------------------------
 
     def limpar(self) -> int:
-        """Remove os visuais gerados antes. Só mexe na pasta visuals desta página.
-
-        O OneDrive marca pasta sincronizada como somente leitura, e ai rmtree
-        falha com PermissionError. O tratador tira o atributo e repete, em vez de
-        deixar a pagina pela metade.
-        """
-        import os
-        import shutil
-        import stat
-
-        def tratar(func, caminho, _excecao):
-            try:
-                if os.path.isdir(caminho):
-                    os.chmod(caminho, stat.S_IWRITE)
-                func(caminho)
-            except OSError:
-                pass
-
-        pasta = self.pasta / "visuals"
-        removidos = 0
-        if pasta.exists():
-            for filho in pasta.iterdir():
-                if filho.is_dir():
-                    shutil.rmtree(filho, onerror=tratar)
-                    if not filho.exists():
-                        removidos += 1
-        return removidos
+        """Remove os visuais gerados antes. Só mexe na pasta visuals desta página."""
+        return limpar_visuais(self.pasta)
 
     def cabecalho_tela(self):
         self.add("textbox", 24, 24, 1392, 48,
                  objects=cabecalho(self.nome_pagina), container=sem_cromo())
+
+    def rodape_tela(self, linha: str | None = None):
+        linha = linha or ("Base_Usina_PowerBI_Final_v4.xlsx · Fato_Medicoes, "
+                          "Dim_Indicador, Dim_Calendario")
+        self.add("textbox", 24, 750, 1392, 36,
+                 objects=rodape(linha), container=sem_cromo())
 
     def filtro_data(self, x=24, y=152, w=320):
         self.add("slicer", x, y, w, 40,
@@ -234,8 +243,9 @@ class Pagina:
                  objects=rotulo_cartao(valor_px),
                  container=sem_cromo() if not rotulo else titulo(rotulo))
 
-    def trilho(self, medidas: list[tuple[str, str, str]], x=24, y=220, w=300, h=72, gap=8,
+    def trilho(self, medidas: list[tuple[str, str, str]], x=24, y=220, w=300, h=120, gap=8,
                valor_px=18):
+        """Altura 120: abaixo disso o cartao corta o valor, confirmado no Desktop."""
         """Empilha cartoes no trilho de 300px. Cada item: (rotulo, tabela, medida)."""
         atual = y
         for rotulo, tabela, nome in medidas:

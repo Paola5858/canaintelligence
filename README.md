@@ -12,7 +12,7 @@ Fonte única de dados: `data/Base_Usina_PowerBI_Final_v4.xlsx`. Todas as contage
 | Relatório abre no Power BI Desktop | Sim, aberto e carregado em 29/10/2026 |
 | Modelo semântico em TMDL | Implementado, 6 tabelas e 55 medidas |
 | Relacionamentos | 2, ambos de um para muitos e filtro simples |
-| Páginas do relatório | 6 criadas, todas na grade nova. 77 visuais gerados por script e conferidos pela suíte de grade. O projeto abriu no Desktop em 29/10/2026 com os arquivos já migrados; a composição das páginas ainda não foi conferida visualmente. Indicadores está sem a distribuição |
+| Páginas do relatório | 6 criadas, todas na grade nova. 82 visuais gerados por script e conferidos pela suíte de grade. Visão geral, Evolução e Qualidade foram conferidas no Desktop por captura de janela; Fontes, Indicadores e Detalhes ainda não. Indicadores está sem a distribuição |
 | Tema visual | Implementado em `CanaIntelligence.json`, revisado para a grade nova (painel branco, raio 12, borda hairline, coluna e segmentação com padrão) |
 | Desenho do canvas | Seis páginas redesenhadas (conjunto V2) e uma variante V3 da Visão geral. Os 77 visuais em PBIR seguem a grade nova nas seis páginas |
 | Testes de dados | 47 verificações, todas aprovadas |
@@ -67,7 +67,7 @@ Seis suites:
 - `tests/test_data_contract.py`: confere a planilha contra as regras do modelo (contagens, chaves, escalas, duplicidades, pendência de TC).
 - `tests/test_model_structure.py`: confere o TMDL (relacionamentos resolvem, medidas referenciadas existem, formatos percentuais corretos, caminho centralizado).
 - `tests/test_report_structure.py`: confere a cadeia de abertura do PBIP, a ligação entre páginas e a declaração do tema.
-- `tests/test_report_grid.py`: confere a grade dos 77 visuais nas seis páginas (limite da página, sobreposição, `z` e `tabOrder` únicos, página vazia).
+- `tests/test_report_grid.py`: confere a grade dos 82 visuais nas seis páginas (limite da página, sobreposição, `z` e `tabOrder` únicos, página vazia).
 - `tests/test_report_fields.py`: confere que toda medida e toda coluna citadas nos visuais existem no TMDL e que o `queryRef` bate com o campo.
 - `tests/test_tmdl_parser.py`: deserializa o modelo com o parser TMDL oficial que vem com o Power BI Desktop. É o único teste que prova que o projeto realmente abre.
 

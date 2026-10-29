@@ -69,6 +69,14 @@ Página de 1440 x 810 px. Todas as posições abaixo usam esse sistema.
 └──────────────────────────────────────────────────────────────┘
 ```
 
+## Regras que valem nas seis páginas
+
+- Rodapé em 24,750,1392,36 com a origem do dado, gerado em todas as páginas.
+- Cartão de valor com título precisa de 120px de altura. Abaixo disso o Desktop corta o número, confirmado por captura em 29/10/2026.
+- O rótulo de categoria do cartão fica desligado, porque repete o título e consome a área do valor.
+- Trilho com mais de quatro itens não cabe em 514px com altura legível. Acima disso, dividir em colunas ou trocar por cartão de várias linhas.
+- As medidas `Copias Exatas Preservadas` e `Dias sem Medicao` saíram do trilho da página Qualidade quando ele passou a quatro cartões. Continuam no modelo e podem voltar numa segunda coluna de trilho.
+
 ## Convenções de interação
 
 | Regra | Aplicação |
@@ -94,7 +102,7 @@ Pergunta da página: qual é a cobertura da base e como o indicador selecionado 
 | 1.4 | Fonte | Segmentação de dados (lista) | 360,152,200,44 | `Fato_Medicoes[Fonte]` | Nenhuma |
 | 1.5 | Indicador | Segmentação de dados (lista) | 576,152,320,44 | `Dim_Indicador[Nome_Original]` | Nenhuma |
 | 1.6 | Cobertura da base | 5 cartões abertos | 24,220 até 1413, 120 | Nenhum | `Dias com Dados`, `Registros Validados`, `Quantidade de Indicadores`, `Quantidade de Fontes`, `Ultima Data com Dados` |
-| 1.7 | Trilho do indicador | 4 cartões empilhados | 24,356,300,88 cada, 8px de intervalo | `Dim_Indicador` no cartão de agregação e status | `Quantidade de Leituras`, `Rotulo Agregacao Recomendada`, `Status do Indicador`, `Primeira Data com Dados` |
+| 1.7 | Trilho do indicador | 3 cartões empilhados | 24,356,300,112 cada, 16px de intervalo | `Dim_Indicador` no cartão de agregação e status | `Quantidade de Leituras`, `Rotulo Agregacao Recomendada`, `Status do Indicador` |
 | 1.8 | Evolução diária | Gráfico de linhas | 340,356,684,378 | `Fato_Medicoes[Data]` no eixo | `Media Aritmetica Nao Ponderada` |
 | 1.9 | Cobertura por fonte | Gráfico de barras horizontais | 1040,356,376,378 | `Fato_Medicoes[Fonte]` no eixo | `Quantidade de Registros` |
 | 1.10 | Rodapé | Caixa de texto | 24,750,1392,36 | Origem do dado | Nenhuma |
@@ -128,7 +136,8 @@ Pergunta da página: como o indicador muda no tempo e como o período atual se c
 | 2.2 | Contrato do indicador | Trilho 300x514 | 24,220,300,514 | `Dim_Indicador[Nome_Original]`, `Unidade_Confirmada`, `Status_Validacao`, `Categoria` | `Quantidade de Leituras`, `Frentes com Dado do Indicador`, `Rotulo Agregacao Recomendada` |
 | 2.3 | Série diária | Gráfico de linhas | 340,220,1076,286 | `Dim_Calendario[Data]` | `Media Aritmetica Nao Ponderada` |
 | 2.4 | Média mensal | Gráfico de linhas com marcadores | 340,522,620,212 | `Dim_Calendario[Nome_Mes]` ordenado por `Numero_Mes` | `Media Aritmetica Nao Ponderada` |
-| 2.5 | Comparação de períodos | Tabela | 976,522,440,212 | Rótulo de período | `Media do Periodo Anterior`, `Variacao Absoluta vs Periodo Anterior`, `Variacao Percentual vs Periodo Anterior` |
+| 2.5 | Comparação de períodos | 3 cartões | 976,522,440,212, 141 cada | Nenhum | `Media Aritmetica Nao Ponderada`, `Media do Periodo Anterior`, `Variacao Percentual vs Periodo Anterior` |
+| 2.6 | Rodapé | Caixa de texto | 24,750,1392,36 | Origem do dado | Nenhuma |
 
 **Pergunta do visual 2.3:** o indicador tem 237 leituras em 342 dias para ATR. Mostrar como pontos evita sugerir continuidade entre leituras distantes.
 **Implementação:** gráfico de linhas, marcadores ligados, largura de linha 0 px e transparência da linha em 100%. Eixo y de 100 a 135.
@@ -195,7 +204,7 @@ Pergunta da página: o que está pendente, onde há lacuna e o que foi preservad
 | # | Visual | Tipo nativo | Posição (x,y,w,h) | Campos | Medidas |
 | --- | --- | --- | --- | --- | --- |
 | 5.1 | Cabeçalho, navegação e filtros | Iguais à página 1, mais filtro de status | 24,24 até 24,204 | | |
-| 5.2 | Resumo da base | 6 células em trilho | 24,220,300,514 | Nenhum | `Quantidade de Registros`, `Registros Pendentes`, `Percentual de Registros Pendentes`, `Registros com Ajuste de Escala`, `Copias Exatas Preservadas`, `Dias sem Medicao` |
+| 5.2 | Resumo da base | 4 cartões empilhados | 24,220,300,120 cada, 8px de intervalo | Nenhum | `Quantidade de Registros`, `Registros Pendentes`, `Percentual de Registros Pendentes`, `Registros com Ajuste de Escala` |
 | 5.3 | Registros por mês | Gráfico de colunas | 340,220,660,184 | `Dim_Calendario[Nome_Mes]` | `Quantidade de Registros` |
 | 5.4 | Status de validação | Gráfico de barras horizontais | 1016,220,400,184 | `Fato_Medicoes[Status_Validacao]` | `Quantidade de Registros` |
 | 5.5 | Pendências | Tabela | 340,420,1076,314 | `Pendencias_Validacao[ID_Pendencia, Indicador, Problema, Acao_Recomendada, Status]` | Nenhuma |

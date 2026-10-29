@@ -24,8 +24,6 @@ from pbir_lib import (  # noqa: E402
     coluna,
     conferir_dentro_da_pagina,
     medida,
-    rodape,
-    sem_cromo,
     titulo,
 )
 
@@ -55,12 +53,12 @@ def visao_geral() -> Pagina:
         p.cartao(24 + i * (largura + 16), 220, largura, 120, rotulo, "_Medidas", nome, valor_px=18)
 
     # 1.8 trilho do indicador
+    # tres cartoes de 112px: quatro de 88px cortavam o valor
     p.trilho([
         ("Leituras", "_Medidas", "Quantidade de Leituras"),
         ("Agregação", "_Medidas", "Rotulo Agregacao Recomendada"),
         ("Status do indicador", "_Medidas", "Status do Indicador"),
-        ("Primeira data", "_Medidas", "Primeira Data com Dados"),
-    ], y=356, h=88, gap=8)
+    ], y=356, h=112, gap=16)
 
     # 1.9 evolucao diaria
     p.add(
@@ -83,10 +81,7 @@ def visao_geral() -> Pagina:
     )
 
     # 1.10 rodape: origem do dado. Contagens de pendencia ficam no painel de qualidade.
-    p.add("textbox", 24, 750, 1392, 36,
-          objects=rodape("Base_Usina_PowerBI_Final_v4.xlsx · Fato_Medicoes, "
-                         "Dim_Indicador, Dim_Calendario"),
-          container=sem_cromo())
+    p.rodape_tela()
     return p
 
 

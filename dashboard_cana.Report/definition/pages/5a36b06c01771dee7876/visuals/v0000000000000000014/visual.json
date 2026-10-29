@@ -2,15 +2,15 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000014",
   "position": {
-    "x": 340,
+    "x": 1040,
     "y": 356,
     "z": 1014,
-    "width": 684,
+    "width": 376,
     "height": 378,
     "tabOrder": 14
   },
   "visual": {
-    "visualType": "lineChart",
+    "visualType": "barChart",
     "query": {
       "queryState": {
         "Category": {
@@ -20,14 +20,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Dim_Calendario"
+                      "Entity": "Fato_Medicoes"
                     }
                   },
-                  "Property": "Data"
+                  "Property": "Fonte"
                 }
               },
-              "queryRef": "Dim_Calendario.Data",
-              "nativeQueryRef": "Data",
+              "queryRef": "Fato_Medicoes.Fonte",
+              "nativeQueryRef": "Fonte",
               "active": true
             }
           ]
@@ -42,11 +42,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Media Aritmetica Nao Ponderada"
+                  "Property": "Quantidade de Registros"
                 }
               },
-              "queryRef": "_Medidas.Media Aritmetica Nao Ponderada",
-              "nativeQueryRef": "Media Aritmetica Nao Ponderada"
+              "queryRef": "_Medidas.Quantidade de Registros",
+              "nativeQueryRef": "Quantidade de Registros"
             }
           ]
         }
@@ -67,7 +67,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Série diária'"
+                  "Value": "'Cobertura por fonte'"
                 }
               }
             },
@@ -105,7 +105,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Média aritmética não ponderada do indicador selecionado'"
+                  "Value": "'Registros de todos os indicadores'"
                 }
               }
             },

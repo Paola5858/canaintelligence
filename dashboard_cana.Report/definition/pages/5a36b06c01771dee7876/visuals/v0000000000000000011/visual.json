@@ -3,10 +3,10 @@
   "name": "v0000000000000000011",
   "position": {
     "x": 24,
-    "y": 452,
+    "y": 484,
     "z": 1011,
     "width": 300,
-    "height": 88,
+    "height": 112,
     "tabOrder": 11
   },
   "visual": {
@@ -72,32 +72,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "10D"
-                }
-              }
-            },
-            "fontFamily": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Segoe UI'"
-                }
-              }
-            },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#76817B'"
-                    }
-                  }
+                  "Value": "false"
                 }
               }
             }

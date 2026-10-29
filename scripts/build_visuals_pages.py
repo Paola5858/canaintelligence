@@ -38,6 +38,7 @@ def cartoes_em_linha(pagina: Pagina, itens, x0, y, largura_total, h, gap=16, val
 
 def fontes() -> Pagina:
     p = Pagina(FONTES, "Fontes")
+    p.limpar()
     p.cabecalho_tela()
     p.filtro_data()
     p.filtro("Dim_Indicador", "Nome_Original", 360, w=320)
@@ -77,6 +78,7 @@ def fontes() -> Pagina:
         },
         container=titulo("Comparação por fonte", "Leituras, cobertura e faixa"),
     )
+    p.rodape_tela()
     return p
 
 
@@ -84,6 +86,7 @@ def fontes() -> Pagina:
 
 def indicadores() -> Pagina:
     p = Pagina(INDICADORES, "Indicadores")
+    p.limpar()
     p.cabecalho_tela()
     p.filtro_data()
     p.filtro("Fato_Medicoes", "Fonte", 360, w=200)
@@ -118,6 +121,7 @@ def indicadores() -> Pagina:
 
     # 4.5 distribuicao: sem o grupo de faixas nao existe eixo honesto.
     # O espaco fica reservado e o passo manual esta no runbook.
+    p.rodape_tela()
     return p
 
 
@@ -125,19 +129,19 @@ def indicadores() -> Pagina:
 
 def qualidade() -> Pagina:
     p = Pagina(QUALIDADE, "Qualidade")
+    p.limpar()
     p.cabecalho_tela()
     p.filtro_data()
     p.filtro("Fato_Medicoes", "Status_Validacao", 360, w=240)
     p.filtro("Dim_Indicador", "Nome_Original", 616, w=280)
 
+    # quatro cartoes de 120px: seis de 76px cortavam todos os valores
     p.trilho([
         ("Registros", "_Medidas", "Quantidade de Registros"),
         ("Pendentes", "_Medidas", "Registros Pendentes"),
         ("Percentual pendente", "_Medidas", "Percentual de Registros Pendentes"),
         ("Ajustes de escala", "_Medidas", "Registros com Ajuste de Escala"),
-        ("Cópias exatas", "_Medidas", "Copias Exatas Preservadas"),
-        ("Dias sem medição", "_Medidas", "Dias sem Medicao"),
-    ], y=220, h=76, gap=8)
+    ])
 
     p.add(
         "columnChart", 340, 220, 660, 184,
@@ -168,6 +172,8 @@ def qualidade() -> Pagina:
         ]}},
         container=titulo("Pendências de validação", "4 registros na origem"),
     )
+    p.rodape_tela("Base_Usina_PowerBI_Final_v4.xlsx · Fato_Medicoes, "
+                  "Pendencias_Validacao, Auditoria_Dados")
     return p
 
 
@@ -175,6 +181,7 @@ def qualidade() -> Pagina:
 
 def detalhes() -> Pagina:
     p = Pagina(DETALHES, "Detalhes")
+    p.limpar()
     p.cabecalho_tela()
     p.filtro_data()
     p.filtro("Dim_Indicador", "Nome_Original", 360, w=240)
@@ -208,6 +215,8 @@ def detalhes() -> Pagina:
         ]}},
         container=titulo("Registros", "Data decrescente · 903 registros no recorte"),
     )
+    p.rodape_tela("Base_Usina_PowerBI_Final_v4.xlsx · Fato_Medicoes, "
+                  "Auditoria_Dados, Dim_Indicador")
     return p
 
 
