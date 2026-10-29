@@ -137,7 +137,9 @@ check("Toda tabela e coluna tem lineageTag", len(all_tags) > 40, f"{len(all_tags
 measures: dict[str, dict] = {}
 for name, table in tables.items():
     for measure in table["measures"]:
-        block = re.search(rf"^\tmeasure '{re.escape(measure)}' = (.*?)(?=\n\tmeasure |\n\tpartition |\Z)",
+        # O Desktop grava medidas de DAX multilinha como "measure 'X' =" e
+        # quebra a linha, sem espaco depois do sinal. Aceitar as duas formas.
+        block = re.search(rf"^\tmeasure '{re.escape(measure)}' =[ ]?(.*?)(?=\n\tmeasure |\n\tpartition |\Z)",
                           table["text"], re.MULTILINE | re.DOTALL)
         measures[measure] = {"table": name, "dax": block.group(1) if block else ""}
 
