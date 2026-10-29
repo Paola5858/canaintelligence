@@ -1,4 +1,7 @@
 expression CaminhoDaBase = "C:\Users\alunodev25\Desktop\OneDrive\dev\CanaIntelligence\data\Base_Usina_PowerBI_Final_v4.xlsx" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
+	lineageTag: ca64fa69-0b5c-4098-973d-db3270a57500
+
 	annotation PBI_ResultType = Text
 
 	annotation PBI_NavigationStepName = Navegação
+

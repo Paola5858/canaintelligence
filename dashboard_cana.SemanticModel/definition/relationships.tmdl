@@ -5,3 +5,4 @@ relationship 4a7c1e60-1b2d-4e3f-8a45-01b0c9000001
 relationship 4a7c1e60-1b2d-4e3f-8a45-01b0c9000002
 	fromColumn: Fato_Medicoes.Indicador_Codigo
 	toColumn: Dim_Indicador.Codigo
+

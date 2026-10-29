@@ -1,6 +1,6 @@
 table Dim_Calendario
-	dataCategory: Time
 	lineageTag: 5c1d9a70-3c1e-4a6f-9a7f-01b0c1000001
+	dataCategory: Time
 
 	column Data
 		dataType: dateTime
@@ -112,3 +112,4 @@ table Dim_Calendario
 				    LinhasValidas
 
 	annotation PBI_ResultType = Table
+

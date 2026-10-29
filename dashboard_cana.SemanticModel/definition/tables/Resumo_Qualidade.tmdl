@@ -85,3 +85,4 @@ table Resumo_Qualidade
 				    TiposAtribuidos
 
 	annotation PBI_ResultType = Table
+

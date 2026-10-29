@@ -125,3 +125,4 @@ table Auditoria_Dados
 				    LinhasValidas
 
 	annotation PBI_ResultType = Table
+

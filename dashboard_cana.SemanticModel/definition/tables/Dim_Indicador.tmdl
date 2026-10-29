@@ -81,11 +81,11 @@ table Dim_Indicador
 
 	column Ordem
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 7b2e4c10-4d2a-4f80-8b61-01b0c2000011
 		summarizeBy: none
 		sourceColumn: Ordem
-		isHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -127,3 +127,4 @@ table Dim_Indicador
 				    LinhasValidas
 
 	annotation PBI_ResultType = Table
+

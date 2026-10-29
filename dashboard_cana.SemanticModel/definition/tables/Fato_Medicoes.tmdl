@@ -167,3 +167,4 @@ table Fato_Medicoes
 				    LinhasValidas
 
 	annotation PBI_ResultType = Table
+

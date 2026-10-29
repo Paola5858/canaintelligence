@@ -64,3 +64,4 @@ table Pendencias_Validacao
 				    LinhasValidas
 
 	annotation PBI_ResultType = Table
+
