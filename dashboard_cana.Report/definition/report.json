@@ -9,6 +9,10 @@
         "page": "2.3.1"
       },
       "type": "SharedResources"
+    },
+    "customTheme": {
+      "name": "CanaIntelligence",
+      "type": "SharedResources"
     }
   },
   "objects": {
@@ -35,6 +39,11 @@
           "name": "Fluent2-CY26SU08",
           "path": "BaseThemes/Fluent2-CY26SU08.json",
           "type": "BaseTheme"
+        },
+        {
+          "name": "CanaIntelligence",
+          "path": "BaseThemes/CanaIntelligence.json",
+          "type": "CustomTheme"
         }
       ]
     }
