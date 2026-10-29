@@ -11,7 +11,7 @@ Data de referência dos resultados: 29/10/2026.
 | `tests/test_report_structure.py` | 43 | 43 | 0 | Sim |
 | `tests/test_tmdl_parser.py` (parser oficial do Power BI) | 1 | 1 | 0 | Sim |
 | Total automatizado | 122 | 122 | 0 | Sim |
-| Abertura do relatório no Power BI Desktop | 0 | 0 | 0 | **Não** |
+| Abertura do relatório no Power BI Desktop | 1 | 1 | 0 | Sim, em 29/10/2026 |
 | Execução de DAX | 0 | 0 | 0 | **Não** |
 | Renderização de visuais | 0 | 0 | 0 | **Não** |
 
@@ -99,9 +99,14 @@ O teste valida estrutura do modelo, não semântica de DAX. Expressão DAX com e
 
 ### Abertura completa no Power BI Desktop
 
-O modelo semântico agora deserializa no parser oficial, o que cobre a maior parte do risco de abertura. O que continua sem validação por app é a camada do relatório: `report.json`, `page.json` e o tema personalizado são lidos pelo Power BI por outro caminho, que não tem parser exposto para execução em linha de comando.
+Executada em 29/10/2026, depois das duas correções. Resultado observado na sessão do Desktop, produto 2.157.879.0:
 
-Passo manual: abrir `dashboard_cana.pbip` e confirmar que as 6 páginas aparecem na ordem, com o tema aplicado e sem aviso de arquivo inválido.
+1. O projeto abre e o título da janela passa a `dashboard_cana`.
+2. Nenhum snapshot de erro novo é gerado em `Power BI Desktop Store App`.
+3. O modelo carrega, as 7 tabelas são avaliadas e as 55 medidas aparecem no painel de dados.
+4. A lista de problemas do relatório fica vazia, depois da correção de `reportVersionAtImport`.
+
+O que o Desktop ainda não confirma por si só: se cada página tem a composição prevista, porque os visuais não foram montados. A abertura prova o arquivo, não o desenho.
 
 ### Execução de medidas DAX
 
@@ -162,3 +167,4 @@ Não executadas, porque os visuais ainda não existem no projeto. Ver checklist 
 | Catálogo de medidas | Três medidas com numeração de pasta inconsistente | Renumeração de 00 a 06 |
 | Abertura no Power BI Desktop (29/10/2026) | `description:` usado como linha de propriedade em coluna e em medida. O TMDL recusa a chave inteira e o projeto não abre. Erro reproduzido localmente com `TmdlSerializer.DeserializeModelFromFolder` | As 45 descrições viraram comentários `///` acima de cada declaração, que é a forma da propriedade embutida |
 | Teste de estrutura | Cobrava `description:` dentro do bloco da medida, que é justamente o formato inválido | Passou a exigir comentário `///` antes da declaração e a proibir a chave antiga |
+| Segunda abertura (29/10/2026) | `customTheme` sem `reportVersionAtImport`. O Desktop recusa a definição do relatório com "A propriedade necessária reportVersionAtImport não foi incluída na propriedade /themeCollection/customTheme" | Propriedade adicionada, e o teste de estrutura do relatório passou a exigi-la |

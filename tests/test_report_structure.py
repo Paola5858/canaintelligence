@@ -84,6 +84,12 @@ colecao = report.get("themeCollection", {})
 custom = colecao.get("customTheme", {})
 check("report.json declara tema personalizado", custom.get("name") == "CanaIntelligence", str(custom))
 check("Tema personalizado e do tipo SharedResources", custom.get("type") == "SharedResources")
+# Sem reportVersionAtImport o Desktop recusa o relatorio inteiro com
+# "A propriedade necessária reportVersionAtImport não foi incluída".
+check("Tema personalizado tem reportVersionAtImport",
+      isinstance(custom.get("reportVersionAtImport"), dict)
+      and {"visual", "report", "page"} <= set(custom.get("reportVersionAtImport", {})),
+      str(custom.get("reportVersionAtImport")))
 
 pacotes = report.get("resourcePackages", [])
 itens = [item for pacote in pacotes for item in pacote.get("items", [])]

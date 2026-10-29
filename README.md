@@ -9,7 +9,7 @@ Fonte única de dados: `data/Base_Usina_PowerBI_Final_v4.xlsx`. Todas as contage
 | Item | Estado |
 | --- | --- |
 | Modelo semântico aceito pelo parser oficial | Sim, 7 tabelas, 55 medidas, 2 relacionamentos |
-| Relatório abre no Power BI Desktop | Não validado. Depende de abertura manual |
+| Relatório abre no Power BI Desktop | Sim, aberto e carregado em 29/10/2026 |
 | Modelo semântico em TMDL | Implementado, 6 tabelas e 55 medidas |
 | Relacionamentos | 2, ambos de um para muitos e filtro simples |
 | Páginas do relatório | 6 criadas, sem visuais |
