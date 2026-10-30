@@ -68,26 +68,11 @@ def sem_cromo() -> dict:
 
 
 def painel_card(titulo_texto: str, subtitulo_texto: str | None = None) -> dict:
-    """Contêiner padrão para cards e gráficos analíticos com borda e sombra suaves."""
+    """Contêiner padrão para cards e gráficos analíticos com título e subtítulo contextuais.
+    
+    Fundo branco, raio de borda 12 e sombra suave são herdados do tema CanaIntelligence.json.
+    """
     container = {
-        "background": [{"properties": {
-            "show": lit("true"),
-            "color": cor("#FFFFFF"),
-            "transparency": inteiro(0),
-        }}],
-        "border": [{"properties": {
-            "show": lit("true"),
-            "color": cor("#D8DDD5"),
-            "radius": inteiro(12),
-        }}],
-        "dropShadow": [{"properties": {
-            "show": lit("true"),
-            "color": cor("#173F35"),
-            "transparency": inteiro(94),
-            "blur": inteiro(10),
-            "angle": inteiro(135),
-            "distance": inteiro(3),
-        }}],
         "title": [{"properties": {
             "show": lit("true"),
             "text": texto(titulo_texto),
