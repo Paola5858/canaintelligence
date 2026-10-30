@@ -336,6 +336,36 @@ table _Medidas
 		displayFolder: 06 | Rastreabilidade
 		lineageTag: 86405bd7-28f8-464e-8142-de77cec88e63
 
+	/// Texto sem abreviacao para cartao. O Desktop ignora displayUnits vindo do arquivo e escreve 19.532 como "20 Mil". Nao usar em grafico.
+	measure 'Rotulo Registros' = FORMAT ( [Quantidade de Registros], "#,##0" )
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 5f1a0b11-1c2d-4e3f-9a00-ca1a00000001
+
+	/// Texto sem abreviacao para cartao. Ver Rotulo Registros.
+	measure 'Rotulo Registros Validados' = FORMAT ( [Registros Validados], "#,##0" )
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 5f1a0b11-1c2d-4e3f-9a00-ca1a00000002
+
+	/// Texto sem abreviacao para cartao. Ver Rotulo Registros.
+	measure 'Rotulo Leituras' = FORMAT ( [Quantidade de Leituras], "#,##0" )
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 5f1a0b11-1c2d-4e3f-9a00-ca1a00000003
+
+	/// Texto sem abreviacao para cartao. Ver Rotulo Registros.
+	measure 'Rotulo Ajustes de Escala' = FORMAT ( [Registros com Ajuste de Escala], "#,##0" )
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 5f1a0b11-1c2d-4e3f-9a00-ca1a00000004
+
+	/// Texto sem abreviacao para cartao. Depende do registro selecionado em Auditoria_Dados.
+	measure 'Rotulo Valor Original' = FORMAT ( [Valor Original do Registro], "#,##0" )
+		displayFolder: 06 | Rastreabilidade
+		lineageTag: 5f1a0b11-1c2d-4e3f-9a00-ca1a00000005
+
+	/// Texto sem abreviacao para cartao. Depende do registro selecionado em Auditoria_Dados.
+	measure 'Rotulo Fator Aplicado' = FORMAT ( [Fator Aplicado do Registro], "#,##0" )
+		displayFolder: 06 | Rastreabilidade
+		lineageTag: 5f1a0b11-1c2d-4e3f-9a00-ca1a00000006
+
 	column Placeholder
 		dataType: string
 		isHidden

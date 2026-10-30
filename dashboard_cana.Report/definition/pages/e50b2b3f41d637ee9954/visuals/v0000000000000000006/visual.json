@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Fator Aplicado do Registro"
+                  "Property": "Rotulo Fator Aplicado"
                 }
               },
-              "queryRef": "_Medidas.Fator Aplicado do Registro",
-              "nativeQueryRef": "Fator Aplicado do Registro"
+              "queryRef": "_Medidas.Rotulo Fator Aplicado",
+              "nativeQueryRef": "Rotulo Fator Aplicado"
             }
           ]
         }

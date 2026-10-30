@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Quantidade de Registros"
+                  "Property": "Rotulo Registros"
                 }
               },
-              "queryRef": "_Medidas.Quantidade de Registros",
-              "nativeQueryRef": "Quantidade de Registros"
+              "queryRef": "_Medidas.Rotulo Registros",
+              "nativeQueryRef": "Rotulo Registros"
             }
           ]
         }

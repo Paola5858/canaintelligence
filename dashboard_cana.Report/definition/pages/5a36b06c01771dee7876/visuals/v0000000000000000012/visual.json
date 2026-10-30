@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Status do indicador'"
+                  "Value": "'Status'"
                 }
               }
             },

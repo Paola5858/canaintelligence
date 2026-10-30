@@ -42,7 +42,7 @@ def visao_geral() -> Pagina:
     # 1.6 faixa de cobertura: cinco cartoes abertos, 1392px de largura
     cobertura = [
         ("Dias com dados", "Dias com Dados"),
-        ("Registros validados", "Registros Validados"),
+        ("Registros validados", "Rotulo Registros Validados"),
         ("Indicadores", "Quantidade de Indicadores"),
         ("Fontes", "Quantidade de Fontes"),
         ("Última medição", "Ultima Data com Dados"),
@@ -55,9 +55,9 @@ def visao_geral() -> Pagina:
     # 1.8 trilho do indicador
     # tres cartoes de 112px: quatro de 88px cortavam o valor
     p.trilho([
-        ("Leituras", "_Medidas", "Quantidade de Leituras"),
+        ("Leituras", "_Medidas", "Rotulo Leituras"),
         ("Agregação", "_Medidas", "Rotulo Agregacao Recomendada"),
-        ("Status do indicador", "_Medidas", "Status do Indicador"),
+        ("Status", "_Medidas", "Status do Indicador"),
     ], y=356, h=112, gap=16)
 
     # 1.9 evolucao diaria

@@ -18,7 +18,7 @@ import sys
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-from pbir_lib import Pagina, coluna, conferir_dentro_da_pagina, medida, titulo  # noqa: E402
+from pbir_lib import Pagina, coluna, conferir_dentro_da_pagina, lit, medida, titulo  # noqa: E402
 
 FONTES = "b2d5f88c1ea304bb6621"
 INDICADORES = "c3e6091d2fb415cc7732"
@@ -45,9 +45,9 @@ def fontes() -> Pagina:
     p.filtro("Fato_Medicoes", "Grupo_Fonte", 696, w=200)
 
     p.trilho([
-        ("Leituras", "_Medidas", "Quantidade de Leituras"),
-        ("Frentes com dado", "_Medidas", "Frentes com Dado do Indicador"),
-        ("Status do indicador", "_Medidas", "Status do Indicador"),
+        ("Leituras", "_Medidas", "Rotulo Leituras"),
+        ("Frentes", "_Medidas", "Frentes com Dado do Indicador"),
+        ("Status", "_Medidas", "Status do Indicador"),
         ("Agregação", "_Medidas", "Rotulo Agregacao Recomendada"),
     ])
 
@@ -64,7 +64,9 @@ def fontes() -> Pagina:
         container=titulo("Faixa observada", "Mínimo e máximo por frente"),
     )
 
-    # matriz de comparacao
+    # Matriz, nao tabela: a tabela descartou as quatro medidas e mostrou so a
+    # coluna Fonte. A linha de total da matriz precisa ser desligada no Desktop,
+    # porque a propriedade subTotals nao foi aceita na versao de 30/10/2026.
     p.add(
         "matrix", 776, 220, 640, 514,
         {
@@ -93,22 +95,25 @@ def indicadores() -> Pagina:
     p.filtro("Dim_Indicador", "Nome_Original", 576, w=320)
 
     p.trilho([
-        ("Leituras", "_Medidas", "Quantidade de Leituras"),
-        ("Frentes com dado", "_Medidas", "Frentes com Dado do Indicador"),
-        ("Status do indicador", "_Medidas", "Status do Indicador"),
+        ("Leituras", "_Medidas", "Rotulo Leituras"),
+        ("Frentes", "_Medidas", "Frentes com Dado do Indicador"),
+        ("Status", "_Medidas", "Status do Indicador"),
         ("Agregação", "_Medidas", "Rotulo Agregacao Recomendada"),
     ])
 
+    # 96px: com 72px o valor era cortado na base do cartao, igual as outras paginas
     cartoes_em_linha(p, [
         ("Mediana", "_Medidas", "Mediana do Indicador"),
         ("Média não ponderada", "_Medidas", "Media Aritmetica Nao Ponderada"),
         ("Mínimo", "_Medidas", "Minimo Observado"),
         ("Máximo", "_Medidas", "Maximo Observado"),
-        ("Leituras", "_Medidas", "Quantidade de Leituras"),
-    ], x0=340, y=220, largura_total=1076, h=72)
+        ("Leituras", "_Medidas", "Rotulo Leituras"),
+    ], x0=340, y=220, largura_total=1076, h=96)
 
+    # serie em largura cheia enquanto a distribuicao nao existe: o grupo de faixas
+    # ainda nao foi criado, e 440px vazios pesam mais que uma serie larga
     p.add(
-        "lineChart", 340, 308, 620, 426,
+        "lineChart", 340, 332, 1076, 402,
         {
             "Category": {"projections": [coluna("Dim_Calendario", "Data")]},
             "Y": {"projections": [
@@ -137,10 +142,10 @@ def qualidade() -> Pagina:
 
     # quatro cartoes de 120px: seis de 76px cortavam todos os valores
     p.trilho([
-        ("Registros", "_Medidas", "Quantidade de Registros"),
+        ("Registros", "_Medidas", "Rotulo Registros"),
         ("Pendentes", "_Medidas", "Registros Pendentes"),
-        ("Percentual pendente", "_Medidas", "Percentual de Registros Pendentes"),
-        ("Ajustes de escala", "_Medidas", "Registros com Ajuste de Escala"),
+        ("% pendente", "_Medidas", "Percentual de Registros Pendentes"),
+        ("Ajustes", "_Medidas", "Rotulo Ajustes de Escala"),
     ])
 
     p.add(
@@ -188,22 +193,23 @@ def detalhes() -> Pagina:
     p.filtro("Fato_Medicoes", "Fonte", 616, w=200)
 
     p.trilho([
-        ("Valor original", "_Medidas", "Valor Original do Registro"),
-        ("Fator aplicado", "_Medidas", "Fator Aplicado do Registro"),
-        ("Regra de transformação", "_Medidas", "Regra de Transformacao do Registro"),
+        ("Valor original", "_Medidas", "Rotulo Valor Original"),
+        ("Fator aplicado", "_Medidas", "Rotulo Fator Aplicado"),
+        ("Regra", "_Medidas", "Regra de Transformacao do Registro"),
         ("Status anterior", "_Medidas", "Status Anterior do Registro"),
     ])
 
+    # 96px: com 64px o valor era cortado na base do cartao
     cartoes_em_linha(p, [
-        ("Registros no recorte", "_Medidas", "Quantidade de Registros"),
-        ("Com ajuste de escala", "_Medidas", "Registros com Ajuste de Escala"),
+        ("Registros no recorte", "_Medidas", "Rotulo Registros"),
+        ("Com ajuste de escala", "_Medidas", "Rotulo Ajustes de Escala"),
         ("Status do indicador", "_Medidas", "Status do Indicador"),
         ("Primeira data", "_Medidas", "Primeira Data com Dados"),
         ("Última data", "_Medidas", "Ultima Data com Dados"),
-    ], x0=340, y=220, largura_total=1076, h=64)
+    ], x0=340, y=220, largura_total=1076, h=96)
 
     p.add(
-        "tableEx", 340, 300, 1076, 434,
+        "tableEx", 340, 332, 1076, 402,
         {"Values": {"projections": [
             coluna("Fato_Medicoes", "ID_Registro"),
             coluna("Fato_Medicoes", "Data"),
@@ -213,6 +219,7 @@ def detalhes() -> Pagina:
             coluna("Fato_Medicoes", "Ajuste_Aplicado"),
             coluna("Fato_Medicoes", "Status_Validacao"),
         ]}},
+        sort_by=coluna("Fato_Medicoes", "Data"),
         container=titulo("Registros", "Data decrescente · 903 registros no recorte"),
     )
     p.rodape_tela("Base_Usina_PowerBI_Final_v4.xlsx · Fato_Medicoes, "

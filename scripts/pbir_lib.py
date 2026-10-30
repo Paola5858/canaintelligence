@@ -143,6 +143,11 @@ def rotulo_cartao(valor_px: int = 26) -> dict:
 
 # ------------------------------------------------------------------ pagina
 
+# Descoberto no sandbox em 30/10/2026: em 'data'.mode = 'Dropdown' a segmentacao
+# fecha com seta. 'general' e 'selection' nao tem efeito nesta versao do Desktop.
+MODO_DROPDOWN = {"data": [{"properties": {"mode": texto("Dropdown")}}]}
+
+
 def limpar_visuais(pasta_pagina: Path) -> int:
     """Apaga os visuais gerados de uma pagina.
 
@@ -183,7 +188,11 @@ class Pagina:
         if not self.pasta.exists():
             raise FileNotFoundError(f"pagina nao encontrada: {self.pasta}")
 
-    def add(self, tipo, x, y, w, h, query_state=None, objects=None, container=None):
+    def add(self, tipo, x, y, w, h, query_state=None, objects=None, container=None,
+            sort_by=None, sort_direction="Descending"):
+        # sort_by fica aceito por compatibilidade, mas NAO gera sortDefinition:
+        # 30/10/2026 o Desktop recusou carregar o relatorio com essa chave e nao
+        # deu detalhe. Ordenacao de tabela e ajuste manual no Desktop.
         self.contador += 1
         nome = "v" + str(self.contador).zfill(19)
         visual = {"visualType": tipo}
@@ -230,11 +239,13 @@ class Pagina:
     def filtro_data(self, x=24, y=152, w=320):
         self.add("slicer", x, y, w, 40,
                  {"Values": {"projections": [coluna("Dim_Calendario", "Data")]}},
+                 objects=MODO_DROPDOWN,
                  container=sem_cromo())
 
     def filtro(self, tabela, campo, x, w=220, y=152):
         self.add("slicer", x, y, w, 44,
                  {"Values": {"projections": [coluna(tabela, campo)]}},
+                 objects=MODO_DROPDOWN,
                  container=sem_cromo())
 
     def cartao(self, x, y, w, h, rotulo, tabela, nome_medida, valor_px=26):

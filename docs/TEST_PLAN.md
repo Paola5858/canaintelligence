@@ -54,7 +54,7 @@ Não substitui abrir o projeto, mas pega os erros que impedem a abertura.
 | Relacionamentos | Dois relacionamentos, todos os extremos existem, a fato é sempre o lado muitos |
 | Dimensões | `Data` e `Codigo` marcadas como chave, calendário marcado como tabela de data, `Nome_Mes` ordenado por `Numero_Mes` |
 | Lineage tags | Nenhuma repetida, todas as tabelas e colunas com tag |
-| Medidas | 55 medidas, toda referência entre colchetes existe, todas com pasta de exibição, medidas críticas com descrição |
+| Medidas | 61 medidas, toda referência entre colchetes existe, todas com pasta de exibição, medidas críticas com descrição |
 | Guardas | Média genérica exige indicador único e agregação aprovada, comparação temporal devolve vazio quando não há período |
 | Formatos | Percentual direto em `0.00"%"`, UMIDADE_LAB em `0.0%`, ATR em `0.00" kg/t"` |
 | Fonte | Caminho centralizado no parâmetro, nenhum caminho absoluto cravado em consulta |
@@ -102,7 +102,7 @@ A suíte de grade garante que o visual não se sobrepõe. Esta garante que ele a
 | Consistência | O `queryRef` de cada projeção bate com `Tabela.Propriedade` |
 | Cobertura | Existe pelo menos uma referência a campo nos 77 visuais |
 
-Resultado atual: 192 verificações, 192 aprovadas, 82 visuais e 42 referências distintas a campos. O teste não confere tipo, formato nem semântica de DAX.
+Resultado atual: 192 verificações, 192 aprovadas, 82 visuais e 44 referências distintas a campos. O teste não confere tipo, formato nem semântica de DAX.
 
 ## Validação com o parser oficial do Power BI
 
@@ -123,7 +123,7 @@ PARSE OK
   _Medidas           | colunas=1  medidas=55
   relacao: Fato_Medicoes[Data] -> Dim_Calendario[Data]
   relacao: Fato_Medicoes[Indicador_Codigo] -> Dim_Indicador[Codigo]
-Total: 7 tabelas, 55 medidas, 2 relacionamentos
+Total: 7 tabelas, 61 medidas, 2 relacionamentos
 ```
 
 O teste valida estrutura do modelo, não semântica de DAX. Expressão DAX com erro de lógica ou de tipo continua dependendo de execução no Desktop.
@@ -214,9 +214,37 @@ Três páginas foram conferidas por captura da janela do Desktop em 29/10/2026, 
 | Comparação de períodos ilegível | Quatro colunas de medida em 440px geravam rolagem horizontal e nenhum valor | Três cartões de 141x212, com rótulos curtos |
 | Visual órfão na Qualidade | O gerador não limpava a pasta `visuals`, e o sexto cartão antigo continuava lá | Todo gerador limpa a pasta antes de escrever. A suíte de grade reprovou o caso |
 
+### Segunda rodada, Fontes, Indicadores e Detalhes
+
+| Página | Observação | Resultado |
+| --- | --- | --- |
+| Fontes | Segmentações de data, indicador e grupo | Fechadas com seta, modo lista suspensa aplicado |
+| Fontes | Cartão de leituras | 19.532 inteiro, sem "20 Mil" |
+| Fontes | Matriz de comparação | Renderiza as quatro medidas, com linha de total a desligar no Desktop |
+| Fontes | Faixa observada | Vazia, porque nenhum indicador está selecionado |
+| Indicadores | Cinco cartões de estatística | Sem corte depois de subir para 96px |
+| Indicadores | Série temporal | Largura cheia, vazia até selecionar indicador |
+| Detalhes | Cinco cartões de contexto | 19.532, 1.585, 04/01/2026 e 11/12/2026 legíveis |
+| Detalhes | Tabela de sete colunas | Cabe na largura, sem rolagem horizontal |
+
+### Descobertas de 30/10/2026 no sandbox
+
+| Propriedade | Teste | Resultado |
+| --- | --- | --- |
+| `labels.displayUnits` | Cartão com `1D` | Abreviado, sem efeito |
+| `calloutValue.displayUnits` | Cartão com `1D` | Abreviado, sem efeito |
+| `labels.displayUnits` literal `'None'` | Cartão | Abreviado, sem efeito |
+| `precision` sozinho | Cartão | Abreviado, sem efeito |
+| `general.mode` | Segmentação `Dropdown` | Lista aberta, sem efeito |
+| `data.mode` | Segmentação `Dropdown` | **Funciona**, caixa fechada com seta |
+| `selection.mode` | Segmentação `Dropdown` | Lista aberta, sem efeito |
+| `data.mode` | Segmentação `List` e `Between` | Sem efeito |
+
+A unidade de exibição virou solução por medida de texto, registrada em [MEASURES_CATALOG.md](MEASURES_CATALOG.md). A ordenação declarada em `sortDefinition` foi tentada e **derrubou o carregamento do relatório**, então voltou atrás e ficou manual.
+
 ### O que continua pendente de verificação visual
 
-Fontes, Indicadores e Detalhes nunca foram abertas. Geometria está coberta pela suíte de grade, aparência não. Ver checklist em [RUNBOOK.md](RUNBOOK.md#checklist-de-aceite-do-relatorio).
+As seis páginas já foram abertas ao menos uma vez. O que falta é conferir cada uma depois da última geração, porque qualquer mudança no gerador muda o resultado. Ver checklist em [RUNBOOK.md](RUNBOOK.md#checklist-de-aceite-do-relatorio).
 
 ## Falhas encontradas durante a construção
 

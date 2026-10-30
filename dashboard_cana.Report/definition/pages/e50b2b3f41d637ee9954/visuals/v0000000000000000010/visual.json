@@ -6,7 +6,7 @@
     "y": 220,
     "z": 1010,
     "width": 202,
-    "height": 64,
+    "height": 96,
     "tabOrder": 10
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Registros com Ajuste de Escala"
+                  "Property": "Rotulo Ajustes de Escala"
                 }
               },
-              "queryRef": "_Medidas.Registros com Ajuste de Escala",
-              "nativeQueryRef": "Registros com Ajuste de Escala"
+              "queryRef": "_Medidas.Rotulo Ajustes de Escala",
+              "nativeQueryRef": "Rotulo Ajustes de Escala"
             }
           ]
         }

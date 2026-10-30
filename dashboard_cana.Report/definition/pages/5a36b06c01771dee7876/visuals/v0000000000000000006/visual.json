@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Registros Validados"
+                  "Property": "Rotulo Registros Validados"
                 }
               },
-              "queryRef": "_Medidas.Registros Validados",
-              "nativeQueryRef": "Registros Validados"
+              "queryRef": "_Medidas.Rotulo Registros Validados",
+              "nativeQueryRef": "Rotulo Registros Validados"
             }
           ]
         }

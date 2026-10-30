@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Quantidade de Leituras"
+                  "Property": "Rotulo Leituras"
                 }
               },
-              "queryRef": "_Medidas.Quantidade de Leituras",
-              "nativeQueryRef": "Quantidade de Leituras"
+              "queryRef": "_Medidas.Rotulo Leituras",
+              "nativeQueryRef": "Rotulo Leituras"
             }
           ]
         }

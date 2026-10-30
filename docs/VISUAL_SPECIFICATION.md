@@ -75,6 +75,10 @@ Página de 1440 x 810 px. Todas as posições abaixo usam esse sistema.
 - Cartão de valor com título precisa de 120px de altura. Abaixo disso o Desktop corta o número, confirmado por captura em 29/10/2026.
 - O rótulo de categoria do cartão fica desligado, porque repete o título e consome a área do valor.
 - Trilho com mais de quatro itens não cabe em 514px com altura legível. Acima disso, dividir em colunas ou trocar por cartão de várias linhas.
+- Segmentação só fecha com `objects.data[0].properties.mode = 'Dropdown'`. `general` e `selection` não têm efeito, testado no sandbox em 30/10/2026.
+- `sortDefinition` dentro de `query` derruba o carregamento do relatório, sem detalhe no diálogo. Ordenação de tabela e matriz é manual, pelo menu da coluna.
+- Tabela com coluna e medidas no mesmo `Values` renderiza só a coluna. Para cruzar dimensão com medida, usar matriz.
+- `subTotals` não desliga a linha de total da matriz nesta versão. Desligar em Formatar visual, Subtotais.
 - As medidas `Copias Exatas Preservadas` e `Dias sem Medicao` saíram do trilho da página Qualidade quando ele passou a quatro cartões. Continuam no modelo e podem voltar numa segunda coluna de trilho.
 
 ## Convenções de interação
@@ -160,7 +164,7 @@ Pergunta da página: as frentes de colheita se comportam de forma diferente para
 | 3.1 | Cabeçalho, navegação e filtros | Iguais à página 1 | 24,24 até 24,204 | | |
 | 3.2 | Contrato do indicador | Trilho 300x514 | 24,220,300,514 | `Dim_Indicador[Nome_Original]`, `Unidade_Confirmada`, `Status_Validacao` | `Frentes com Dado do Indicador`, `Rotulo Agregacao Recomendada` |
 | 3.3 | Faixa observada | Gráfico de barras empilhadas | 340,220,420,514 | `Fato_Medicoes[Fonte]` | `Minimo Observado` e amplitude calculada |
-| 3.4 | Matriz de comparação | Matriz | 776,220,640,514 | `Fato_Medicoes[Fonte]` | `Quantidade de Leituras`, `Dias com Dado da Fonte`, `Minimo Observado`, `Maximo Observado` |
+| 3.4 | Comparação por fonte | Matriz | 776,220,640,514 | `Fato_Medicoes[Fonte]` | `Quantidade de Leituras`, `Dias com Dado da Fonte`, `Minimo Observado`, `Maximo Observado` |
 | 3.5 | Nota do laboratório | Caixa de texto | 24,690,300,32 | Texto fixo | Nenhuma |
 
 **Pergunta do visual 3.3:** onde as frentes se sobrepõem e onde alguma se separa.
@@ -169,7 +173,9 @@ Pergunta da página: as frentes de colheita se comportam de forma diferente para
 **Regra de cor:** segmento em `#4E7966`.
 
 **Pergunta do visual 3.4:** qual é a cobertura exata de cada frente.
-**Regra:** leituras por frente variam de 126 a 136. A matriz informa a contagem para que ninguém leia diferença pequena como superioridade operacional.
+**Regra:** leituras por frente variam de 126 a 136. A tabela informa a contagem para que ninguém leia diferença pequena como superioridade operacional.
+**Por que matriz e não tabela:** a tabela com coluna e medidas no mesmo `Values` descartou as quatro medidas e renderizou só `Fonte`, testado em 30/10/2026. A matriz renderiza tudo.
+**Linha de total:** a matriz abre com `Total`. Desligar em Formatar visual, Subtotais, porque a propriedade `subTotals` do arquivo não foi aceita nesta versão. O total de `Dias com Dado da Fonte` soma dias entre fontes e não tem significado, então essa linha não pode ficar.
 
 ---
 
@@ -181,8 +187,8 @@ Pergunta da página: qual é o contrato do indicador e como os valores se distri
 | --- | --- | --- | --- | --- | --- |
 | 4.1 | Cabeçalho, navegação e filtros | Iguais à página 1 | 24,24 até 24,204 | | |
 | 4.2 | Contrato do indicador | Trilho 300x514 | 24,220,300,514 | `Dim_Indicador[Codigo]`, `Nome_Padronizado`, `Unidade_Confirmada`, `Descricao_Confirmada`, `Observacoes_Tecnicas` | `Rotulo Agregacao Recomendada`, `Status do Indicador`, `Quantidade de Leituras` |
-| 4.3 | Estatísticas | 5 células abertas | 340,220,1076,72 | Nenhum | `Mediana do Indicador`, `Media Aritmetica Nao Ponderada`, `Minimo Observado`, `Maximo Observado`, `Quantidade de Leituras` |
-| 4.4 | Série temporal | Gráfico de linhas | 340,308,620,426 | `Dim_Calendario[Data]` | `Media Aritmetica Nao Ponderada` e `Media Movel 7 Dias` |
+| 4.3 | Estatísticas | 5 cartões | 340,220,1076,96 | Nenhum | `Mediana do Indicador`, `Media Aritmetica Nao Ponderada`, `Minimo Observado`, `Maximo Observado`, `Rotulo Leituras` |
+| 4.4 | Série temporal | Gráfico de linhas | 340,332,1076,402 | `Dim_Calendario[Data]` | `Media Aritmetica Nao Ponderada` e `Media Movel 7 Dias` |
 | 4.5 | Distribuição | Gráfico de colunas | 976,308,440,426 | Faixa de valor (grupo criado no Desktop) | `Quantidade de Leituras` |
 
 **Pergunta do visual 4.5:** os valores se espalham de que forma.
@@ -228,8 +234,8 @@ Pergunta da página: qual é o registro exato, seu valor original e a regra apli
 | # | Visual | Tipo nativo | Posição (x,y,w,h) | Campos | Medidas |
 | --- | --- | --- | --- | --- | --- |
 | 6.1 | Cabeçalho, navegação e filtros | Iguais à página 1, mais botão Voltar | 24,24 até 24,204 | | |
-| 6.2 | Contexto do recorte | 5 células abertas | 340,220,1076,64 | `Dim_Indicador[Nome_Original]`, `Unidade_Confirmada` | `Quantidade de Registros`, `Registros com Ajuste de Escala`, `Status do Indicador` |
-| 6.3 | Registros | Tabela | 340,300,1076,434 | `ID_Registro`, `Data`, `Fonte`, `Valor`, `Valor_Original`, `Ajuste_Aplicado`, `Status_Validacao` | Nenhuma |
+| 6.2 | Contexto do recorte | 5 cartões | 340,220,1076,96 | `Dim_Indicador[Nome_Original]`, `Unidade_Confirmada` | `Rotulo Registros`, `Rotulo Ajustes de Escala`, `Status do Indicador`, `Primeira Data com Dados`, `Ultima Data com Dados` |
+| 6.3 | Registros | Tabela | 340,332,1076,402 | `ID_Registro`, `Data`, `Fonte`, `Valor`, `Valor_Original`, `Ajuste_Aplicado`, `Status_Validacao` | Nenhuma |
 | 6.4 | Rastreabilidade | Trilho 300x514 | 24,220,300,514 | `ID_Registro` selecionado | `Valor Original do Registro`, `Fator Aplicado do Registro`, `Regra de Transformacao do Registro` |
 
 **Pergunta do visual 6.3:** qual linha exata gerou o número que estou olhando.

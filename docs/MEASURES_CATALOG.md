@@ -1,6 +1,6 @@
 # Catálogo de medidas
 
-55 medidas na tabela `_Medidas`, organizadas em 7 pastas de exibição. Todas em português, com nome curto e descrição quando o nome não basta.
+61 medidas na tabela `_Medidas`, organizadas em 7 pastas de exibição. Todas em português, com nome curto e descrição quando o nome não basta. Seis delas são medidas de rótulo, criadas em 30/10/2026 para cartão, porque o Desktop ignora a propriedade de unidade de exibição vinda do arquivo.
 
 ## Regra que governa o catálogo
 
@@ -136,6 +136,25 @@ Medidas de texto, usadas em títulos dinâmicos. Não devem ser usadas em cartã
 | `Rotulo Agregacao Recomendada` | Traduz "Média Ponderada por TC" para "Ponderação por TC não disponível" |
 | `Aviso Unidade Desconhecida` | "Unidade não confirmada" quando a unidade é Desconhecida |
 | `Status do Indicador` | Status de validação do indicador selecionado |
+
+### Medidas de rótulo para cartão
+
+O Desktop abrevia 19.532 como "20 Mil" e ignora as quatro variações de `displayUnits` testadas no sandbox em 30/10/2026 (`labels`, `calloutValue`, literal `'None'` e apenas `precision`). A saída foi formatar em DAX e ligar o cartão em uma medida de texto.
+
+| Medida | Expressão | Resultado |
+| --- | --- | --- |
+| `Rotulo Registros` | `FORMAT ( [Quantidade de Registros], "#,##0" )` | 19.532 |
+| `Rotulo Registros Validados` | `FORMAT ( [Registros Validados], "#,##0" )` | 16.823 |
+| `Rotulo Leituras` | `FORMAT ( [Quantidade de Leituras], "#,##0" )` | 903 |
+| `Rotulo Ajustes de Escala` | `FORMAT ( [Registros com Ajuste de Escala], "#,##0" )` | 1.585 |
+| `Rotulo Valor Original` | `FORMAT ( [Valor Original do Registro], "#,##0" )` | 120.400 |
+| `Rotulo Fator Aplicado` | `FORMAT ( [Fator Aplicado do Registro], "#,##0" )` | 10.000 |
+
+Regras:
+
+1. **Só em cartão.** Texto não entra em eixo, legenda, ordenação ou cálculo.
+2. **Nunca substituir a medida numérica na regra de negócio.** `Quantidade de Registros` continua sendo a medida oficial; a versão de rótulo é irmã dela.
+3. **Se o Desktop passar a aceitar `displayUnits`, estas seis podem ser aposentadas.** O teste de campos avisa se algum visual apontar para medida removida.
 
 ## 06 | Rastreabilidade
 

@@ -18,7 +18,7 @@ import json
 import sys
 from pathlib import Path
 
-from pbir_lib import limpar_visuais
+from pbir_lib import MODO_DROPDOWN, limpar_visuais
 
 sys.stdout.reconfigure(encoding="utf-8")
 
@@ -151,13 +151,13 @@ def main() -> int:
     # filtros: periodo, fonte e indicador
     novo_visual("slicer", 24, 152, 320, 40,
                 {"Values": {"projections": [coluna("Dim_Calendario", "Data")]}},
-                container=sem_cromo())
+                objects=MODO_DROPDOWN, container=sem_cromo())
     novo_visual("slicer", 360, 152, 200, 44,
                 {"Values": {"projections": [coluna("Fato_Medicoes", "Fonte")]}},
-                container=sem_cromo())
+                objects=MODO_DROPDOWN, container=sem_cromo())
     novo_visual("slicer", 576, 152, 320, 44,
                 {"Values": {"projections": [coluna("Dim_Indicador", "Nome_Original")]}},
-                container=sem_cromo())
+                objects=MODO_DROPDOWN, container=sem_cromo())
 
     # 2.3 serie diaria: linha sem marcador visivel, largura zero quando configurado no Desktop
     novo_visual(
@@ -205,9 +205,9 @@ def main() -> int:
 
     # trilho do indicador: quatro cartoes abertos na coluna de 300px
     trilho = [
-        ("Leituras", "Quantidade de Leituras"),
-        ("Frentes com dado", "Frentes com Dado do Indicador"),
-        ("Status do indicador", "Status do Indicador"),
+        ("Leituras", "Rotulo Leituras"),
+        ("Frentes", "Frentes com Dado do Indicador"),
+        ("Status", "Status do Indicador"),
         ("Agregação", "Rotulo Agregacao Recomendada"),
     ]
     for indice, (rotulo, nome_medida) in enumerate(trilho):

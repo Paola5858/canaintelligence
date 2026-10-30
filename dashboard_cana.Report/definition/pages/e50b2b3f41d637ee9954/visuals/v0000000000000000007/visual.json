@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Regra de transformação'"
+                  "Value": "'Regra'"
                 }
               }
             },

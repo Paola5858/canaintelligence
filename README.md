@@ -8,9 +8,9 @@ Fonte única de dados: `data/Base_Usina_PowerBI_Final_v4.xlsx`. Todas as contage
 
 | Item | Estado |
 | --- | --- |
-| Modelo semântico aceito pelo parser oficial | Sim, 7 tabelas, 55 medidas, 2 relacionamentos |
+| Modelo semântico aceito pelo parser oficial | Sim, 7 tabelas, 61 medidas, 2 relacionamentos |
 | Relatório abre no Power BI Desktop | Sim, aberto e carregado em 29/10/2026 |
-| Modelo semântico em TMDL | Implementado, 6 tabelas e 55 medidas |
+| Modelo semântico em TMDL | Implementado, 6 tabelas e 61 medidas |
 | Relacionamentos | 2, ambos de um para muitos e filtro simples |
 | Páginas do relatório | 6 criadas, todas na grade nova. 82 visuais gerados por script e conferidos pela suíte de grade. Visão geral, Evolução e Qualidade foram conferidas no Desktop por captura de janela; Fontes, Indicadores e Detalhes ainda não. Indicadores está sem a distribuição |
 | Tema visual | Implementado em `CanaIntelligence.json`, revisado para a grade nova (painel branco, raio 12, borda hairline, coluna e segmentação com padrão) |

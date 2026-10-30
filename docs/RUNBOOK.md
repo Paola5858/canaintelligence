@@ -149,6 +149,10 @@ O que continua manual no Desktop, depois de gerar:
 | Mês aparece em ordem alfabética | `sortByColumn` perdido | Conferir `Nome_Mes` ordenado por `Numero_Mes` |
 | Número cortado na base do cartão | Altura insuficiente para o valor que o cartão escala sozinho | Usar 120px de altura no cartão com título e desligar o rótulo de categoria |
 | Visual antigo aparece por cima do novo | Arquivo órfão na pasta `visuals` | Rodar o gerador, que limpa a pasta antes de escrever |
+| Relatório não carrega depois de gerar, sem detalhe no diálogo | `sortDefinition` dentro de `query` | Remover a chave. Ordenação é manual, pelo menu da coluna |
+| Número abreviado em cartão | O Desktop ignora `displayUnits` do arquivo | Usar medida de rótulo com `FORMAT`, ver [MEASURES_CATALOG.md](MEASURES_CATALOG.md#medidas-de-rótulo-para-cartão) |
+| Segmentação abre como lista | Falta `objects.data[0].properties.mode = 'Dropdown'` | Aplicar só em `data`, que é o único papel aceito |
+| Tabela mostra só a coluna e nenhuma medida | Coluna e medida no mesmo `Values` | Trocar por matriz |
 
 ## Git
 

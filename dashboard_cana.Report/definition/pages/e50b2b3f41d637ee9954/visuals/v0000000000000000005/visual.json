@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Valor Original do Registro"
+                  "Property": "Rotulo Valor Original"
                 }
               },
-              "queryRef": "_Medidas.Valor Original do Registro",
-              "nativeQueryRef": "Valor Original do Registro"
+              "queryRef": "_Medidas.Rotulo Valor Original",
+              "nativeQueryRef": "Rotulo Valor Original"
             }
           ]
         }
