@@ -3,7 +3,7 @@
   "name": "v0000000000000000013",
   "position": {
     "x": 24,
-    "y": 419,
+    "y": 248,
     "z": 1013,
     "width": 290,
     "height": 157,
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Rotulo Agregacao Recomendada"
+                  "Property": "Rotulo Leituras"
                 }
               },
-              "queryRef": "_Medidas.Rotulo Agregacao Recomendada",
-              "nativeQueryRef": "Rotulo Agregacao Recomendada"
+              "queryRef": "_Medidas.Rotulo Leituras",
+              "nativeQueryRef": "Rotulo Leituras"
             }
           ]
         }
@@ -48,7 +48,7 @@
             "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "'Segoe UI Semibold'"
+                  "Value": "'Aptos Display'"
                 }
               }
             },
@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'📐 REGRA DE AGREGAÇÃO'"
+                  "Value": "'VOLUME DE LEITURAS'"
                 }
               }
             },
@@ -132,7 +132,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Diretriz técnica homologada'"
+                  "Value": "'Total no escopo selecionado'"
                 }
               }
             },

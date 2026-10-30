@@ -2,10 +2,10 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000005",
   "position": {
-    "x": 584,
+    "x": 334,
     "y": 72,
     "z": 1005,
-    "width": 320,
+    "width": 240,
     "height": 46,
     "tabOrder": 5
   },
@@ -20,14 +20,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Dim_Indicador"
+                      "Entity": "Fato_Medicoes"
                     }
                   },
-                  "Property": "Nome_Original"
+                  "Property": "Status_Validacao"
                 }
               },
-              "queryRef": "Dim_Indicador.Nome_Original",
-              "nativeQueryRef": "Nome_Original",
+              "queryRef": "Fato_Medicoes.Status_Validacao",
+              "nativeQueryRef": "Status_Validacao",
               "active": true
             }
           ]

@@ -3,10 +3,10 @@
   "name": "v0000000000000000010",
   "position": {
     "x": 24,
-    "y": 600,
+    "y": 442,
     "z": 1010,
     "width": 290,
-    "height": 148,
+    "height": 146,
     "tabOrder": 10
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Rotulo Agregacao Recomendada"
+                  "Property": "Status do Indicador"
                 }
               },
-              "queryRef": "_Medidas.Rotulo Agregacao Recomendada",
-              "nativeQueryRef": "Rotulo Agregacao Recomendada"
+              "queryRef": "_Medidas.Status do Indicador",
+              "nativeQueryRef": "Status do Indicador"
             }
           ]
         }
@@ -48,7 +48,7 @@
             "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "'Segoe UI Semibold'"
+                  "Value": "'Aptos Display'"
                 }
               }
             },
@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'📐 REGRA DE AGREGAÇÃO'"
+                  "Value": "'CONFORMIDADE TÉCNICA'"
                 }
               }
             },
@@ -132,7 +132,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Diretriz da dimensão'"
+                  "Value": "'Status homologado'"
                 }
               }
             },

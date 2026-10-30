@@ -3,7 +3,7 @@
   "name": "v0000000000000000012",
   "position": {
     "x": 24,
-    "y": 419,
+    "y": 248,
     "z": 1012,
     "width": 290,
     "height": 157,
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Rotulo Fator Aplicado"
+                  "Property": "Rotulo Valor Original"
                 }
               },
-              "queryRef": "_Medidas.Rotulo Fator Aplicado",
-              "nativeQueryRef": "Rotulo Fator Aplicado"
+              "queryRef": "_Medidas.Rotulo Valor Original",
+              "nativeQueryRef": "Rotulo Valor Original"
             }
           ]
         }
@@ -48,7 +48,7 @@
             "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "'Segoe UI Semibold'"
+                  "Value": "'Aptos Display'"
                 }
               }
             },
@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'➗ FATOR APLICADO'"
+                  "Value": "'VALOR ORIGINAL'"
                 }
               }
             },
@@ -132,7 +132,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Divisão efetuada na carga'"
+                  "Value": "'Auditados ou pré-ajuste'"
                 }
               }
             },

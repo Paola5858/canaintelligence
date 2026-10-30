@@ -149,8 +149,9 @@ for page_id, nome_pagina, largura_pagina, altura_pagina, visuais in paginas:
             tab_vistos.add(tab)
 
         for outro_nome, ox, oy, ow, oh in areas:
+            fundo_header = (ow >= 1400 and oy == 0 and oh <= 70) or (w >= 1400 and y == 0 and h <= 70)
             decorativo = (w <= 48 and h <= 30) or (ow <= 48 and oh <= 30)
-            separado = decorativo or x >= ox + ow or ox >= x + w or y >= oy + oh or oy >= y + h
+            separado = fundo_header or decorativo or x >= ox + ow or ox >= x + w or y >= oy + oh or oy >= y + h
             if not separado:
                 check(f"{rotulo}: nao sobrepoe {outro_nome}", False,
                       f"{x},{y} {w}x{h} contra {ox},{oy} {ow}x{oh}")

@@ -8,9 +8,9 @@ Fonte única de dados: `data/Base_Usina_PowerBI_Final_v4.xlsx`. Todas as contage
 
 | Item | Estado |
 | --- | --- |
-| Modelo semântico aceito pelo parser oficial | Sim, 8 tabelas, 65 medidas, 2 relacionamentos |
+| Modelo semântico aceito pelo parser oficial | Sim, 8 tabelas, 72 medidas, 2 relacionamentos |
 | Evidência de abertura no Power BI Desktop | 29/10/2026 (duas sessões verificadas) |
-| Modelo semântico em TMDL | Implementado, 8 tabelas e 65 medidas |
+| Modelo semântico em TMDL | Implementado, 8 tabelas e 72 medidas |
 | Relacionamentos | 2, ambos de um para muitos e filtro simples |
 | Páginas do relatório | 6 criadas na grade executiva premium (89 visuais). Abas no formato pill em todas as páginas, faixa de controle com chip de escopo, cards KPI com título e subtítulo contextuais |
 | Tema visual | Implementado em `CanaIntelligence.json`, ajustado para UI premium (fundo marfim esverdeado `#EEF1EA`, painéis brancos, raio 12, sombra suave e paleta de 8 cores) |

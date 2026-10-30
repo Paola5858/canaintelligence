@@ -3,10 +3,10 @@
   "name": "v0000000000000000012",
   "position": {
     "x": 324,
-    "y": 504,
+    "y": 126,
     "z": 1012,
-    "width": 590,
-    "height": 244,
+    "width": 1092,
+    "height": 368,
     "tabOrder": 12
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "Dim_Calendario"
                     }
                   },
-                  "Property": "Nome_Mes"
+                  "Property": "Data"
                 }
               },
-              "queryRef": "Dim_Calendario.Nome_Mes",
-              "nativeQueryRef": "Nome_Mes",
+              "queryRef": "Dim_Calendario.Data",
+              "nativeQueryRef": "Data",
               "active": true
             }
           ]
@@ -67,7 +67,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Sazonalidade Mensal da Safra'"
+                  "Value": "'Comportamento Temporal Contínuo do Indicador'"
                 }
               }
             },
@@ -105,7 +105,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Média consolidada por mês da colheita e moagem'"
+                  "Value": "'Série diária não ponderada; ponderação por TC bloqueada até P_TC_01'"
                 }
               }
             },

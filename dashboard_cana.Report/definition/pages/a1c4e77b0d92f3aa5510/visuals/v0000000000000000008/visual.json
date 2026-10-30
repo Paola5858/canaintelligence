@@ -3,7 +3,7 @@
   "name": "v0000000000000000008",
   "position": {
     "x": 24,
-    "y": 284,
+    "y": 126,
     "z": 1008,
     "width": 290,
     "height": 146,
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Frentes com Dado do Indicador"
+                  "Property": "Rotulo Leituras"
                 }
               },
-              "queryRef": "_Medidas.Frentes com Dado do Indicador",
-              "nativeQueryRef": "Frentes com Dado do Indicador"
+              "queryRef": "_Medidas.Rotulo Leituras",
+              "nativeQueryRef": "Rotulo Leituras"
             }
           ]
         }
@@ -48,7 +48,7 @@
             "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "'Segoe UI Semibold'"
+                  "Value": "'Aptos Display'"
                 }
               }
             },
@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'🏭 FRENTES COM DADO'"
+                  "Value": "'VOLUME DE LEITURAS'"
                 }
               }
             },
@@ -132,7 +132,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Frentes que medem'"
+                  "Value": "'Contagem no período'"
                 }
               }
             },

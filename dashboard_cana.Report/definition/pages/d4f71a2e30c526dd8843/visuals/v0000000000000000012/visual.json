@@ -2,15 +2,15 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000012",
   "position": {
-    "x": 722,
+    "x": 24,
     "y": 248,
     "z": 1012,
-    "width": 694,
+    "width": 684,
     "height": 238,
     "tabOrder": 12
   },
   "visual": {
-    "visualType": "barChart",
+    "visualType": "columnChart",
     "query": {
       "queryState": {
         "Category": {
@@ -20,14 +20,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Fato_Medicoes"
+                      "Entity": "Dim_Calendario"
                     }
                   },
-                  "Property": "Status_Validacao"
+                  "Property": "Nome_Mes"
                 }
               },
-              "queryRef": "Fato_Medicoes.Status_Validacao",
-              "nativeQueryRef": "Status_Validacao",
+              "queryRef": "Dim_Calendario.Nome_Mes",
+              "nativeQueryRef": "Nome_Mes",
               "active": true
             }
           ]
@@ -67,7 +67,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Composição por Status de Validação'"
+                  "Value": "'Volumetria de Coleta por Mês'"
                 }
               }
             },
@@ -105,7 +105,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Registros validados (16.823), normalizados (1.806) e pendentes (903)'"
+                  "Value": "'Tratamento analítico aplicado; pendências na origem continuam visíveis'"
                 }
               }
             },

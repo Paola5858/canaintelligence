@@ -2,35 +2,50 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000006",
   "position": {
-    "x": 914,
+    "x": 664,
     "y": 72,
     "z": 1006,
-    "width": 502,
+    "width": 240,
     "height": 46,
     "tabOrder": 6
   },
   "visual": {
-    "visualType": "textbox",
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fato_Medicoes"
+                    }
+                  },
+                  "Property": "Grupo_Fonte"
+                }
+              },
+              "queryRef": "Fato_Medicoes.Grupo_Fonte",
+              "nativeQueryRef": "Grupo_Fonte",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
     "drillFilterOtherVisuals": true,
     "objects": {
-      "general": [
+      "data": [
         {
           "properties": {
-            "paragraphs": [
-              {
-                "textRuns": [
-                  {
-                    "value": "🎯 ESCOPO FONTES: 7 Frentes de Colheita + 1 Laboratório Central",
-                    "textStyle": {
-                      "fontSize": "8.5pt",
-                      "fontFamily": "Segoe UI Semibold",
-                      "color": "#4E7966"
-                    }
-                  }
-                ],
-                "horizontalTextAlignment": "center"
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
               }
-            ]
+            }
           }
         }
       ]
@@ -51,7 +66,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#F2F5F0'"
+                      "Value": "'#FFFFFF'"
                     }
                   }
                 }

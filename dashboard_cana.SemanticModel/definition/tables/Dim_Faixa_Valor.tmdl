@@ -13,8 +13,8 @@ table Dim_Faixa_Valor
 		dataType: string
 		lineageTag: 7f0b7c2e-22ad-4b9b-9c9a-1f0c00000003
 		summarizeBy: none
-		sortByColumn: Faixa_Ordem
 		sourceColumn: Faixa_Label
+		sortByColumn: Faixa_Ordem
 
 	partition Dim_Faixa_Valor = m
 		mode: import
@@ -34,3 +34,4 @@ table Dim_Faixa_Valor
 					Fonte
 
 	annotation PBI_ResultType = Table
+

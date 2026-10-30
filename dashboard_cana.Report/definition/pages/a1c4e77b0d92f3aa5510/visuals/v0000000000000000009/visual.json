@@ -3,7 +3,7 @@
   "name": "v0000000000000000009",
   "position": {
     "x": 24,
-    "y": 442,
+    "y": 284,
     "z": 1009,
     "width": 290,
     "height": 146,
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Status do Indicador"
+                  "Property": "Frentes com Dado do Indicador"
                 }
               },
-              "queryRef": "_Medidas.Status do Indicador",
-              "nativeQueryRef": "Status do Indicador"
+              "queryRef": "_Medidas.Frentes com Dado do Indicador",
+              "nativeQueryRef": "Frentes com Dado do Indicador"
             }
           ]
         }
@@ -48,7 +48,7 @@
             "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "'Segoe UI Semibold'"
+                  "Value": "'Aptos Display'"
                 }
               }
             },
@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'🛡️ CONFORMIDADE TÉCNICA'"
+                  "Value": "'FRENTES COM DADO'"
                 }
               }
             },
@@ -132,7 +132,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Status homologado'"
+                  "Value": "'Frentes que medem'"
                 }
               }
             },

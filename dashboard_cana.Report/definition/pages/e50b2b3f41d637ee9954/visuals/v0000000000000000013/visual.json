@@ -3,7 +3,7 @@
   "name": "v0000000000000000013",
   "position": {
     "x": 24,
-    "y": 590,
+    "y": 419,
     "z": 1013,
     "width": 290,
     "height": 157,
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Regra de Transformacao do Registro"
+                  "Property": "Rotulo Fator Aplicado"
                 }
               },
-              "queryRef": "_Medidas.Regra de Transformacao do Registro",
-              "nativeQueryRef": "Regra de Transformacao do Registro"
+              "queryRef": "_Medidas.Rotulo Fator Aplicado",
+              "nativeQueryRef": "Rotulo Fator Aplicado"
             }
           ]
         }
@@ -48,7 +48,7 @@
             "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "'Segoe UI Semibold'"
+                  "Value": "'Aptos Display'"
                 }
               }
             },
@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'📜 REGRA APLICADA'"
+                  "Value": "'FATOR APLICADO'"
                 }
               }
             },
@@ -132,7 +132,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Fundamentação técnica'"
+                  "Value": "'Divisão efetuada na carga'"
                 }
               }
             },

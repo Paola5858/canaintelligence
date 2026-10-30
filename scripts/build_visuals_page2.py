@@ -41,16 +41,16 @@ def evolucao() -> Pagina:
     p.filtro("Fato_Medicoes", "Fonte", x=334, w=230, y=72, h=46)
     p.filtro("Dim_Indicador", "Nome_Original", x=574, w=330, y=72, h=46)
     p.scope_chip(
-        "🎯 ESCOPO TEMPORAL: Janela 04/01 a 11/12/2026  |  274 Dias com Leituras",
+        "ESCOPO TEMPORAL  ·  04/01 a 11/12/2026  ·  274 dias com leituras",
         x=914, y=72, w=502, h=46
     )
 
     # 3. Trilho do Indicador à esquerda (4 cards: x = 24, w = 290, y = 126 a 748, h = 622)
     trilho_itens = [
-        ("📈 VOLUME DE LEITURAS", "Contagem no período", "Rotulo Leituras"),
-        ("🏭 FRENTES COM DADO", "Frentes que medem", "Frentes com Dado do Indicador"),
-        ("🛡️ CONFORMIDADE TÉCNICA", "Status homologado", "Status do Indicador"),
-        ("📐 REGRA DE AGREGAÇÃO", "Diretriz da dimensão", "Rotulo Agregacao Recomendada"),
+        ("VOLUME DE LEITURAS", "Contagem no período", "Rotulo Leituras"),
+        ("FRENTES COM DADO", "Frentes que medem", "Frentes com Dado do Indicador"),
+        ("CONFORMIDADE TÉCNICA", "Status homologado", "Status do Indicador"),
+        ("REGRA RECOMENDADA", "Diretriz técnica Dim_Indicador", "Rotulo Regra Recomendada Curta"),
     ]
     h_card = (622 - 12 * 3) // 4  # 146px
     for i, (tit, sub, med) in enumerate(trilho_itens):
@@ -69,7 +69,7 @@ def evolucao() -> Pagina:
         },
         container=painel_card(
             "Comportamento Temporal Contínuo do Indicador",
-            "Série diária da média aritmética ao longo da safra 2026"
+            "Série diária não ponderada; ponderação por TC bloqueada até P_TC_01"
         ),
     )
 
@@ -81,16 +81,16 @@ def evolucao() -> Pagina:
             "Y": {"projections": [medida("_Medidas", "Media Aritmetica Nao Ponderada")]},
         },
         container=painel_card(
-            "Sazonalidade Mensal da Safra",
+            "Comportamento Mensal da Safra",
             "Média consolidada por mês da colheita e moagem"
         ),
     )
 
     # 6. Bloco Inferior Direito: Comparação de Períodos (3 cards: x = 924, y = 504, w = 492, h = 244)
     comparacao = [
-        ("📅 PERÍODO ATUAL", "Média na janela", "Media Aritmetica Nao Ponderada"),
-        ("⏮️ PERÍODO ANTERIOR", "Média deslocada", "Rotulo Media do Periodo Anterior"),
-        ("📊 VARIAÇÃO %", "Diferença relativa", "Rotulo Variacao Percentual"),
+        ("PERÍODO ATUAL", "Média na janela", "Media Aritmetica Nao Ponderada"),
+        ("PERÍODO ANTERIOR", "Comparativo histórico", "Rotulo Media do Periodo Anterior"),
+        ("VARIAÇÃO", "vs. ciclo anterior", "Rotulo Variacao Percentual"),
     ]
     w_comp = (492 - 12 * 2) // 3  # 156px
     for i, (tit, sub, med) in enumerate(comparacao):

@@ -41,17 +41,17 @@ def visao_geral() -> Pagina:
     p.filtro("Fato_Medicoes", "Fonte", x=334, w=230, y=72, h=46)
     p.filtro("Dim_Indicador", "Nome_Original", x=574, w=330, y=72, h=46)
     p.scope_chip(
-        "🎯 RECORTE ATIVO: ATR (kg/t)  |  8 Fontes  |  Base Homologada (19.532 Linhas)",
+        "RECORTE ATIVO  ·  ATR (kg/t)  ·  8 fontes  ·  19.532 linhas",
         x=914, y=72, w=502, h=46
     )
 
     # 3. Faixa superior de 5 KPI Cards (y = 126 a 238, h = 112)
     kpis = [
-        ("📅 DIAS MONITORADOS", "80,1% de cobertura contínua", "Dias com Dados"),
-        ("✅ REGISTROS VÁLIDOS", "86,1% sem pendência técnica", "Rotulo Registros Validados"),
-        ("📊 INDICADORES ATIVOS", "22 homologados · 1 sob revisão", "Quantidade de Indicadores"),
-        ("🏭 FONTES DE COLETA", "7 frentes + 1 laboratório", "Quantidade de Fontes"),
-        ("⏱️ ÚLTIMA MEDIÇÃO", "Safra 2026/2027 atualizada", "Ultima Data com Dados"),
+        ("DIAS MONITORADOS", "80,1% de cobertura contínua", "Dias com Dados"),
+        ("REGISTROS VÁLIDOS", "86,1% sem pendência técnica", "Rotulo Registros Validados"),
+        ("INDICADORES ATIVOS", "22 homologados · 1 sob revisão", "Quantidade de Indicadores"),
+        ("FONTES DE COLETA", "7 frentes + 1 laboratório", "Quantidade de Fontes"),
+        ("ÚLTIMA MEDIÇÃO", "Safra 2026/2027 atualizada", "Ultima Data com Dados"),
     ]
     largura = (1392 - 16 * (len(kpis) - 1)) // len(kpis)  # 265px cada
     for i, (titulo_card, subtitulo_card, nome_medida) in enumerate(kpis):
@@ -62,9 +62,9 @@ def visao_geral() -> Pagina:
 
     # 4. Trilho do Indicador Selecionado (3 cards à esquerda: x = 24, w = 290, h = 500)
     trilho_itens = [
-        ("📈 VOLUME DE LEITURAS", "Total no escopo selecionado", "Rotulo Leituras"),
-        ("📐 REGRA DE AGREGAÇÃO", "Diretriz técnica homologada", "Rotulo Agregacao Recomendada"),
-        ("🛡️ STATUS DE VALIDAÇÃO", "Conformidade na dimensão", "Status do Indicador"),
+        ("VOLUME DE LEITURAS", "Total no escopo selecionado", "Rotulo Leituras"),
+        ("REGRA RECOMENDADA", "Diretriz técnica Dim_Indicador", "Rotulo Regra Recomendada Curta"),
+        ("STATUS DE VALIDAÇÃO", "Conformidade na dimensão", "Status do Indicador"),
     ]
     h_card = (500 - 14 * 2) // 3  # 157px
     for i, (tit, sub, med) in enumerate(trilho_itens):
@@ -82,7 +82,7 @@ def visao_geral() -> Pagina:
         },
         container=painel_card(
             "Evolução Temporal do Indicador",
-            "Média diária observada ao longo da safra 2026"
+            "Média diária não ponderada; ponderação por TC bloqueada até P_TC_01"
         ),
     )
 

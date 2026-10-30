@@ -2,50 +2,116 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000003",
   "position": {
-    "x": 24,
-    "y": 72,
+    "x": 504,
+    "y": 12,
     "z": 1003,
-    "width": 300,
-    "height": 46,
+    "width": 912,
+    "height": 40,
     "tabOrder": 3
   },
   "visual": {
-    "visualType": "slicer",
-    "query": {
-      "queryState": {
-        "Values": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Dim_Calendario"
-                    }
-                  },
-                  "Property": "Data"
-                }
-              },
-              "queryRef": "Dim_Calendario.Data",
-              "nativeQueryRef": "Data",
-              "active": true
-            }
-          ]
-        }
-      }
-    },
+    "visualType": "textbox",
     "drillFilterOtherVisuals": true,
     "objects": {
-      "data": [
+      "general": [
         {
           "properties": {
-            "mode": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Dropdown'"
-                }
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": " Visão Geral ",
+                    "textStyle": {
+                      "fontSize": "9pt",
+                      "fontFamily": "Aptos",
+                      "color": "#5C6D65"
+                    }
+                  },
+                  {
+                    "value": " · ",
+                    "textStyle": {
+                      "fontSize": "8.5pt",
+                      "fontFamily": "Aptos",
+                      "color": "#B8C4BD"
+                    }
+                  },
+                  {
+                    "value": " [ EVOLUÇÃO ] ",
+                    "textStyle": {
+                      "fontSize": "9pt",
+                      "fontFamily": "Aptos Display",
+                      "color": "#173F35",
+                      "fontWeight": "700"
+                    }
+                  },
+                  {
+                    "value": " · ",
+                    "textStyle": {
+                      "fontSize": "8.5pt",
+                      "fontFamily": "Aptos",
+                      "color": "#B8C4BD"
+                    }
+                  },
+                  {
+                    "value": " Fontes ",
+                    "textStyle": {
+                      "fontSize": "9pt",
+                      "fontFamily": "Aptos",
+                      "color": "#5C6D65"
+                    }
+                  },
+                  {
+                    "value": " · ",
+                    "textStyle": {
+                      "fontSize": "8.5pt",
+                      "fontFamily": "Aptos",
+                      "color": "#B8C4BD"
+                    }
+                  },
+                  {
+                    "value": " Indicadores ",
+                    "textStyle": {
+                      "fontSize": "9pt",
+                      "fontFamily": "Aptos",
+                      "color": "#5C6D65"
+                    }
+                  },
+                  {
+                    "value": " · ",
+                    "textStyle": {
+                      "fontSize": "8.5pt",
+                      "fontFamily": "Aptos",
+                      "color": "#B8C4BD"
+                    }
+                  },
+                  {
+                    "value": " Qualidade ",
+                    "textStyle": {
+                      "fontSize": "9pt",
+                      "fontFamily": "Aptos",
+                      "color": "#5C6D65"
+                    }
+                  },
+                  {
+                    "value": " · ",
+                    "textStyle": {
+                      "fontSize": "8.5pt",
+                      "fontFamily": "Aptos",
+                      "color": "#B8C4BD"
+                    }
+                  },
+                  {
+                    "value": " Detalhes ",
+                    "textStyle": {
+                      "fontSize": "9pt",
+                      "fontFamily": "Aptos",
+                      "color": "#5C6D65"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "right"
               }
-            }
+            ]
           }
         }
       ]
@@ -66,7 +132,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#FFFFFF'"
+                      "Value": "'#F4F7F2'"
                     }
                   }
                 }
@@ -106,7 +172,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "8D"
+                  "Value": "16D"
                 }
               }
             }

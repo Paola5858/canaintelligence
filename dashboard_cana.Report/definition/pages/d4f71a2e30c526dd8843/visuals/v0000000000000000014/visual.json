@@ -3,40 +3,100 @@
   "name": "v0000000000000000014",
   "position": {
     "x": 24,
-    "y": 756,
+    "y": 496,
     "z": 1014,
     "width": 1392,
-    "height": 38,
+    "height": 250,
     "tabOrder": 14
   },
   "visual": {
-    "visualType": "textbox",
-    "drillFilterOtherVisuals": true,
-    "objects": {
-      "general": [
-        {
-          "properties": {
-            "paragraphs": [
-              {
-                "textRuns": [
-                  {
-                    "value": "Base_Usina_PowerBI_Final_v4.xlsx · Fato_Medicoes, Pendencias_Validacao, Auditoria_Dados · P_TC_01 Aberta",
-                    "textStyle": {
-                      "fontSize": "8.5pt",
-                      "fontFamily": "Segoe UI",
-                      "color": "#76817B"
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Pendencias_Validacao"
                     }
-                  }
-                ],
-                "horizontalTextAlignment": "center"
-              }
-            ]
-          }
+                  },
+                  "Property": "ID_Pendencia"
+                }
+              },
+              "queryRef": "Pendencias_Validacao.ID_Pendencia",
+              "nativeQueryRef": "ID_Pendencia",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Pendencias_Validacao"
+                    }
+                  },
+                  "Property": "Indicador"
+                }
+              },
+              "queryRef": "Pendencias_Validacao.Indicador",
+              "nativeQueryRef": "Indicador",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Pendencias_Validacao"
+                    }
+                  },
+                  "Property": "Problema"
+                }
+              },
+              "queryRef": "Pendencias_Validacao.Problema",
+              "nativeQueryRef": "Problema",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Pendencias_Validacao"
+                    }
+                  },
+                  "Property": "Acao_Recomendada"
+                }
+              },
+              "queryRef": "Pendencias_Validacao.Acao_Recomendada",
+              "nativeQueryRef": "Acao_Recomendada",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Pendencias_Validacao"
+                    }
+                  },
+                  "Property": "Status"
+                }
+              },
+              "queryRef": "Pendencias_Validacao.Status",
+              "nativeQueryRef": "Status",
+              "active": true
+            }
+          ]
         }
-      ]
+      }
     },
+    "drillFilterOtherVisuals": true,
     "visualContainerObjects": {
-      "background": [
+      "title": [
         {
           "properties": {
             "show": {
@@ -46,28 +106,35 @@
                 }
               }
             },
-            "color": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Inventário Oficial de Pendências Técnicas de Auditoria'"
+                }
+              }
+            },
+            "fontColor": {
               "solid": {
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#FFFFFF'"
+                      "Value": "'#173F35'"
                     }
                   }
                 }
               }
             },
-            "transparency": {
+            "alignment": {
               "expr": {
                 "Literal": {
-                  "Value": "0D"
+                  "Value": "'left'"
                 }
               }
             }
           }
         }
       ],
-      "border": [
+      "subTitle": [
         {
           "properties": {
             "show": {
@@ -77,34 +144,28 @@
                 }
               }
             },
-            "color": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Tratamento analítico aplicado; correção no legado ainda pode estar aberta'"
+                }
+              }
+            },
+            "fontColor": {
               "solid": {
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#D8DDD5'"
+                      "Value": "'#76817B'"
                     }
                   }
                 }
               }
             },
-            "radius": {
+            "alignment": {
               "expr": {
                 "Literal": {
-                  "Value": "8D"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "dropShadow": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
+                  "Value": "'left'"
                 }
               }
             }

@@ -51,7 +51,7 @@ Leitura correta: de janeiro a março e em dezembro a base tem apenas as frentes,
 
 ## Pendências
 
-Quatro pendências estão registradas na origem. A tabela do modelo é `Pendencias_Validacao`.
+Quatro pendências estão registradas na origem. A tabela do modelo é `Pendencias_Validacao`. O campo `Status` separa o tratamento analítico já aplicado da correção ainda aberta no sistema legado.
 
 | ID | Indicador | Problema | Situação |
 | --- | --- | --- | --- |

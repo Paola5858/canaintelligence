@@ -25,22 +25,22 @@
   "tableAccent": "#4E7966",
   "textClasses": {
     "callout": {
-      "fontFace": "Segoe UI Semibold",
+      "fontFace": "Aptos Display",
       "fontSize": 30,
       "color": "#173F35"
     },
     "title": {
-      "fontFace": "Segoe UI Semibold",
+      "fontFace": "Aptos Display",
       "fontSize": 12,
       "color": "#173F35"
     },
     "header": {
-      "fontFace": "Segoe UI Semibold",
+      "fontFace": "Aptos",
       "fontSize": 10,
       "color": "#76817B"
     },
     "label": {
-      "fontFace": "Segoe UI",
+      "fontFace": "Aptos",
       "fontSize": 10,
       "color": "#76817B"
     }

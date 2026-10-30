@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000011",
   "position": {
-    "x": 24,
-    "y": 248,
+    "x": 1080,
+    "y": 126,
     "z": 1011,
-    "width": 290,
-    "height": 157,
+    "width": 336,
+    "height": 114,
     "tabOrder": 11
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Rotulo Valor Original"
+                  "Property": "Ultima Data com Dados"
                 }
               },
-              "queryRef": "_Medidas.Rotulo Valor Original",
-              "nativeQueryRef": "Rotulo Valor Original"
+              "queryRef": "_Medidas.Ultima Data com Dados",
+              "nativeQueryRef": "Ultima Data com Dados"
             }
           ]
         }
@@ -41,14 +41,14 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "18D"
+                  "Value": "22D"
                 }
               }
             },
             "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "'Segoe UI Semibold'"
+                  "Value": "'Aptos Display'"
                 }
               }
             },
@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'🔍 VALOR ORIGINAL'"
+                  "Value": "'ÚLTIMA DATA'"
                 }
               }
             },
@@ -132,7 +132,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Leitura antes do ajuste'"
+                  "Value": "'Encerramento da coleta'"
                 }
               }
             },

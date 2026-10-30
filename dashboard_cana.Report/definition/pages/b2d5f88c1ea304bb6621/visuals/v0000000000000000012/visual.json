@@ -2,18 +2,18 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000012",
   "position": {
-    "x": 588,
+    "x": 24,
     "y": 248,
     "z": 1012,
-    "width": 828,
+    "width": 550,
     "height": 500,
     "tabOrder": 12
   },
   "visual": {
-    "visualType": "matrix",
+    "visualType": "barChart",
     "query": {
       "queryState": {
-        "Rows": {
+        "Category": {
           "projections": [
             {
               "field": {
@@ -32,36 +32,8 @@
             }
           ]
         },
-        "Values": {
+        "Y": {
           "projections": [
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Medidas"
-                    }
-                  },
-                  "Property": "Quantidade de Leituras"
-                }
-              },
-              "queryRef": "_Medidas.Quantidade de Leituras",
-              "nativeQueryRef": "Quantidade de Leituras"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Medidas"
-                    }
-                  },
-                  "Property": "Dias com Dado da Fonte"
-                }
-              },
-              "queryRef": "_Medidas.Dias com Dado da Fonte",
-              "nativeQueryRef": "Dias com Dado da Fonte"
-            },
             {
               "field": {
                 "Measure": {
@@ -109,7 +81,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Matriz Comparativa de Desempenho por Fonte'"
+                  "Value": "'Dispersão Operacional por Fonte'"
                 }
               }
             },
@@ -147,7 +119,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Volumetria de leituras, dias cobertos e extremos operacionais'"
+                  "Value": "'Mínimo e máximo observados por frente de colheita'"
                 }
               }
             },

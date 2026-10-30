@@ -15,12 +15,12 @@ annotation PBI_QueryOrder = ["Auditoria_Dados","Dim_Calendario","Dim_Faixa_Valor
 
 ref table Auditoria_Dados
 ref table Dim_Calendario
-ref table Dim_Faixa_Valor
 ref table Dim_Indicador
 ref table Fato_Medicoes
 ref table Pendencias_Validacao
 ref table Resumo_Qualidade
 ref table _Medidas
+ref table Dim_Faixa_Valor
 
 ref cultureInfo pt-BR
 

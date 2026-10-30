@@ -58,7 +58,7 @@ Não substitui abrir o projeto, mas pega os erros que impedem a abertura.
 | Relacionamentos | Dois relacionamentos, todos os extremos existem, a fato é sempre o lado muitos |
 | Dimensões | `Data` e `Codigo` marcadas como chave, calendário marcado como tabela de data, `Nome_Mes` ordenado por `Numero_Mes` |
 | Lineage tags | Nenhuma repetida, todas as tabelas e colunas com tag |
-| Medidas | 65 medidas, toda referência entre colchetes existe, todas com pasta de exibição, medidas críticas com descrição |
+| Medidas | 72 medidas, toda referência entre colchetes existe, todas com pasta de exibição, medidas críticas com descrição |
 | Guardas | Média genérica exige indicador único e agregação aprovada, comparação temporal devolve vazio quando não há período |
 | Formatos | Percentual direto em `0.00"%"`, UMIDADE_LAB em `0.0%`, ATR em `0.00" kg/t"` |
 | Fonte | Caminho centralizado no parâmetro, nenhum caminho absoluto cravado em consulta |
@@ -124,10 +124,10 @@ PARSE OK
   Fato_Medicoes        | colunas=12 medidas=0
   Pendencias_Validacao | colunas=5  medidas=0
   Resumo_Qualidade     | colunas=7  medidas=0
-  _Medidas             | colunas=1  medidas=65
+  _Medidas             | colunas=1  medidas=72
   relacao: Fato_Medicoes[Data] -> Dim_Calendario[Data]
   relacao: Fato_Medicoes[Indicador_Codigo] -> Dim_Indicador[Codigo]
-Total: 8 tabelas, 65 medidas, 2 relacionamentos
+Total: 8 tabelas, 72 medidas, 2 relacionamentos
 ```
 
 O teste valida estrutura do modelo, não semântica de DAX. Expressão DAX com erro de lógica ou de tipo continua dependendo de execução no Desktop.
@@ -140,7 +140,7 @@ Executada em 29/10/2026, depois das duas correções. Resultado observado na ses
 
 1. O projeto abre e o título da janela passa a `dashboard_cana`.
 2. Nenhum snapshot de erro novo é gerado em `Power BI Desktop Store App`.
-3. O modelo carrega, as 8 tabelas são avaliadas e as 65 medidas aparecem no painel de dados.
+3. O modelo carrega, as 8 tabelas são avaliadas e as 72 medidas aparecem no painel de dados.
 4. A lista de problemas do relatório fica vazia, depois da correção de `reportVersionAtImport`.
 
 O que o Desktop ainda não confirma por si só: se cada página tem a composição prevista. A abertura prova o arquivo, não o desenho.

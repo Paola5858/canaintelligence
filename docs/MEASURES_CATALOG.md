@@ -1,6 +1,6 @@
 # Catálogo de medidas
 
-65 medidas na tabela `_Medidas`, organizadas em 7 pastas de exibição. Todas em português, com nome curto e descrição quando o nome não basta. O recorte inicial seguro é ATR, usado quando o slicer de indicador está em Todos; o usuário pode trocar para qualquer indicador.
+72 medidas na tabela `_Medidas`, organizadas em 7 pastas de exibição. Todas em português, com nome curto e descrição quando o nome não basta. O recorte inicial seguro é ATR, usado quando o slicer de indicador está em Todos; o usuário pode trocar para qualquer indicador.
 
 ## Regra que governa o catálogo
 
@@ -137,7 +137,12 @@ Medidas de texto, usadas em títulos dinâmicos. Não devem ser usadas em cartã
 |---|---|
 | `Titulo Dinamico do Indicador` | Nome original e unidade, ou "Selecione um indicador" |
 | `Mensagem Sem Dados` | "Sem medições no período" quando a contagem é zero |
-| `Rotulo Agregacao Recomendada` | Traduz "Média Ponderada por TC" para "Ponderação por TC não disponível" |
+| `Rotulo Agregacao Recomendada` | Compatibilidade legada; o painel usa `Rotulo Regra Recomendada` para exibir a recomendação sem confundi-la com o cálculo aplicado |
+| `Rotulo Regra Recomendada` | Regra declarada na dimensão, por exemplo média ponderada por TC |
+| `Rotulo Agregacao Utilizada` | Média aritmética não ponderada exploratória; TC fica bloqueado |
+| `Aviso Agregacao Utilizada` | Explica quando a recomendação depende de TC ou de regra logarítmica |
+| `Pendencias Abertas na Origem` | Pendências com correção ainda aberta no sistema legado |
+| `Pendencias Tratadas na Analitica` | Pendências normalizadas ou documentadas na camada analítica |
 | `Aviso Unidade Desconhecida` | "Unidade não confirmada" quando a unidade é Desconhecida |
 | `Status do Indicador` | Status de validação do indicador selecionado |
 

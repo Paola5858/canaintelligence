@@ -95,11 +95,11 @@ def titulo(titulo_texto: str, subtitulo_texto: str | None = None) -> dict:
     return painel_card(titulo_texto, subtitulo_texto)
 
 
-def rotulo_cartao(valor_px: int = 26, cor_valor: str = "#173F35") -> dict:
+def rotulo_cartao(valor_px: int = 24, cor_valor: str = "#173F35") -> dict:
     return {
         "labels": [{"properties": {
             "fontSize": inteiro(valor_px),
-            "fontFamily": texto("Segoe UI Semibold"),
+            "fontFamily": texto("Aptos Display"),
             "color": cor(cor_valor),
         }}],
         "categoryLabels": [{"properties": {
@@ -187,16 +187,29 @@ class Pagina:
         """Header executivo moderno: marca à esquerda e abas de navegação no formato pill à direita."""
         idx = indice_ativo if indice_ativo is not None else self.indice_pagina
 
-        # 1. Brand Logo & Title Box (Left)
+        # 1. Faixa superior de marca. O contraste vem da composicao, nao de emoji.
         self.add(
-            "textbox", 24, 16, 470, 48,
+            "textbox", 0, 0, 1440, 64,
+            objects={"general": [{"properties": {"paragraphs": [{
+                "textRuns": [{"value": "", "textStyle": {"fontSize": "1pt"}}]
+            }]}}]},
+            container={
+                "background": [{"properties": {"show": lit("true"), "color": cor("#173F35")}}],
+                "border": [{"properties": {"show": lit("false")}}],
+                "dropShadow": [{"properties": {"show": lit("false")}}],
+            },
+        )
+
+        # 2. Brand Logo & Title Box (Left)
+        self.add(
+            "textbox", 24, 8, 470, 48,
             objects={"general": [{"properties": {"paragraphs": [
                 {
                     "textRuns": [
-                        {"value": "🌿 CANA INTELLIGENCE", "textStyle": {
+                        {"value": "CANA INTELLIGENCE", "textStyle": {
                             "fontSize": "15pt",
-                            "fontFamily": "Segoe UI Semibold",
-                            "color": "#173F35",
+                            "fontFamily": "Aptos Display",
+                            "color": "#FFFFFF",
                             "fontWeight": "700",
                         }},
                     ],
@@ -206,8 +219,8 @@ class Pagina:
                     "textRuns": [
                         {"value": "USINA SUCROENERGÉTICA · SAFRA 2026/2027 · PAINEL EXECUTIVO", "textStyle": {
                             "fontSize": "8pt",
-                            "fontFamily": "Segoe UI",
-                            "color": "#76817B",
+                            "fontFamily": "Aptos",
+                            "color": "#D8DDD5",
                         }},
                     ],
                     "horizontalTextAlignment": "left",
@@ -216,14 +229,14 @@ class Pagina:
             container=sem_cromo(),
         )
 
-        # 2. Pill Navigation Tabs (Right)
+        # 3. Navegacao horizontal em pill container executivo
         paginas_info = [
-            (1, "1. Visão Geral"),
-            (2, "2. Evolução"),
-            (3, "3. Fontes"),
-            (4, "4. Indicadores"),
-            (5, "5. Qualidade"),
-            (6, "6. Detalhes"),
+            (1, "Visão Geral"),
+            (2, "Evolução"),
+            (3, "Fontes"),
+            (4, "Indicadores"),
+            (5, "Qualidade"),
+            (6, "Detalhes"),
         ]
 
         text_runs = []
@@ -233,32 +246,32 @@ class Pagina:
                     "value": f" [ {nome.upper()} ] ",
                     "textStyle": {
                         "fontSize": "9pt",
-                        "fontFamily": "Segoe UI Semibold",
+                        "fontFamily": "Aptos Display",
                         "color": "#173F35",
                         "fontWeight": "700",
                     },
                 })
             else:
                 text_runs.append({
-                    "value": f"  {nome}  ",
+                    "value": f" {nome} ",
                     "textStyle": {
                         "fontSize": "9pt",
-                        "fontFamily": "Segoe UI",
-                        "color": "#76817B",
+                        "fontFamily": "Aptos",
+                        "color": "#5C6D65",
                     },
                 })
             if i < len(paginas_info) - 1:
                 text_runs.append({
-                    "value": "·",
+                    "value": " · ",
                     "textStyle": {
-                        "fontSize": "8pt",
-                        "fontFamily": "Segoe UI",
-                        "color": "#D8DDD5",
+                        "fontSize": "8.5pt",
+                        "fontFamily": "Aptos",
+                        "color": "#B8C4BD",
                     },
                 })
 
         self.add(
-            "textbox", 504, 16, 912, 48,
+            "textbox", 504, 12, 912, 40,
             objects={"general": [{"properties": {"paragraphs": [{
                 "textRuns": text_runs,
                 "horizontalTextAlignment": "right",
@@ -266,13 +279,13 @@ class Pagina:
             container={
                 "background": [{"properties": {
                     "show": lit("true"),
-                    "color": cor("#FFFFFF"),
+                    "color": cor("#F4F7F2"),
                     "transparency": inteiro(0),
                 }}],
                 "border": [{"properties": {
                     "show": lit("true"),
                     "color": cor("#D8DDD5"),
-                    "radius": inteiro(8),
+                    "radius": inteiro(16),
                 }}],
                 "dropShadow": [{"properties": {"show": lit("false")}}],
             },
@@ -286,8 +299,9 @@ class Pagina:
                 "textRuns": [
                     {"value": texto_escopo, "textStyle": {
                         "fontSize": "8.5pt",
-                        "fontFamily": "Segoe UI Semibold",
-                        "color": "#4E7966",
+                        "fontFamily": "Aptos",
+                        "color": "#173F35",
+                        "fontWeight": "600",
                     }},
                 ],
                 "horizontalTextAlignment": "center",
@@ -301,7 +315,7 @@ class Pagina:
                 "border": [{"properties": {
                     "show": lit("true"),
                     "color": cor("#D8DDD5"),
-                    "radius": inteiro(8),
+                    "radius": inteiro(12),
                 }}],
                 "dropShadow": [{"properties": {"show": lit("false")}}],
             },
@@ -309,7 +323,7 @@ class Pagina:
 
     def rodape_tela(self, linha: str | None = None):
         linha = linha or (
-            "🌿 CANA INTELLIGENCE v2.0  ·  Fonte: Base_Usina_PowerBI_Final_v4.xlsx  ·  "
+            "CANA INTELLIGENCE  ·  Fonte: Base_Usina_PowerBI_Final_v4.xlsx  ·  "
             "Fato_Medicoes (19.532 Linhas)  ·  Dim_Indicador (23 Indicadores)  ·  Dim_Calendario (365 Dias)  ·  Auditoria Ativa"
         )
         self.add(
@@ -406,8 +420,9 @@ def conferir_dentro_da_pagina(pagina: Pagina, largura=1440, altura=810) -> list[
         if x < 0 or y < 0 or x + w > largura or y + h > altura:
             problemas.append(f"{nome} ({tipo}) sai da pagina: {x},{y} {w}x{h}")
         for outro, ox, oy, ow, oh, onome in areas:
+            fundo_header = (ow >= 1400 and oy == 0 and oh <= 70) or (w >= 1400 and y == 0 and h <= 70)
             decorativo = (w <= 48 and h <= 30) or (ow <= 48 and oh <= 30)
-            separado = decorativo or x >= ox + ow or ox >= x + w or y >= oy + oh or oy >= y + h
+            separado = fundo_header or decorativo or x >= ox + ow or ox >= x + w or y >= oy + oh or oy >= y + h
             if not separado:
                 problemas.append(f"{nome} ({tipo}) sobrepoe {onome} ({outro}): {x},{y} {w}x{h} vs {ox},{oy} {ow}x{oh}")
         areas.append((tipo, x, y, w, h, nome))

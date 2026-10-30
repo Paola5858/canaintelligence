@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000012",
   "position": {
-    "x": 24,
-    "y": 248,
+    "x": 1148,
+    "y": 126,
     "z": 1012,
-    "width": 290,
-    "height": 157,
+    "width": 265,
+    "height": 114,
     "tabOrder": 12
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Rotulo Leituras"
+                  "Property": "Ultima Data com Dados"
                 }
               },
-              "queryRef": "_Medidas.Rotulo Leituras",
-              "nativeQueryRef": "Rotulo Leituras"
+              "queryRef": "_Medidas.Ultima Data com Dados",
+              "nativeQueryRef": "Ultima Data com Dados"
             }
           ]
         }
@@ -41,14 +41,14 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "20D"
+                  "Value": "24D"
                 }
               }
             },
             "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "'Segoe UI Semibold'"
+                  "Value": "'Aptos Display'"
                 }
               }
             },
@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'📈 VOLUME DE LEITURAS'"
+                  "Value": "'ÚLTIMA MEDIÇÃO'"
                 }
               }
             },
@@ -132,7 +132,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Total no escopo selecionado'"
+                  "Value": "'Safra 2026/2027 atualizada'"
                 }
               }
             },

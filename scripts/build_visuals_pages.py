@@ -45,16 +45,16 @@ def fontes() -> Pagina:
     p.filtro("Dim_Indicador", "Nome_Original", x=334, w=320, y=72, h=46)
     p.filtro("Fato_Medicoes", "Grupo_Fonte", x=664, w=240, y=72, h=46)
     p.scope_chip(
-        "🎯 ESCOPO FONTES: 7 Frentes de Colheita + 1 Laboratório Central",
+        "ESCOPO FONTES  ·  7 frentes de colheita  ·  laboratório central",
         x=914, y=72, w=502, h=46
     )
 
     # 3. Faixa de 4 KPI Cards (y = 126 a 238, h = 112)
     kpis = [
-        ("📈 VOLUME DE LEITURAS", "Total no indicador ativo", "Rotulo Leituras"),
-        ("🏭 FRENTES COM DADO", "Frentes com cobertura ativa", "Frentes com Dado do Indicador"),
-        ("🛡️ CONFORMIDADE TÉCNICA", "Status de homologação", "Status do Indicador"),
-        ("📐 REGRA DE AGREGAÇÃO", "Diretriz de ponderação", "Rotulo Agregacao Recomendada"),
+        ("VOLUME DE LEITURAS", "Total no indicador ativo", "Rotulo Leituras"),
+        ("FRENTES COM DADO", "Frentes com cobertura ativa", "Frentes com Dado do Indicador"),
+        ("CONFORMIDADE TÉCNICA", "Status de homologação", "Status do Indicador"),
+        ("REGRA RECOMENDADA", "Diretriz técnica Dim_Indicador", "Rotulo Regra Recomendada Curta"),
     ]
     largura = (1392 - 16 * (len(kpis) - 1)) // len(kpis)  # 336px
     for i, (tit, sub, med) in enumerate(kpis):
@@ -116,17 +116,17 @@ def indicadores() -> Pagina:
     p.filtro("Fato_Medicoes", "Fonte", x=334, w=230, y=72, h=46)
     p.filtro("Dim_Indicador", "Nome_Original", x=574, w=330, y=72, h=46)
     p.scope_chip(
-        "🎯 EXPLORADOR ANALÍTICO: Estatísticas Descritivas e Distribuição por Faixas",
+        "EXPLORADOR ANALÍTICO  ·  estatísticas descritivas  ·  distribuição por faixas",
         x=914, y=72, w=502, h=46
     )
 
     # 3. Faixa de 5 KPI Cards Estatísticos (y = 126 a 238, h = 112)
     kpis = [
-        ("📊 MÉDIA NÃO PONDERADA", "Escala direta do indicador", "Media Aritmetica Nao Ponderada"),
-        ("🎯 MEDIANA OBSERVADA", "Valor central robusto", "Mediana do Indicador"),
-        ("📉 MÍNIMO REGISTRADO", "Limite inferior observado", "Minimo Observado"),
-        ("📈 MÁXIMO REGISTRADO", "Limite superior observado", "Maximo Observado"),
-        ("📋 TOTAL DE LEITURAS", "Amostras na safra 2026", "Rotulo Leituras"),
+        ("MÉDIA NÃO PONDERADA", "Escala direta do indicador", "Media Aritmetica Nao Ponderada"),
+        ("MEDIANA OBSERVADA", "Valor central robusto", "Mediana do Indicador"),
+        ("MÍNIMO REGISTRADO", "Limite inferior observado", "Minimo Observado"),
+        ("MÁXIMO REGISTRADO", "Limite superior observado", "Maximo Observado"),
+        ("TOTAL DE LEITURAS", "Amostras na safra 2026", "Rotulo Leituras"),
     ]
     largura = (1392 - 16 * (len(kpis) - 1)) // len(kpis)  # 265px
     for i, (tit, sub, med) in enumerate(kpis):
@@ -160,7 +160,7 @@ def indicadores() -> Pagina:
         },
         container=painel_card(
             "Histograma de Distribuição de Frequência",
-            "Contagem de medições em 14 faixas relativas da escala ativa"
+            "Contagem em 14 faixas relativas; não representa limite técnico homologado"
         ),
     )
 
@@ -183,16 +183,16 @@ def qualidade() -> Pagina:
     p.filtro("Fato_Medicoes", "Status_Validacao", x=334, w=240, y=72, h=46)
     p.filtro("Dim_Indicador", "Nome_Original", x=584, w=320, y=72, h=46)
     p.scope_chip(
-        "🎯 AUDITORIA ATIVA: 19.532 Linhas | 1.585 Ajustes de Escala | 1 Pendência Aberta (TC)",
+        "AUDITORIA ATIVA  ·  19.532 linhas  ·  1.585 ajustes  ·  TC pendente",
         x=914, y=72, w=502, h=46
     )
 
     # 3. Faixa de 4 KPI Cards de Qualidade (y = 126 a 238, h = 112)
     kpis = [
-        ("📋 REGISTROS TOTAIS", "Total carregado da fato", "Rotulo Registros"),
-        ("⏳ REGISTROS PENDENTES", "Regra não homologada (TC)", "Registros Pendentes"),
-        ("⚠️ TAXA DE PENDÊNCIA", "Proporção sobre o total", "Percentual de Registros Pendentes"),
-        ("➗ AJUSTES DE ESCALA", "PC e ArCana corrigidos", "Rotulo Ajustes de Escala"),
+        ("REGISTROS TOTAIS", "Total carregado da fato", "Rotulo Registros"),
+        ("REGISTROS PENDENTES", "Regra não homologada (TC)", "Registros Pendentes"),
+        ("TAXA DE PENDÊNCIA", "Proporção sobre o total", "Percentual de Registros Pendentes"),
+        ("AJUSTES DE ESCALA", "Tratamento aplicado na camada analítica", "Rotulo Ajustes de Escala"),
     ]
     largura = (1392 - 16 * (len(kpis) - 1)) // len(kpis)  # 336px
     for i, (tit, sub, med) in enumerate(kpis):
@@ -211,7 +211,7 @@ def qualidade() -> Pagina:
         },
         container=painel_card(
             "Volumetria de Coleta por Mês",
-            "Distribuição temporal de registros na safra 2026"
+            "Tratamento analítico aplicado; pendências na origem continuam visíveis"
         ),
     )
 
@@ -240,7 +240,7 @@ def qualidade() -> Pagina:
         ]}},
         container=painel_card(
             "Inventário Oficial de Pendências Técnicas de Auditoria",
-            "Rastreabilidade de inconsistências mapeadas na origem (P_TC_01 aberta)"
+            "Tratamento analítico aplicado; correção no legado ainda pode estar aberta"
         ),
     )
 
@@ -265,16 +265,16 @@ def detalhes() -> Pagina:
     p.filtro("Dim_Indicador", "Nome_Original", x=334, w=320, y=72, h=46)
     p.filtro("Fato_Medicoes", "Fonte", x=664, w=240, y=72, h=46)
     p.scope_chip(
-        "🎯 RASTREABILIDADE OPERACIONAL: Inspeção Linha a Linha e Histórico de Ajustes",
+        "RASTREABILIDADE OPERACIONAL  ·  inspeção linha a linha  ·  histórico de ajustes",
         x=914, y=72, w=502, h=46
     )
 
     # 3. Faixa de 4 KPI Cards de Contexto (y = 126 a 238, h = 112)
     kpis = [
-        ("📋 REGISTROS NO FILTRO", "Medições selecionadas", "Rotulo Registros"),
-        ("➗ COM AJUSTE DE ESCALA", "Passaram por auditoria", "Rotulo Ajustes de Escala"),
-        ("📅 PRIMEIRA DATA", "Início da coleta na safra", "Primeira Data com Dados"),
-        ("⏱️ ÚLTIMA DATA", "Encerramento da coleta", "Ultima Data com Dados"),
+        ("REGISTROS NO FILTRO", "Medições selecionadas", "Rotulo Registros"),
+        ("COM AJUSTE DE ESCALA", "Passaram por auditoria", "Rotulo Ajustes de Escala"),
+        ("PRIMEIRA DATA", "Início da coleta na safra", "Primeira Data com Dados"),
+        ("ÚLTIMA DATA", "Encerramento da coleta", "Ultima Data com Dados"),
     ]
     largura = (1392 - 16 * (len(kpis) - 1)) // len(kpis)  # 336px
     for i, (tit, sub, med) in enumerate(kpis):
@@ -285,9 +285,9 @@ def detalhes() -> Pagina:
 
     # 4. Trilho de Rastreabilidade via LOOKUPVALUE (Esquerda: x = 24, y = 248, w = 310, h = 500)
     trilho_itens = [
-        ("🔍 VALOR ORIGINAL", "Leitura antes do ajuste", "Rotulo Valor Original"),
-        ("➗ FATOR APLICADO", "Divisão efetuada na carga", "Rotulo Fator Aplicado"),
-        ("📜 REGRA APLICADA", "Fundamentação técnica", "Regra de Transformacao do Registro"),
+        ("VALOR ORIGINAL", "Auditados ou pré-ajuste", "Rotulo Valor Original"),
+        ("FATOR APLICADO", "Divisão efetuada na carga", "Rotulo Fator Aplicado"),
+        ("REGRA APLICADA", "Fundamentação técnica", "Rotulo Regra Aplicada"),
     ]
     h_card = (500 - 14 * 2) // 3  # 157px
     for i, (tit, sub, med) in enumerate(trilho_itens):

@@ -137,7 +137,7 @@ Pergunta da página: como o indicador muda no tempo e como o período atual se c
 | 2.1 | Cabeçalho, navegação e filtros | Iguais à página 1 | 24,24 até 24,204 | | |
 | 2.2 | Contrato do indicador | Trilho 300x514 | 24,220,300,514 | `Dim_Indicador[Nome_Original]`, `Unidade_Confirmada`, `Status_Validacao`, `Categoria` | `Quantidade de Leituras`, `Frentes com Dado do Indicador`, `Rotulo Agregacao Recomendada` |
 | 2.3 | Série diária | Gráfico de linhas | 340,220,1076,286 | `Dim_Calendario[Data]` | `Media Aritmetica Nao Ponderada` |
-| 2.4 | Média mensal | Gráfico de linhas com marcadores | 340,522,620,212 | `Dim_Calendario[Nome_Mes]` ordenado por `Numero_Mes` | `Media Aritmetica Nao Ponderada` |
+| 2.4 | Comportamento mensal | Gráfico de linhas com marcadores | 340,522,620,212 | `Dim_Calendario[Nome_Mes]` ordenado por `Numero_Mes` | `Media Aritmetica Nao Ponderada` |
 | 2.5 | Comparação de períodos | 3 cartões | 976,522,440,212, 141 cada | Nenhum | `Media Aritmetica Nao Ponderada`, `Media do Periodo Anterior`, `Variacao Percentual vs Periodo Anterior` |
 | 2.6 | Rodapé | Caixa de texto | 24,750,1392,36 | Origem do dado | Nenhuma |
 
