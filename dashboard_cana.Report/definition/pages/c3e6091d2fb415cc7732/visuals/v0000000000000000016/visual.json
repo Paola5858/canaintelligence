@@ -2,73 +2,142 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000016",
   "position": {
-    "x": 24,
-    "y": 750,
+    "x": 340,
+    "y": 332,
     "z": 1016,
-    "width": 1392,
-    "height": 36,
+    "width": 620,
+    "height": 402,
     "tabOrder": 16
   },
   "visual": {
-    "visualType": "textbox",
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Dim_Calendario"
+                    }
+                  },
+                  "Property": "Data"
+                }
+              },
+              "queryRef": "Dim_Calendario.Data",
+              "nativeQueryRef": "Data",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Media Aritmetica Nao Ponderada"
+                }
+              },
+              "queryRef": "_Medidas.Media Aritmetica Nao Ponderada",
+              "nativeQueryRef": "Media Aritmetica Nao Ponderada"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Media Movel 7 Dias"
+                }
+              },
+              "queryRef": "_Medidas.Media Movel 7 Dias",
+              "nativeQueryRef": "Media Movel 7 Dias"
+            }
+          ]
+        }
+      }
+    },
     "drillFilterOtherVisuals": true,
-    "objects": {
-      "general": [
+    "visualContainerObjects": {
+      "title": [
         {
           "properties": {
-            "paragraphs": [
-              {
-                "textRuns": [
-                  {
-                    "value": "Base_Usina_PowerBI_Final_v4.xlsx · Fato_Medicoes, Dim_Indicador, Dim_Calendario",
-                    "textStyle": {
-                      "fontSize": "9pt",
-                      "fontFamily": "Segoe UI",
-                      "color": "#76817B"
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Série temporal'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#173F35'"
                     }
                   }
-                ],
-                "horizontalTextAlignment": "left"
+                }
               }
-            ]
-          }
-        }
-      ]
-    },
-    "visualContainerObjects": {
-      "background": [
-        {
-          "properties": {
-            "show": {
+            },
+            "alignment": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "'left'"
                 }
               }
             }
           }
         }
       ],
-      "border": [
+      "subTitle": [
         {
           "properties": {
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
-            }
-          }
-        }
-      ],
-      "dropShadow": [
-        {
-          "properties": {
-            "show": {
+            },
+            "text": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "'Média não ponderada e média móvel de 7 dias'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#76817B'"
+                    }
+                  }
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
                 }
               }
             }

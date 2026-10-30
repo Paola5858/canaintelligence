@@ -2,50 +2,32 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000003",
   "position": {
-    "x": 360,
-    "y": 152,
+    "x": 0,
+    "y": 0,
     "z": 1003,
-    "width": 200,
-    "height": 44,
+    "width": 40,
+    "height": 24,
     "tabOrder": 3
   },
   "visual": {
-    "visualType": "slicer",
-    "query": {
-      "queryState": {
-        "Values": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Fato_Medicoes"
-                    }
-                  },
-                  "Property": "Fonte"
-                }
-              },
-              "queryRef": "Fato_Medicoes.Fonte",
-              "nativeQueryRef": "Fonte",
-              "active": true
-            }
-          ]
-        }
-      }
-    },
+    "visualType": "textbox",
     "drillFilterOtherVisuals": true,
     "objects": {
-      "data": [
+      "general": [
         {
           "properties": {
-            "mode": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Dropdown'"
-                }
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "",
+                    "textStyle": {
+                      "fontSize": "1pt"
+                    }
+                  }
+                ]
               }
-            }
+            ]
           }
         }
       ]
@@ -57,7 +39,18 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#173F35'"
+                    }
+                  }
                 }
               }
             }

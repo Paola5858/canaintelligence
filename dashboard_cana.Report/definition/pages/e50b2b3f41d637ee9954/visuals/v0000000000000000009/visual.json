@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000009",
   "position": {
-    "x": 340,
-    "y": 220,
+    "x": 24,
+    "y": 476,
     "z": 1009,
-    "width": 202,
-    "height": 96,
+    "width": 300,
+    "height": 120,
     "tabOrder": 9
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Rotulo Registros"
+                  "Property": "Regra de Transformacao do Registro"
                 }
               },
-              "queryRef": "_Medidas.Rotulo Registros",
-              "nativeQueryRef": "Rotulo Registros"
+              "queryRef": "_Medidas.Regra de Transformacao do Registro",
+              "nativeQueryRef": "Regra de Transformacao do Registro"
             }
           ]
         }
@@ -41,7 +41,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "22D"
+                  "Value": "18D"
                 }
               }
             },
@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Registros no recorte'"
+                  "Value": "'Regra'"
                 }
               }
             },

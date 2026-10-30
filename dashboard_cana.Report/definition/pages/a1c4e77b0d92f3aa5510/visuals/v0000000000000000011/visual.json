@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000011",
   "position": {
-    "x": 24,
-    "y": 348,
+    "x": 1274,
+    "y": 522,
     "z": 1011,
-    "width": 300,
-    "height": 120,
+    "width": 141,
+    "height": 212,
     "tabOrder": 11
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Frentes com Dado do Indicador"
+                  "Property": "Rotulo Variacao Percentual"
                 }
               },
-              "queryRef": "_Medidas.Frentes com Dado do Indicador",
-              "nativeQueryRef": "Frentes com Dado do Indicador"
+              "queryRef": "_Medidas.Rotulo Variacao Percentual",
+              "nativeQueryRef": "Rotulo Variacao Percentual"
             }
           ]
         }
@@ -41,7 +41,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "22D"
+                  "Value": "18D"
                 }
               }
             },
@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Frentes'"
+                  "Value": "'Variação %'"
                 }
               }
             },

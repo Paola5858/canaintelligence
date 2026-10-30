@@ -54,7 +54,7 @@ Não substitui abrir o projeto, mas pega os erros que impedem a abertura.
 | Relacionamentos | Dois relacionamentos, todos os extremos existem, a fato é sempre o lado muitos |
 | Dimensões | `Data` e `Codigo` marcadas como chave, calendário marcado como tabela de data, `Nome_Mes` ordenado por `Numero_Mes` |
 | Lineage tags | Nenhuma repetida, todas as tabelas e colunas com tag |
-| Medidas | 61 medidas, toda referência entre colchetes existe, todas com pasta de exibição, medidas críticas com descrição |
+| Medidas | 64 medidas, toda referência entre colchetes existe, todas com pasta de exibição, medidas críticas com descrição |
 | Guardas | Média genérica exige indicador único e agregação aprovada, comparação temporal devolve vazio quando não há período |
 | Formatos | Percentual direto em `0.00"%"`, UMIDADE_LAB em `0.0%`, ATR em `0.00" kg/t"` |
 | Fonte | Caminho centralizado no parâmetro, nenhum caminho absoluto cravado em consulta |
@@ -86,7 +86,7 @@ Existe porque posição de visual não quebra a abertura do arquivo. O Desktop a
 | Sobreposição | Nenhum par de visuais se cruza, testado em todos os pares de cada página |
 | Cobertura | Toda página da ordem tem `page.json` e pelo menos um visual |
 
-Resultado atual: 424 verificações, 424 aprovadas, 6 páginas e 83 visuais. O teste não confere se o visual renderiza nem se o campo existe no modelo; isso continua com a suite de estrutura do modelo e com a abertura no Desktop.
+Resultado atual: 484 verificações, 484 aprovadas, 6 páginas e 95 visuais. O teste não confere se o visual renderiza nem se o campo existe no modelo; isso continua com a suite de estrutura do modelo e com a abertura no Desktop.
 
 O teste já pagou o custo: pegou um visual órfão na página Qualidade, sobra de uma geração anterior em que o trilho tinha seis cartões. O arquivo continuava na pasta e se sobrepunha ao cartão novo. A correção foi fazer todo gerador limpar a pasta `visuals` antes de escrever.
 
@@ -100,9 +100,9 @@ A suíte de grade garante que o visual não se sobrepõe. Esta garante que ele a
 | Medida | Toda medida citada existe na tabela citada, lendo `measure` do arquivo `.tmdl` |
 | Coluna | Toda coluna citada existe na tabela citada, lendo `column` do arquivo `.tmdl` |
 | Consistência | O `queryRef` de cada projeção bate com `Tabela.Propriedade` |
-| Cobertura | Existe pelo menos uma referência a campo nos 83 visuais |
+| Cobertura | Existe pelo menos uma referência a campo nos 95 visuais |
 
-Resultado atual: 192 verificações, 192 aprovadas, 83 visuais e 44 referências distintas a campos. O teste não confere tipo, formato nem semântica de DAX.
+Resultado atual: 192 verificações, 192 aprovadas, 95 visuais e 44 referências distintas a campos. O teste não confere tipo, formato nem semântica de DAX.
 
 ## Validação com o parser oficial do Power BI
 
@@ -123,7 +123,7 @@ PARSE OK
   _Medidas           | colunas=1  medidas=55
   relacao: Fato_Medicoes[Data] -> Dim_Calendario[Data]
   relacao: Fato_Medicoes[Indicador_Codigo] -> Dim_Indicador[Codigo]
-Total: 7 tabelas, 61 medidas, 2 relacionamentos
+Total: 7 tabelas, 64 medidas, 2 relacionamentos
 ```
 
 O teste valida estrutura do modelo, não semântica de DAX. Expressão DAX com erro de lógica ou de tipo continua dependendo de execução no Desktop.

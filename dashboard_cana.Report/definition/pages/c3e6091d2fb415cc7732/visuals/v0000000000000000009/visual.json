@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000009",
   "position": {
-    "x": 340,
-    "y": 220,
+    "x": 24,
+    "y": 476,
     "z": 1009,
-    "width": 202,
-    "height": 96,
+    "width": 300,
+    "height": 120,
     "tabOrder": 9
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Mediana do Indicador"
+                  "Property": "Status do Indicador"
                 }
               },
-              "queryRef": "_Medidas.Mediana do Indicador",
-              "nativeQueryRef": "Mediana do Indicador"
+              "queryRef": "_Medidas.Status do Indicador",
+              "nativeQueryRef": "Status do Indicador"
             }
           ]
         }
@@ -41,7 +41,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "22D"
+                  "Value": "18D"
                 }
               }
             },
@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Mediana'"
+                  "Value": "'Status'"
                 }
               }
             },

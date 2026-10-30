@@ -129,7 +129,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/validate_tmdl.ps1
 
 `Fato_Medicoes[Valor]` está com `summarizeBy: none`. Essa é uma decisão de segurança, não de estilo: com a soma padrão, qualquer campo arrastado por engano produziria um número somando pH com acidez e ATR. Sem resumo automático, quem monta o visual é obrigado a escolher uma medida.
 
-Todas as medidas que agregam valor exigem um único indicador selecionado. Ver [MEASURES_CATALOG.md](MEASURES_CATALOG.md).
+Todas as medidas que agregam valor usam um único indicador no contexto. Quando o slicer abre em Todos, o modelo aplica explicitamente ATR como recorte exploratório padrão. Ver [MEASURES_CATALOG.md](MEASURES_CATALOG.md).
 
 ## Idiomas e formatos
 

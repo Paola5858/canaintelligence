@@ -15,7 +15,7 @@ O desenho é contido por escolha: fundo marfim, painéis brancos, uma sombra dif
 | Verde floresta | `#173F35` | Marca, valor de KPI, título de painel, aba ativa, série agregada |
 | Verde cana | `#4E7966` | Série principal, barras, estado validado |
 | Sálvia | `#A8B9A0` | Série secundária, laboratório, estado normalizado |
-| Marfim | `#F7F6F0` | Fundo da página |
+| Marfim esverdeado | `#EEF1EA` | Fundo da página |
 | Branco | `#FFFFFF` | Superfície de painel, tabela, controle |
 | Grafite | `#25312D` | Texto principal |
 | Cinza neutro | `#76817B` | Rótulo, eixo, texto secundário |
@@ -36,7 +36,7 @@ Uma superfície tem **um** separador. Não se acumula borda, preenchimento, somb
 
 | Nível | Tratamento | Uso |
 | --- | --- | --- |
-| Fundo | Marfim `#F7F6F0`, sem borda | Página |
+| Fundo | Marfim esverdeado `#EEF1EA`, sem borda | Página |
 | Painel | Branco, raio 24px, sombra `0 1px 2px rgba(23,63,53,.045), 0 18px 44px -26px rgba(23,63,53,.30)`, sem borda | Todo bloco analítico |
 | Divisória interna | Hairline 1px `rgba(37,49,45,.07)` | Células de faixa, linhas de tabela |
 | Controle | Fundo `#FBFAF6`, borda 1px `rgba(37,49,45,.09)`, raio 12px | Campos de filtro |

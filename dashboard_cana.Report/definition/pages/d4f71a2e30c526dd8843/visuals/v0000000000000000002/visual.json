@@ -3,49 +3,56 @@
   "name": "v0000000000000000002",
   "position": {
     "x": 24,
-    "y": 152,
+    "y": 24,
     "z": 1002,
-    "width": 320,
-    "height": 40,
+    "width": 1392,
+    "height": 48,
     "tabOrder": 2
   },
   "visual": {
-    "visualType": "slicer",
-    "query": {
-      "queryState": {
-        "Values": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Dim_Calendario"
-                    }
-                  },
-                  "Property": "Data"
-                }
-              },
-              "queryRef": "Dim_Calendario.Data",
-              "nativeQueryRef": "Data",
-              "active": true
-            }
-          ]
-        }
-      }
-    },
+    "visualType": "textbox",
     "drillFilterOtherVisuals": true,
     "objects": {
-      "data": [
+      "general": [
         {
           "properties": {
-            "mode": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Dropdown'"
-                }
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "CANA INTELLIGENCE",
+                    "textStyle": {
+                      "fontSize": "20pt",
+                      "fontFamily": "Segoe UI Semibold",
+                      "color": "#173F35",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "     Qualidade",
+                    "textStyle": {
+                      "fontSize": "12pt",
+                      "fontFamily": "Segoe UI",
+                      "color": "#25312D"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "ANÁLISE DE COBERTURA · INDICADORES DE PROCESSO · BASE OPERACIONAL",
+                    "textStyle": {
+                      "fontSize": "8pt",
+                      "fontFamily": "Segoe UI",
+                      "color": "#76817B"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
               }
-            }
+            ]
           }
         }
       ]

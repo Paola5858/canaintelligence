@@ -3,7 +3,7 @@
   "name": "v0000000000000000012",
   "position": {
     "x": 24,
-    "y": 476,
+    "y": 220,
     "z": 1012,
     "width": 300,
     "height": 120,
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Status do Indicador"
+                  "Property": "Rotulo Leituras"
                 }
               },
-              "queryRef": "_Medidas.Status do Indicador",
-              "nativeQueryRef": "Status do Indicador"
+              "queryRef": "_Medidas.Rotulo Leituras",
+              "nativeQueryRef": "Rotulo Leituras"
             }
           ]
         }
@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Status'"
+                  "Value": "'Leituras'"
                 }
               }
             },

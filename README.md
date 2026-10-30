@@ -8,13 +8,13 @@ Fonte única de dados: `data/Base_Usina_PowerBI_Final_v4.xlsx`. Todas as contage
 
 | Item | Estado |
 | --- | --- |
-| Modelo semântico aceito pelo parser oficial | Sim, 7 tabelas, 61 medidas, 2 relacionamentos |
+| Modelo semântico aceito pelo parser oficial | Sim, 7 tabelas, 64 medidas, 2 relacionamentos |
 | Evidência de abertura no Power BI Desktop | Capturas históricas em `.kombai/tmp`; não verificável nesta sessão |
-| Modelo semântico em TMDL | Implementado, 6 tabelas e 61 medidas |
+| Modelo semântico em TMDL | Implementado, 6 tabelas e 64 medidas |
 | Relacionamentos | 2, ambos de um para muitos e filtro simples |
-| Páginas do relatório | 6 criadas, todas na grade nova. 83 visuais gerados por script e conferidos pela suíte de grade. A distribuição de Indicadores exibe uma explicação honesta da limitação; Fontes, Indicadores e Detalhes ainda precisam de conferência visual ao vivo |
+| Páginas do relatório | 6 criadas, todas na grade nova. 95 visuais gerados por script e conferidos pela suíte de grade. O estado inicial usa ATR como recorte exploratório e a distribuição de Indicadores exibe uma explicação honesta da limitação |
 | Tema visual | Implementado em `CanaIntelligence.json`, revisado para a grade nova (painel branco, raio 12, borda hairline, coluna e segmentação com padrão) |
-| Desenho do canvas | Seis páginas redesenhadas (conjunto V2) e uma variante V3 da Visão geral. Os 83 visuais em PBIR seguem a grade nova nas seis páginas |
+| Desenho do canvas | Seis páginas redesenhadas (conjunto V2) e uma variante V3 da Visão geral. Os 95 visuais em PBIR seguem a grade nova nas seis páginas |
 | Testes de dados | 47 verificações, todas aprovadas |
 | Testes de estrutura do modelo | 32 verificações, todas aprovadas |
 | Testes de estrutura do relatório | 44 verificações, todas aprovadas |
@@ -67,7 +67,7 @@ Seis suites:
 - `tests/test_data_contract.py`: confere a planilha contra as regras do modelo (contagens, chaves, escalas, duplicidades, pendência de TC).
 - `tests/test_model_structure.py`: confere o TMDL (relacionamentos resolvem, medidas referenciadas existem, formatos percentuais corretos, caminho centralizado).
 - `tests/test_report_structure.py`: confere a cadeia de abertura do PBIP, a ligação entre páginas e a declaração do tema.
-- `tests/test_report_grid.py`: confere a grade dos 83 visuais nas seis páginas (limite da página, sobreposição, `z` e `tabOrder` únicos, página vazia).
+- `tests/test_report_grid.py`: confere a grade dos 95 visuais nas seis páginas (limite da página, sobreposição, `z` e `tabOrder` únicos, página vazia).
 - `tests/test_report_fields.py`: confere que toda medida e toda coluna citadas nos visuais existem no TMDL e que o `queryRef` bate com o campo.
 - `tests/test_tmdl_parser.py`: deserializa o modelo com o parser TMDL oficial que vem com o Power BI Desktop. É o único teste que prova que o projeto realmente abre.
 

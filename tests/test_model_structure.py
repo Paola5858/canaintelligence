@@ -182,8 +182,11 @@ check("Nenhuma medida usa a propriedade description, que o TMDL recusa",
       "description:" not in read(TABLES_DIR / "_Medidas.tmdl"))
 
 # 7. Guardas de semantica --------------------------------------------------
-guard_ok = "HASONEVALUE" in measures["Valor Medio do Indicador"]["dax"]
-check("Media generica exige um unico indicador selecionado", guard_ok)
+guard_ok = (
+    "Codigo do Indicador no Contexto" in measures["Valor Medio do Indicador"]["dax"]
+    and "Dim_Indicador[Codigo] = Codigo" in measures["Valor Medio do Indicador"]["dax"]
+)
+check("Media generica usa indicador unico ou recorte padrao seguro", guard_ok)
 
 guard_ok = "Média Aritmética" in measures["Valor Medio do Indicador"]["dax"]
 check("Media generica exige agregacao aritmetica aprovada", guard_ok)

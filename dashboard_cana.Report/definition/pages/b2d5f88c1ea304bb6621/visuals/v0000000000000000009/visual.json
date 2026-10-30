@@ -2,37 +2,18 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000009",
   "position": {
-    "x": 340,
-    "y": 220,
+    "x": 24,
+    "y": 476,
     "z": 1009,
-    "width": 420,
-    "height": 514,
+    "width": 300,
+    "height": 120,
     "tabOrder": 9
   },
   "visual": {
-    "visualType": "barChart",
+    "visualType": "card",
     "query": {
       "queryState": {
-        "Category": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Fato_Medicoes"
-                    }
-                  },
-                  "Property": "Fonte"
-                }
-              },
-              "queryRef": "Fato_Medicoes.Fonte",
-              "nativeQueryRef": "Fonte",
-              "active": true
-            }
-          ]
-        },
-        "Y": {
+        "Values": {
           "projections": [
             {
               "field": {
@@ -42,31 +23,63 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Minimo Observado"
+                  "Property": "Status do Indicador"
                 }
               },
-              "queryRef": "_Medidas.Minimo Observado",
-              "nativeQueryRef": "Minimo Observado"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Medidas"
-                    }
-                  },
-                  "Property": "Maximo Observado"
-                }
-              },
-              "queryRef": "_Medidas.Maximo Observado",
-              "nativeQueryRef": "Maximo Observado"
+              "queryRef": "_Medidas.Status do Indicador",
+              "nativeQueryRef": "Status do Indicador"
             }
           ]
         }
       }
     },
     "drillFilterOtherVisuals": true,
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "18D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI Semibold'"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#173F35'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryLabels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "visualContainerObjects": {
       "title": [
         {
@@ -81,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Faixa observada'"
+                  "Value": "'Status'"
                 }
               }
             },
@@ -91,44 +104,6 @@
                   "expr": {
                     "Literal": {
                       "Value": "'#173F35'"
-                    }
-                  }
-                }
-              }
-            },
-            "alignment": {
-              "expr": {
-                "Literal": {
-                  "Value": "'left'"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "subTitle": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Mínimo e máximo por frente'"
-                }
-              }
-            },
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#76817B'"
                     }
                   }
                 }

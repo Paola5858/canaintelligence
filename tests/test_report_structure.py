@@ -107,7 +107,7 @@ check("Paleta comeca no verde cana", tema.get("dataColors", [""])[0] == "#4E7966
 check("Tema contem o verde floresta da marca", "#173F35" in tema.get("dataColors", []))
 check("Tema desliga sombra", tema["visualStyles"]["*"]["*"]["dropShadow"][0]["show"] is False)
 check("Fundo da pagina em marfim",
-      tema["visualStyles"]["page"]["*"]["background"][0]["color"]["solid"]["color"] == "#F7F6F0")
+      tema["visualStyles"]["page"]["*"]["background"][0]["color"]["solid"]["color"] == "#EEF1EA")
 check("Tema define classes de texto", set(tema.get("textClasses", {})) >= {"callout", "title", "header", "label"})
 
 # 4. Coerencia entre paginas e documentacao --------------------------------

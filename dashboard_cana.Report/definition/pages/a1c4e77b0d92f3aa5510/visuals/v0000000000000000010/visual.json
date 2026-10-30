@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000010",
   "position": {
-    "x": 24,
-    "y": 220,
+    "x": 1125,
+    "y": 522,
     "z": 1010,
-    "width": 300,
-    "height": 120,
+    "width": 141,
+    "height": 212,
     "tabOrder": 10
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Rotulo Leituras"
+                  "Property": "Rotulo Media do Periodo Anterior"
                 }
               },
-              "queryRef": "_Medidas.Rotulo Leituras",
-              "nativeQueryRef": "Rotulo Leituras"
+              "queryRef": "_Medidas.Rotulo Media do Periodo Anterior",
+              "nativeQueryRef": "Rotulo Media do Periodo Anterior"
             }
           ]
         }
@@ -41,7 +41,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "22D"
+                  "Value": "18D"
                 }
               }
             },
@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Leituras'"
+                  "Value": "'Média anterior'"
                 }
               }
             },

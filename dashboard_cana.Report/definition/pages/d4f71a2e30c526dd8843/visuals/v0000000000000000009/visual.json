@@ -2,37 +2,18 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000009",
   "position": {
-    "x": 340,
-    "y": 220,
+    "x": 24,
+    "y": 476,
     "z": 1009,
-    "width": 660,
-    "height": 184,
+    "width": 300,
+    "height": 120,
     "tabOrder": 9
   },
   "visual": {
-    "visualType": "columnChart",
+    "visualType": "card",
     "query": {
       "queryState": {
-        "Category": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Dim_Calendario"
-                    }
-                  },
-                  "Property": "Nome_Mes"
-                }
-              },
-              "queryRef": "Dim_Calendario.Nome_Mes",
-              "nativeQueryRef": "Nome_Mes",
-              "active": true
-            }
-          ]
-        },
-        "Y": {
+        "Values": {
           "projections": [
             {
               "field": {
@@ -42,17 +23,63 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Quantidade de Registros"
+                  "Property": "Percentual de Registros Pendentes"
                 }
               },
-              "queryRef": "_Medidas.Quantidade de Registros",
-              "nativeQueryRef": "Quantidade de Registros"
+              "queryRef": "_Medidas.Percentual de Registros Pendentes",
+              "nativeQueryRef": "Percentual de Registros Pendentes"
             }
           ]
         }
       }
     },
     "drillFilterOtherVisuals": true,
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "18D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI Semibold'"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#173F35'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryLabels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "visualContainerObjects": {
       "title": [
         {
@@ -67,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Registros por mês'"
+                  "Value": "'% pendente'"
                 }
               }
             },
@@ -77,44 +104,6 @@
                   "expr": {
                     "Literal": {
                       "Value": "'#173F35'"
-                    }
-                  }
-                }
-              }
-            },
-            "alignment": {
-              "expr": {
-                "Literal": {
-                  "Value": "'left'"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "subTitle": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Todos os indicadores · 19.532 registros'"
-                }
-              }
-            },
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#76817B'"
                     }
                   }
                 }

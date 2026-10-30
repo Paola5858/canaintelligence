@@ -106,6 +106,14 @@ def cabecalho(titulo_pagina: str) -> dict:
                 }},
             ],
             "horizontalTextAlignment": "left",
+        }, {
+            "textRuns": [{"value": "ANÁLISE DE COBERTURA · INDICADORES DE PROCESSO · BASE OPERACIONAL",
+                           "textStyle": {
+                               "fontSize": "8pt",
+                               "fontFamily": "Segoe UI",
+                               "color": "#76817B",
+                           }}],
+            "horizontalTextAlignment": "left",
         }]}}]
     }
 
@@ -227,8 +235,30 @@ class Pagina:
         return limpar_visuais(self.pasta)
 
     def cabecalho_tela(self):
+        self.add(
+            "textbox", 0, 0, 40, 24,
+            objects={"general": [{"properties": {"paragraphs": [{
+                "textRuns": [{"value": "", "textStyle": {"fontSize": "1pt"}}],
+            }]}}]},
+            container={
+                "background": [{"properties": {"show": lit("true"), "color": cor("#173F35")}}],
+                "border": [{"properties": {"show": lit("false")}}],
+                "dropShadow": [{"properties": {"show": lit("false")}}],
+            },
+        )
         self.add("textbox", 24, 24, 1392, 48,
                  objects=cabecalho(self.nome_pagina), container=sem_cromo())
+        self.add(
+            "textbox", 24, 72, 40, 24,
+            objects={"general": [{"properties": {"paragraphs": [{
+                "textRuns": [{"value": "", "textStyle": {"fontSize": "1pt"}}],
+            }]}}]},
+            container={
+                "background": [{"properties": {"show": lit("true"), "color": cor("#C17A4A")}}],
+                "border": [{"properties": {"show": lit("false")}}],
+                "dropShadow": [{"properties": {"show": lit("false")}}],
+            },
+        )
 
     def rodape_tela(self, linha: str | None = None):
         linha = linha or ("Base_Usina_PowerBI_Final_v4.xlsx · Fato_Medicoes, "

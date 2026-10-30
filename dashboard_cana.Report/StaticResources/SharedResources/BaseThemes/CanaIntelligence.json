@@ -67,7 +67,7 @@
                 "color": "#EFEDE6"
               }
             },
-            "radius": 12
+            "radius": 16
           }
         ],
         "dropShadow": [
@@ -140,7 +140,7 @@
           {
             "color": {
               "solid": {
-                "color": "#F7F6F0"
+                "color": "#EEF1EA"
               }
             },
             "transparency": 0
@@ -150,7 +150,7 @@
           {
             "color": {
               "solid": {
-                "color": "#F7F6F0"
+              "color": "#EEF1EA"
               }
             },
             "transparency": 0

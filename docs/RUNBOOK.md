@@ -51,7 +51,7 @@ As páginas existem vazias. A ordem de montagem recomendada segue a dependência
 Por página:
 
 1. Abra a página no Desktop.
-2. Aplique o plano de fundo `#F7F6F0` se o tema ainda não aplicou.
+2. Aplique o plano de fundo `#EEF1EA` se o tema ainda não aplicou.
 3. Insira primeiro os elementos estruturais: caixa de texto do cabeçalho, navegador de páginas, segmentações de dados.
 4. Depois os cartões e as medidas.
 5. Por último os gráficos.

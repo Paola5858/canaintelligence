@@ -134,6 +134,14 @@ def cabecalho(titulo_pagina: str):
                 }},
             ],
             "horizontalTextAlignment": "left",
+        }, {
+            "textRuns": [{"value": "ANÁLISE DE COBERTURA · INDICADORES DE PROCESSO · BASE OPERACIONAL",
+                           "textStyle": {
+                               "fontSize": "8pt",
+                               "fontFamily": "Segoe UI",
+                               "color": "#76817B",
+                           }}],
+            "horizontalTextAlignment": "left",
         }]}}]
     }
 
@@ -147,6 +155,30 @@ def main() -> int:
 
     # 2.1 cabecalho
     novo_visual("textbox", 24, 24, 1392, 48, objects=cabecalho("Evolução"), container=sem_cromo())
+
+    novo_visual(
+        "textbox", 24, 72, 40, 24,
+        objects={"general": [{"properties": {"paragraphs": [{
+            "textRuns": [{"value": "", "textStyle": {"fontSize": "1pt"}}],
+        }]}}]},
+        container={
+            "background": [{"properties": {"show": lit("true"), "color": cor("#C17A4A")}}],
+            "border": [{"properties": {"show": lit("false")}}],
+            "dropShadow": [{"properties": {"show": lit("false")}}],
+        },
+    )
+
+    novo_visual(
+        "textbox", 0, 0, 40, 24,
+        objects={"general": [{"properties": {"paragraphs": [{
+            "textRuns": [{"value": "", "textStyle": {"fontSize": "1pt"}}],
+        }]}}]},
+        container={
+            "background": [{"properties": {"show": lit("true"), "color": cor("#173F35")}}],
+            "border": [{"properties": {"show": lit("false")}}],
+            "dropShadow": [{"properties": {"show": lit("false")}}],
+        },
+    )
 
     # filtros: periodo, fonte e indicador
     novo_visual("slicer", 24, 152, 320, 40,
@@ -184,8 +216,8 @@ def main() -> int:
     # em 440px geravam barra de rolagem horizontal e nenhuma leitura
     comparacao = [
         ("Média atual", "Media Aritmetica Nao Ponderada"),
-        ("Média anterior", "Media do Periodo Anterior"),
-        ("Variação %", "Variacao Percentual vs Periodo Anterior"),
+        ("Média anterior", "Rotulo Media do Periodo Anterior"),
+        ("Variação %", "Rotulo Variacao Percentual"),
     ]
     largura_cartao = (440 - 8 * (len(comparacao) - 1)) // len(comparacao)
     for indice, (rotulo, nome_medida) in enumerate(comparacao):

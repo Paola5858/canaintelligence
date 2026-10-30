@@ -3,92 +3,50 @@
   "name": "v0000000000000000011",
   "position": {
     "x": 340,
-    "y": 420,
+    "y": 220,
     "z": 1011,
-    "width": 1076,
-    "height": 314,
+    "width": 660,
+    "height": 184,
     "tabOrder": 11
   },
   "visual": {
-    "visualType": "tableEx",
+    "visualType": "columnChart",
     "query": {
       "queryState": {
-        "Values": {
+        "Category": {
           "projections": [
             {
               "field": {
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Pendencias_Validacao"
+                      "Entity": "Dim_Calendario"
                     }
                   },
-                  "Property": "ID_Pendencia"
+                  "Property": "Nome_Mes"
                 }
               },
-              "queryRef": "Pendencias_Validacao.ID_Pendencia",
-              "nativeQueryRef": "ID_Pendencia",
+              "queryRef": "Dim_Calendario.Nome_Mes",
+              "nativeQueryRef": "Nome_Mes",
               "active": true
-            },
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
             {
               "field": {
-                "Column": {
+                "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Pendencias_Validacao"
+                      "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Indicador"
+                  "Property": "Quantidade de Registros"
                 }
               },
-              "queryRef": "Pendencias_Validacao.Indicador",
-              "nativeQueryRef": "Indicador",
-              "active": true
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Pendencias_Validacao"
-                    }
-                  },
-                  "Property": "Problema"
-                }
-              },
-              "queryRef": "Pendencias_Validacao.Problema",
-              "nativeQueryRef": "Problema",
-              "active": true
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Pendencias_Validacao"
-                    }
-                  },
-                  "Property": "Acao_Recomendada"
-                }
-              },
-              "queryRef": "Pendencias_Validacao.Acao_Recomendada",
-              "nativeQueryRef": "Acao_Recomendada",
-              "active": true
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Pendencias_Validacao"
-                    }
-                  },
-                  "Property": "Status"
-                }
-              },
-              "queryRef": "Pendencias_Validacao.Status",
-              "nativeQueryRef": "Status",
-              "active": true
+              "queryRef": "_Medidas.Quantidade de Registros",
+              "nativeQueryRef": "Quantidade de Registros"
             }
           ]
         }
@@ -109,7 +67,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Pendências de validação'"
+                  "Value": "'Registros por mês'"
                 }
               }
             },
@@ -147,7 +105,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'4 registros na origem'"
+                  "Value": "'Todos os indicadores · 19.532 registros'"
                 }
               }
             },

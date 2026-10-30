@@ -3,7 +3,7 @@
   "name": "v0000000000000000013",
   "position": {
     "x": 24,
-    "y": 604,
+    "y": 348,
     "z": 1013,
     "width": 300,
     "height": 120,
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Rotulo Agregacao Recomendada"
+                  "Property": "Frentes com Dado do Indicador"
                 }
               },
-              "queryRef": "_Medidas.Rotulo Agregacao Recomendada",
-              "nativeQueryRef": "Rotulo Agregacao Recomendada"
+              "queryRef": "_Medidas.Frentes com Dado do Indicador",
+              "nativeQueryRef": "Frentes com Dado do Indicador"
             }
           ]
         }
@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Agregação'"
+                  "Value": "'Frentes'"
                 }
               }
             },

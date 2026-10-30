@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000010",
   "position": {
-    "x": 558,
-    "y": 220,
+    "x": 24,
+    "y": 604,
     "z": 1010,
-    "width": 202,
-    "height": 96,
+    "width": 300,
+    "height": 120,
     "tabOrder": 10
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Rotulo Ajustes de Escala"
+                  "Property": "Status Anterior do Registro"
                 }
               },
-              "queryRef": "_Medidas.Rotulo Ajustes de Escala",
-              "nativeQueryRef": "Rotulo Ajustes de Escala"
+              "queryRef": "_Medidas.Status Anterior do Registro",
+              "nativeQueryRef": "Status Anterior do Registro"
             }
           ]
         }
@@ -41,7 +41,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "22D"
+                  "Value": "18D"
                 }
               }
             },
@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Com ajuste de escala'"
+                  "Value": "'Status anterior'"
                 }
               }
             },

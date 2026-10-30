@@ -3,7 +3,7 @@
   "name": "v0000000000000000007",
   "position": {
     "x": 24,
-    "y": 476,
+    "y": 220,
     "z": 1007,
     "width": 300,
     "height": 120,
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Regra de Transformacao do Registro"
+                  "Property": "Rotulo Valor Original"
                 }
               },
-              "queryRef": "_Medidas.Regra de Transformacao do Registro",
-              "nativeQueryRef": "Regra de Transformacao do Registro"
+              "queryRef": "_Medidas.Rotulo Valor Original",
+              "nativeQueryRef": "Rotulo Valor Original"
             }
           ]
         }
@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Regra'"
+                  "Value": "'Valor original'"
                 }
               }
             },

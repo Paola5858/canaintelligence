@@ -3,7 +3,7 @@
   "name": "v0000000000000000007",
   "position": {
     "x": 24,
-    "y": 476,
+    "y": 220,
     "z": 1007,
     "width": 300,
     "height": 120,
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Percentual de Registros Pendentes"
+                  "Property": "Rotulo Registros"
                 }
               },
-              "queryRef": "_Medidas.Percentual de Registros Pendentes",
-              "nativeQueryRef": "Percentual de Registros Pendentes"
+              "queryRef": "_Medidas.Rotulo Registros",
+              "nativeQueryRef": "Rotulo Registros"
             }
           ]
         }
@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'% pendente'"
+                  "Value": "'Registros'"
                 }
               }
             },

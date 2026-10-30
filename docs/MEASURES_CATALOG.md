@@ -1,24 +1,28 @@
 # Catálogo de medidas
 
-61 medidas na tabela `_Medidas`, organizadas em 7 pastas de exibição. Todas em português, com nome curto e descrição quando o nome não basta. Seis delas são medidas de rótulo, criadas em 30/10/2026 para cartão, porque o Desktop ignora a propriedade de unidade de exibição vinda do arquivo.
+64 medidas na tabela `_Medidas`, organizadas em 7 pastas de exibição. Todas em português, com nome curto e descrição quando o nome não basta. O recorte inicial seguro é ATR, usado quando o slicer de indicador está em Todos; o usuário pode trocar para qualquer indicador.
 
 ## Regra que governa o catálogo
 
-Nenhuma medida genérica soma ou tira média de todos os valores da fato. Somar pH com acidez e ATR produz um número sem significado, e um número sem significado em um cartão é pior que um cartão vazio.
+Nenhuma medida genérica soma ou tira média de todos os valores da fato. Quando o slicer está em Todos, o modelo aplica explicitamente ATR como recorte exploratório padrão. Somar pH com acidez e ATR produz um número sem significado, e um número sem significado em um cartão é pior que um cartão vazio.
 
 Por isso as medidas de agregação genérica exigem duas condições:
 
 ```dax
 Valor Medio do Indicador =
-IF (
-    HASONEVALUE ( Indicadores[Indicador] )
-        && SELECTEDVALUE ( Dim_Indicador[Tipo_Agregacao_Recomendada] ) = "Média aritmética",
-    AVERAGE ( Fato_Medicoes[Valor] ),
+VAR Codigo = [Codigo do Indicador no Contexto]
+VAR Agregacao = CALCULATE (
+    SELECTEDVALUE ( Dim_Indicador[Tipo_Agregacao_Recomendada] ),
+    Dim_Indicador[Codigo] = Codigo
+)
+RETURN IF (
+    Agregacao = "Média aritmética",
+    CALCULATE ( AVERAGE ( Fato_Medicoes[Valor] ), Dim_Indicador[Codigo] = Codigo ),
     BLANK ()
 )
 ```
 
-1. Um único indicador selecionado.
+1. Um indicador no contexto, ou o recorte padrão ATR quando o slicer está em Todos.
 2. Comportamento de média reconhecido no catálogo do indicador.
 
 Fora disso, o resultado é vazio, nunca zero.

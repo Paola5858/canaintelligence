@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000010",
   "position": {
-    "x": 24,
-    "y": 356,
+    "x": 867,
+    "y": 220,
     "z": 1010,
-    "width": 300,
-    "height": 112,
+    "width": 265,
+    "height": 120,
     "tabOrder": 10
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Rotulo Leituras"
+                  "Property": "Quantidade de Fontes"
                 }
               },
-              "queryRef": "_Medidas.Rotulo Leituras",
-              "nativeQueryRef": "Rotulo Leituras"
+              "queryRef": "_Medidas.Quantidade de Fontes",
+              "nativeQueryRef": "Quantidade de Fontes"
             }
           ]
         }
@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Leituras'"
+                  "Value": "'Fontes'"
                 }
               }
             },

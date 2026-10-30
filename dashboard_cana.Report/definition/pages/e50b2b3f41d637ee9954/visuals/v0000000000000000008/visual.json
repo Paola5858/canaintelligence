@@ -3,7 +3,7 @@
   "name": "v0000000000000000008",
   "position": {
     "x": 24,
-    "y": 604,
+    "y": 348,
     "z": 1008,
     "width": 300,
     "height": 120,
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Status Anterior do Registro"
+                  "Property": "Rotulo Fator Aplicado"
                 }
               },
-              "queryRef": "_Medidas.Status Anterior do Registro",
-              "nativeQueryRef": "Status Anterior do Registro"
+              "queryRef": "_Medidas.Rotulo Fator Aplicado",
+              "nativeQueryRef": "Rotulo Fator Aplicado"
             }
           ]
         }
@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Status anterior'"
+                  "Value": "'Fator aplicado'"
                 }
               }
             },
