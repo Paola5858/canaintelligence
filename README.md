@@ -9,18 +9,18 @@ Fonte única de dados: `data/Base_Usina_PowerBI_Final_v4.xlsx`. Todas as contage
 | Item | Estado |
 | --- | --- |
 | Modelo semântico aceito pelo parser oficial | Sim, 7 tabelas, 61 medidas, 2 relacionamentos |
-| Relatório abre no Power BI Desktop | Sim, aberto e carregado em 29/10/2026 |
+| Evidência de abertura no Power BI Desktop | Capturas históricas em `.kombai/tmp`; não verificável nesta sessão |
 | Modelo semântico em TMDL | Implementado, 6 tabelas e 61 medidas |
 | Relacionamentos | 2, ambos de um para muitos e filtro simples |
-| Páginas do relatório | 6 criadas, todas na grade nova. 82 visuais gerados por script e conferidos pela suíte de grade. Visão geral, Evolução e Qualidade foram conferidas no Desktop por captura de janela; Fontes, Indicadores e Detalhes ainda não. Indicadores está sem a distribuição |
+| Páginas do relatório | 6 criadas, todas na grade nova. 83 visuais gerados por script e conferidos pela suíte de grade. A distribuição de Indicadores exibe uma explicação honesta da limitação; Fontes, Indicadores e Detalhes ainda precisam de conferência visual ao vivo |
 | Tema visual | Implementado em `CanaIntelligence.json`, revisado para a grade nova (painel branco, raio 12, borda hairline, coluna e segmentação com padrão) |
-| Desenho do canvas | Seis páginas redesenhadas (conjunto V2) e uma variante V3 da Visão geral. Os 77 visuais em PBIR seguem a grade nova nas seis páginas |
+| Desenho do canvas | Seis páginas redesenhadas (conjunto V2) e uma variante V3 da Visão geral. Os 83 visuais em PBIR seguem a grade nova nas seis páginas |
 | Testes de dados | 47 verificações, todas aprovadas |
-| Testes de estrutura do modelo | 31 verificações, todas aprovadas |
-| Testes de estrutura do relatório | 43 verificações, todas aprovadas |
-| Visuais nativos | Não implementados. Ver a seção de limitações |
+| Testes de estrutura do modelo | 32 verificações, todas aprovadas |
+| Testes de estrutura do relatório | 44 verificações, todas aprovadas |
+| Visuais nativos | Declarados em PBIR e validados estruturalmente; acabamento fino ainda depende do Desktop |
 
-As páginas existem, mas estão vazias de visuais. Cada visual tem posição, campos, medida e regra de cor definidos em [docs/VISUAL_SPECIFICATION.md](docs/VISUAL_SPECIFICATION.md), pronto para ser montado no Desktop em poucos minutos por página.
+As páginas e os visuais declarativos existem. O que ainda depende do Desktop é o acabamento fino e a configuração manual de recursos que a versão atual não aceita no PBIR, como agrupamento dinâmico em faixas e a ação do botão Voltar.
 
 ## Estrutura
 
@@ -67,7 +67,7 @@ Seis suites:
 - `tests/test_data_contract.py`: confere a planilha contra as regras do modelo (contagens, chaves, escalas, duplicidades, pendência de TC).
 - `tests/test_model_structure.py`: confere o TMDL (relacionamentos resolvem, medidas referenciadas existem, formatos percentuais corretos, caminho centralizado).
 - `tests/test_report_structure.py`: confere a cadeia de abertura do PBIP, a ligação entre páginas e a declaração do tema.
-- `tests/test_report_grid.py`: confere a grade dos 82 visuais nas seis páginas (limite da página, sobreposição, `z` e `tabOrder` únicos, página vazia).
+- `tests/test_report_grid.py`: confere a grade dos 83 visuais nas seis páginas (limite da página, sobreposição, `z` e `tabOrder` únicos, página vazia).
 - `tests/test_report_fields.py`: confere que toda medida e toda coluna citadas nos visuais existem no TMDL e que o `queryRef` bate com o campo.
 - `tests/test_tmdl_parser.py`: deserializa o modelo com o parser TMDL oficial que vem com o Power BI Desktop. É o único teste que prova que o projeto realmente abre.
 
@@ -97,8 +97,8 @@ python scripts/data_audit.py
 
 ## Limitações conhecidas
 
-1. **Cobertura de visuais incompleta e não validada no Desktop.** Evolução, Fontes, Qualidade e Detalhes têm visuais gerados por `scripts/build_visuals_page2.py` e [scripts/build_visuals_pages.py](scripts/build_visuals_pages.py). Nenhuma dessas quatro foi aberta no Desktop depois da geração. Indicadores está sem a distribuição, que depende de grupo de faixas, e Detalhes está sem botão Voltar. O projeto abriu no Desktop depois da migração, o que confirma que o arquivo carrega, mas não confirma a composição de cada página. O passo a passo está em [docs/RUNBOOK.md](docs/RUNBOOK.md).
-2. **Validação no Desktop pendente.** O modelo foi checado por testes estáticos e pela leitura da planilha, mas não foi aberto em uma instância do Power BI Desktop neste ambiente. O primeiro passo do runbook é essa abertura.
+1. **Validação visual ao vivo pendente.** Os visuais declarativos foram gerados e passam nas suites de estrutura, grade e campos. A abertura atual do projeto no Desktop não pôde ser repetida porque o aplicativo não está disponível no inventário desta sessão. Capturas anteriores ficam apenas como evidência histórica, não como prova do estado atual.
+2. **Distribuição de Indicadores depende do Desktop.** A página mostra a limitação e o procedimento, mas não inventa bins globais que misturariam unidades. Criar o grupo de faixas para `Fato_Medicoes[Valor]` continua sendo uma etapa manual documentada em [docs/RUNBOOK.md](docs/RUNBOOK.md).
 3. **Ponderação por TC bloqueada.** A fonte recomenda média ponderada por TC para 10 indicadores, e TC não tem unidade nem regra confirmadas. Nenhuma medida do modelo calcula média ponderada. Onde é preciso mostrar valor, existe média aritmética declarada como não ponderada.
 4. **Safra e ano não são filtros.** A base tem um único valor em cada coluna, `2026/2027` e `2026`. Os filtros ficam como texto no cabeçalho, porque um seletor de valor único não filtra nada.
 5. **Auditoria sem relacionamento.** `Auditoria_Dados` não tem relacionamento modelado com a fato. A ligação é feita por `LOOKUPVALUE` usando `ID_Registro`, para não impor uma cardinalidade um para um sem necessidade.

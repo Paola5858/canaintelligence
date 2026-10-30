@@ -18,7 +18,7 @@ import sys
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-from pbir_lib import Pagina, coluna, conferir_dentro_da_pagina, lit, medida, titulo  # noqa: E402
+from pbir_lib import Pagina, coluna, conferir_dentro_da_pagina, lit, medida, sem_cromo, titulo  # noqa: E402
 
 FONTES = "b2d5f88c1ea304bb6621"
 INDICADORES = "c3e6091d2fb415cc7732"
@@ -110,10 +110,10 @@ def indicadores() -> Pagina:
         ("Leituras", "_Medidas", "Rotulo Leituras"),
     ], x0=340, y=220, largura_total=1076, h=96)
 
-    # serie em largura cheia enquanto a distribuicao nao existe: o grupo de faixas
-    # ainda nao foi criado, e 440px vazios pesam mais que uma serie larga
+    # A serie ocupa o painel esquerdo; o painel direito fica reservado para a
+    # distribuicao, cuja faixa depende do indicador escolhido.
     p.add(
-        "lineChart", 340, 332, 1076, 402,
+        "lineChart", 340, 332, 620, 402,
         {
             "Category": {"projections": [coluna("Dim_Calendario", "Data")]},
             "Y": {"projections": [
@@ -125,7 +125,30 @@ def indicadores() -> Pagina:
     )
 
     # 4.5 distribuicao: sem o grupo de faixas nao existe eixo honesto.
-    # O espaco fica reservado e o passo manual esta no runbook.
+    # Em vez de deixar um vazio silencioso, o relatorio explica a limitacao.
+    # Um bin fixo misturaria escalas incompatíveis quando o indicador muda.
+    p.add(
+        "textbox", 976, 332, 440, 402,
+        objects={"general": [{"properties": {"paragraphs": [{
+            "textRuns": [
+                {"value": "Distribuição por faixas não configurada", "textStyle": {
+                    "fontSize": "16pt", "fontFamily": "Segoe UI Semibold",
+                    "color": "#173F35", "fontWeight": "600",
+                }},
+                {"value": "\n\nO eixo precisa de faixas calculadas para o indicador selecionado.\n"
+                         "Como os indicadores usam escalas e unidades diferentes, uma faixa fixa"
+                         " no modelo misturaria grandezas incompatíveis.\n\n"
+                         "Configure o agrupamento de Fato_Medicoes[Valor] no Power BI Desktop "
+                         "com 14 intervalos iguais após selecionar um indicador.",
+                 "textStyle": {
+                    "fontSize": "12pt", "fontFamily": "Segoe UI",
+                    "color": "#76817B",
+                }},
+            ],
+            "horizontalTextAlignment": "left",
+        }]}}]},
+        container=sem_cromo(),
+    )
     p.rodape_tela()
     return p
 

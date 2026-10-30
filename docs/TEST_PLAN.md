@@ -86,7 +86,7 @@ Existe porque posição de visual não quebra a abertura do arquivo. O Desktop a
 | Sobreposição | Nenhum par de visuais se cruza, testado em todos os pares de cada página |
 | Cobertura | Toda página da ordem tem `page.json` e pelo menos um visual |
 
-Resultado atual: 419 verificações, 419 aprovadas, 6 páginas e 82 visuais. O teste não confere se o visual renderiza nem se o campo existe no modelo; isso continua com a suite de estrutura do modelo e com a abertura no Desktop.
+Resultado atual: 424 verificações, 424 aprovadas, 6 páginas e 83 visuais. O teste não confere se o visual renderiza nem se o campo existe no modelo; isso continua com a suite de estrutura do modelo e com a abertura no Desktop.
 
 O teste já pagou o custo: pegou um visual órfão na página Qualidade, sobra de uma geração anterior em que o trilho tinha seis cartões. O arquivo continuava na pasta e se sobrepunha ao cartão novo. A correção foi fazer todo gerador limpar a pasta `visuals` antes de escrever.
 
@@ -100,9 +100,9 @@ A suíte de grade garante que o visual não se sobrepõe. Esta garante que ele a
 | Medida | Toda medida citada existe na tabela citada, lendo `measure` do arquivo `.tmdl` |
 | Coluna | Toda coluna citada existe na tabela citada, lendo `column` do arquivo `.tmdl` |
 | Consistência | O `queryRef` de cada projeção bate com `Tabela.Propriedade` |
-| Cobertura | Existe pelo menos uma referência a campo nos 77 visuais |
+| Cobertura | Existe pelo menos uma referência a campo nos 83 visuais |
 
-Resultado atual: 192 verificações, 192 aprovadas, 82 visuais e 44 referências distintas a campos. O teste não confere tipo, formato nem semântica de DAX.
+Resultado atual: 192 verificações, 192 aprovadas, 83 visuais e 44 referências distintas a campos. O teste não confere tipo, formato nem semântica de DAX.
 
 ## Validação com o parser oficial do Power BI
 

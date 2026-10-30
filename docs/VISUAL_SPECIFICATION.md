@@ -188,11 +188,11 @@ Pergunta da página: qual é o contrato do indicador e como os valores se distri
 | 4.1 | Cabeçalho, navegação e filtros | Iguais à página 1 | 24,24 até 24,204 | | |
 | 4.2 | Contrato do indicador | Trilho 300x514 | 24,220,300,514 | `Dim_Indicador[Codigo]`, `Nome_Padronizado`, `Unidade_Confirmada`, `Descricao_Confirmada`, `Observacoes_Tecnicas` | `Rotulo Agregacao Recomendada`, `Status do Indicador`, `Quantidade de Leituras` |
 | 4.3 | Estatísticas | 5 cartões | 340,220,1076,96 | Nenhum | `Mediana do Indicador`, `Media Aritmetica Nao Ponderada`, `Minimo Observado`, `Maximo Observado`, `Rotulo Leituras` |
-| 4.4 | Série temporal | Gráfico de linhas | 340,332,1076,402 | `Dim_Calendario[Data]` | `Media Aritmetica Nao Ponderada` e `Media Movel 7 Dias` |
+| 4.4 | Série temporal | Gráfico de linhas | 340,332,620,402 | `Dim_Calendario[Data]` | `Media Aritmetica Nao Ponderada` e `Media Movel 7 Dias` |
 | 4.5 | Distribuição | Gráfico de colunas | 976,308,440,426 | Faixa de valor (grupo criado no Desktop) | `Quantidade de Leituras` |
 
 **Pergunta do visual 4.5:** os valores se espalham de que forma.
-**Estado:** o visual **não foi gerado**. O eixo precisa de um grupo de faixas, e grupo não é criado por arquivo de definição nesta versão. O espaço de 976,308,440,426 está reservado no desenho.
+**Estado:** o grupo de faixas não é criado por arquivo de definição nesta versão. O espaço de 976,308,440,426 recebe um aviso explicando a limitação e o procedimento manual. Não são usados bins globais, porque isso misturaria escalas incompatíveis quando o indicador muda.
 **Implementação:** criar grupo sobre `Fato_Medicoes[Valor]` em Agrupar dados, com 14 intervalos iguais, e usar esse grupo no eixo do gráfico de colunas.
 **Regra de cor:** coluna única em `#4E7966`. Não pintar faixa por posição na distribuição.
 **Regra:** se o indicador selecionado for TC, este visual mostra a contagem por faixa e o aviso de unidade não confirmada, em vez de estatísticas agregadas.
