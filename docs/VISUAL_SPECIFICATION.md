@@ -9,7 +9,7 @@ Inventário de cada visual das seis páginas, com a pergunta que ele responde, o
 | Visão geral | Redesenhada | **Migrada para a grade nova em JSON**. A verificação no Desktop de 29/10/2026 foi feita na grade antiga; a versão migrada ainda não foi reaberta |
 | Evolução | Redesenhada | **Implementada em JSON**: cabeçalho, filtros, trilho, série, média mensal e comparação |
 | Fontes | Redesenhada | **Implementada em JSON**, com faixa em duas séries e matriz. A faixa empilhada fica para o Desktop |
-| Indicadores | Redesenhada | Implementada parcialmente: contrato, estatísticas e série. Falta a distribuição, que depende do grupo de faixas |
+| Indicadores | Redesenhada | Contrato, estatísticas, série e distribuição relativa em 14 faixas calculadas pelo modelo |
 | Qualidade | Redesenhada | **Implementada em JSON**: trilho de resumo, dois gráficos e tabela de pendências |
 | Detalhes | Redesenhada | **Implementada em JSON**: trilho de auditoria, contexto e tabela. Falta o botão Voltar |
 
@@ -53,33 +53,31 @@ O passo a passo está em [RUNBOOK.md](RUNBOOK.md#montar-os-visuais).
 
 Página de 1440 x 810 px. Todas as posições abaixo usam esse sistema.
 
-## Mapa de páginas
+## Mapa de páginas (Grade Executiva Premium)
 
 ```text
 ┌──────────────────────────────────────────────────────────────┐
-│ cabeçalho 24,24 1392x48                                      │
+│ marca e abas de navegação em pills: 24,16 até 1416 (h=48)    │
 ├──────────────────────────────────────────────────────────────┤
-│ navegação 24,80 1392x44                                      │
+│ faixa de controle (filtros + chip de escopo): 24,72 (h=46)   │
 ├──────────────────────────────────────────────────────────────┤
-│ filtros 24,140 1392x64                                       │
+│ cards KPI executivos de alto impacto: 24,126 (h=114)         │
 ├──────────────────────────────────────────────────────────────┤
-│ conteúdo 24,220 até 734                                      │
+│ área analítica integrada: 24,248 até 748 (h=500)             │
 ├──────────────────────────────────────────────────────────────┤
-│ rodapé 24,750 1392x36                                        │
+│ rodapé institucional com governança: 24,756 1392x38          │
 └──────────────────────────────────────────────────────────────┘
 ```
 
 ## Regras que valem nas seis páginas
 
-- Rodapé em 24,750,1392,36 com a origem do dado, gerado em todas as páginas.
-- Cartão de valor com título precisa de 120px de altura. Abaixo disso o Desktop corta o número, confirmado por captura em 29/10/2026.
-- O rótulo de categoria do cartão fica desligado, porque repete o título e consome a área do valor.
-- Trilho com mais de quatro itens não cabe em 514px com altura legível. Acima disso, dividir em colunas ou trocar por cartão de várias linhas.
-- Segmentação só fecha com `objects.data[0].properties.mode = 'Dropdown'`. `general` e `selection` não têm efeito, testado no sandbox em 30/10/2026.
-- `sortDefinition` dentro de `query` derruba o carregamento do relatório, sem detalhe no diálogo. Ordenação de tabela e matriz é manual, pelo menu da coluna.
-- Tabela com coluna e medidas no mesmo `Values` renderiza só a coluna. Para cruzar dimensão com medida, usar matriz.
-- `subTotals` não desliga a linha de total da matriz nesta versão. Desligar em Formatar visual, Subtotais.
-- As medidas `Copias Exatas Preservadas` e `Dias sem Medicao` saíram do trilho da página Qualidade quando ele passou a quatro cartões. Continuam no modelo e podem voltar numa segunda coluna de trilho.
+- Header com marca e barra de navegação no formato pill em 24,16 até 1416 (h=48), destacando visualmente a aba ativa.
+- Faixa de controle em y=72 com segmentações em estilo dropdown sobre contêiner com bordas arredondadas e chip contextual de escopo ativo à direita.
+- Faixa superior de KPIs com 114px de altura, contendo títulos com ícones temáticos, valores em 22-26pt bold e subtítulos explicativos contextuais.
+- Contêineres visuais com fundo branco puro, raio de borda de 12px, borda hairline `#D8DDD5` e sombra suave com transparência de 94%.
+- Rodapé institucional em 24,756,1392,38 com rastreabilidade de dados e carimbo de auditoria ativa.
+- Segmentação configurada em modo Dropdown via propriedade do objeto data.
+- Relacionamentos e medidas seguem as diretrizes semânticas rígidas da usina sucroenergética (nenhuma soma cega de grandezas incompatíveis).
 
 ## Convenções de interação
 
@@ -189,10 +187,10 @@ Pergunta da página: qual é o contrato do indicador e como os valores se distri
 | 4.2 | Contrato do indicador | Trilho 300x514 | 24,220,300,514 | `Dim_Indicador[Codigo]`, `Nome_Padronizado`, `Unidade_Confirmada`, `Descricao_Confirmada`, `Observacoes_Tecnicas` | `Rotulo Agregacao Recomendada`, `Status do Indicador`, `Quantidade de Leituras` |
 | 4.3 | Estatísticas | 5 cartões | 340,220,1076,96 | Nenhum | `Mediana do Indicador`, `Media Aritmetica Nao Ponderada`, `Minimo Observado`, `Maximo Observado`, `Rotulo Leituras` |
 | 4.4 | Série temporal | Gráfico de linhas | 340,332,620,402 | `Dim_Calendario[Data]` | `Media Aritmetica Nao Ponderada` e `Media Movel 7 Dias` |
-| 4.5 | Distribuição | Gráfico de colunas | 976,308,440,426 | Faixa de valor (grupo criado no Desktop) | `Quantidade de Leituras` |
+| 4.5 | Distribuição | Gráfico de colunas | 976,332,440,402 | `Dim_Faixa_Valor[Faixa_Label]` | `Quantidade de Leituras por Faixa` |
 
 **Pergunta do visual 4.5:** os valores se espalham de que forma.
-**Estado:** o grupo de faixas não é criado por arquivo de definição nesta versão. O espaço de 976,308,440,426 recebe um aviso explicando a limitação e o procedimento manual. Não são usados bins globais, porque isso misturaria escalas incompatíveis quando o indicador muda.
+**Estado:** a tabela desconectada `Dim_Faixa_Valor` fornece 14 rótulos ordenados. A medida calcula os limites dentro da escala do indicador selecionado, evitando misturar unidades.
 **Implementação:** criar grupo sobre `Fato_Medicoes[Valor]` em Agrupar dados, com 14 intervalos iguais, e usar esse grupo no eixo do gráfico de colunas.
 **Regra de cor:** coluna única em `#4E7966`. Não pintar faixa por posição na distribuição.
 **Regra:** se o indicador selecionado for TC, este visual mostra a contagem por faixa e o aviso de unidade não confirmada, em vez de estatísticas agregadas.

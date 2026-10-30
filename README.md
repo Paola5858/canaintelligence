@@ -8,19 +8,19 @@ Fonte única de dados: `data/Base_Usina_PowerBI_Final_v4.xlsx`. Todas as contage
 
 | Item | Estado |
 | --- | --- |
-| Modelo semântico aceito pelo parser oficial | Sim, 7 tabelas, 64 medidas, 2 relacionamentos |
+| Modelo semântico aceito pelo parser oficial | Sim, 8 tabelas, 65 medidas, 2 relacionamentos |
 | Evidência de abertura no Power BI Desktop | 29/10/2026 (duas sessões verificadas) |
-| Modelo semântico em TMDL | Implementado, 7 tabelas e 64 medidas |
+| Modelo semântico em TMDL | Implementado, 8 tabelas e 65 medidas |
 | Relacionamentos | 2, ambos de um para muitos e filtro simples |
-| Páginas do relatório | 6 criadas, todas na grade nova. 95 visuais gerados por script e conferidos pela suíte de grade. O estado inicial usa ATR como recorte exploratório e a distribuição de Indicadores exibe uma explicação honesta da limitação |
-| Tema visual | Implementado em `CanaIntelligence.json`, revisado para a grade nova (painel branco, raio 12, borda hairline, coluna e segmentação com padrão) |
-| Desenho do canvas | Seis páginas redesenhadas (conjunto V2) e uma variante V3 da Visão geral. Os 95 visuais em PBIR seguem a grade nova nas seis páginas |
+| Páginas do relatório | 6 criadas na grade executiva premium (89 visuais). Abas no formato pill em todas as páginas, faixa de controle com chip de escopo, cards KPI com título e subtítulo contextuais |
+| Tema visual | Implementado em `CanaIntelligence.json`, ajustado para UI premium (fundo marfim esverdeado `#EEF1EA`, painéis brancos, raio 12, sombra suave e paleta de 8 cores) |
+| Desenho do canvas | Grade executiva de 1440x810 px com alinhamento rigoroso, margens consistentes e hierarquia visual de alto contraste |
 | Testes de dados | 47 verificações, todas aprovadas |
 | Testes de estrutura do modelo | 32 verificações, todas aprovadas |
 | Testes de estrutura do relatório | 44 verificações, todas aprovadas |
-| Testes de grade dos visuais | 484 verificações, 6 páginas, 95 visuais, todas aprovadas |
-| Testes de campos dos visuais | 192 verificações, todas aprovadas |
-| Total de verificações automatizadas | 800, todas aprovadas (30/10/2026) |
+| Testes de grade dos visuais | 454 verificações, 6 páginas, 89 visuais, todas aprovadas |
+| Testes de campos dos visuais | 184 verificações, todas aprovadas |
+| Total de verificações automatizadas | 762, todas aprovadas (30/10/2026) |
 
 As páginas e os visuais declarativos existem. O que ainda depende do Desktop é o acabamento fino e a configuração manual de recursos que a versão atual não aceita no PBIR, como agrupamento dinâmico em faixas e a ação do botão Voltar.
 
@@ -100,7 +100,7 @@ python scripts/data_audit.py
 ## Limitações conhecidas
 
 1. **Validação visual ao vivo pendente.** Os visuais declarativos foram gerados e passam nas suites de estrutura, grade e campos. A abertura atual do projeto no Desktop não pôde ser repetida porque o aplicativo não está disponível no inventário desta sessão. Capturas anteriores ficam apenas como evidência histórica, não como prova do estado atual.
-2. **Distribuição de Indicadores depende do Desktop.** A página mostra a limitação e o procedimento, mas não inventa bins globais que misturariam unidades. Criar o grupo de faixas para `Fato_Medicoes[Valor]` continua sendo uma etapa manual documentada em [docs/RUNBOOK.md](docs/RUNBOOK.md).
+2. **Distribuição de Indicadores.** A página usa a tabela desconectada `Dim_Faixa_Valor` e a medida `Quantidade de Leituras por Faixa`, com 14 intervalos relativos à escala do indicador. Não depende de grupo manual no Desktop.
 3. **Ponderação por TC bloqueada.** A fonte recomenda média ponderada por TC para 10 indicadores, e TC não tem unidade nem regra confirmadas. Nenhuma medida do modelo calcula média ponderada. Onde é preciso mostrar valor, existe média aritmética declarada como não ponderada.
 4. **Safra e ano não são filtros.** A base tem um único valor em cada coluna, `2026/2027` e `2026`. Os filtros ficam como texto no cabeçalho, porque um seletor de valor único não filtra nada.
 5. **Auditoria sem relacionamento.** `Auditoria_Dados` não tem relacionamento modelado com a fato. A ligação é feita por `LOOKUPVALUE` usando `ID_Registro`, para não impor uma cardinalidade um para um sem necessidade.

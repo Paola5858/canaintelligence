@@ -33,6 +33,19 @@
           }
         }
       }
+    ],
+    "outspacePane": [
+      {
+        "properties": {
+          "expanded": {
+            "expr": {
+              "Literal": {
+                "Value": "false"
+              }
+            }
+          }
+        }
+      }
     ]
   },
   "resourcePackages": [
@@ -41,14 +54,14 @@
       "type": "SharedResources",
       "items": [
         {
-          "name": "Fluent2-CY26SU08",
-          "path": "BaseThemes/Fluent2-CY26SU08.json",
-          "type": "BaseTheme"
-        },
-        {
           "name": "CanaIntelligence",
           "path": "BaseThemes/CanaIntelligence.json",
           "type": "CustomTheme"
+        },
+        {
+          "name": "Fluent2-CY26SU08",
+          "path": "BaseThemes/Fluent2-CY26SU08.json",
+          "type": "BaseTheme"
         }
       ]
     }

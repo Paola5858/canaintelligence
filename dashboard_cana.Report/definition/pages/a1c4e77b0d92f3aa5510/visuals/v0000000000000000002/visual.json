@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000002",
   "position": {
-    "x": 24,
-    "y": 72,
+    "x": 504,
+    "y": 16,
     "z": 1002,
-    "width": 40,
-    "height": 24,
+    "width": 912,
+    "height": 48,
     "tabOrder": 2
   },
   "visual": {
@@ -20,12 +20,96 @@
               {
                 "textRuns": [
                   {
-                    "value": "",
+                    "value": "  1. Visão Geral  ",
                     "textStyle": {
-                      "fontSize": "1pt"
+                      "fontSize": "9pt",
+                      "fontFamily": "Segoe UI",
+                      "color": "#76817B"
+                    }
+                  },
+                  {
+                    "value": "·",
+                    "textStyle": {
+                      "fontSize": "8pt",
+                      "fontFamily": "Segoe UI",
+                      "color": "#D8DDD5"
+                    }
+                  },
+                  {
+                    "value": " [ 2. EVOLUÇÃO ] ",
+                    "textStyle": {
+                      "fontSize": "9pt",
+                      "fontFamily": "Segoe UI Semibold",
+                      "color": "#173F35",
+                      "fontWeight": "700"
+                    }
+                  },
+                  {
+                    "value": "·",
+                    "textStyle": {
+                      "fontSize": "8pt",
+                      "fontFamily": "Segoe UI",
+                      "color": "#D8DDD5"
+                    }
+                  },
+                  {
+                    "value": "  3. Fontes  ",
+                    "textStyle": {
+                      "fontSize": "9pt",
+                      "fontFamily": "Segoe UI",
+                      "color": "#76817B"
+                    }
+                  },
+                  {
+                    "value": "·",
+                    "textStyle": {
+                      "fontSize": "8pt",
+                      "fontFamily": "Segoe UI",
+                      "color": "#D8DDD5"
+                    }
+                  },
+                  {
+                    "value": "  4. Indicadores  ",
+                    "textStyle": {
+                      "fontSize": "9pt",
+                      "fontFamily": "Segoe UI",
+                      "color": "#76817B"
+                    }
+                  },
+                  {
+                    "value": "·",
+                    "textStyle": {
+                      "fontSize": "8pt",
+                      "fontFamily": "Segoe UI",
+                      "color": "#D8DDD5"
+                    }
+                  },
+                  {
+                    "value": "  5. Qualidade  ",
+                    "textStyle": {
+                      "fontSize": "9pt",
+                      "fontFamily": "Segoe UI",
+                      "color": "#76817B"
+                    }
+                  },
+                  {
+                    "value": "·",
+                    "textStyle": {
+                      "fontSize": "8pt",
+                      "fontFamily": "Segoe UI",
+                      "color": "#D8DDD5"
+                    }
+                  },
+                  {
+                    "value": "  6. Detalhes  ",
+                    "textStyle": {
+                      "fontSize": "9pt",
+                      "fontFamily": "Segoe UI",
+                      "color": "#76817B"
                     }
                   }
-                ]
+                ],
+                "horizontalTextAlignment": "right"
               }
             ]
           }
@@ -48,9 +132,16 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#C17A4A'"
+                      "Value": "'#FFFFFF'"
                     }
                   }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
                 }
               }
             }
@@ -63,7 +154,25 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#D8DDD5'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
                 }
               }
             }

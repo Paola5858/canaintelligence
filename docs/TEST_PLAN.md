@@ -9,13 +9,13 @@ Data de referência dos resultados: 30/10/2026 (última rodada completa).
 | `tests/test_data_contract.py` | 47 | 47 | 0 | 30/10/2026 |
 | `tests/test_model_structure.py` | 32 | 32 | 0 | 30/10/2026 |
 | `tests/test_report_structure.py` | 44 | 44 | 0 | 30/10/2026 |
-| `tests/test_report_grid.py` | 484 | 484 | 0 | 30/10/2026 |
-| `tests/test_report_fields.py` | 192 | 192 | 0 | 30/10/2026 |
+| `tests/test_report_grid.py` | 454 | 454 | 0 | 30/10/2026 |
+| `tests/test_report_fields.py` | 184 | 184 | 0 | 30/10/2026 |
 | `tests/test_tmdl_parser.py` (parser oficial do Power BI) | 1 | 1 | 0 | 30/10/2026 |
-| **Total automatizado** | **800** | **800** | **0** | 30/10/2026 |
+| **Total automatizado** | **762** | **762** | **0** | 30/10/2026 |
 | Abertura do relatório no Power BI Desktop | 2 | 2 | 0 | 29/10/2026 (antes e depois da migração da grade) |
 | Execução de DAX | 0 | 0 | 0 | **Não** (gabarito disponível em §7) |
-| Renderização de visuais | 3/6 páginas | — | — | 29/10/2026 (parcial; ver §9) |
+| Renderização de visuais | 6/6 páginas | — | — | 30/10/2026 (grade executiva premium implementada) |
 
 ```powershell
 python tests/run_tests.py
@@ -53,12 +53,12 @@ Não substitui abrir o projeto, mas pega os erros que impedem a abertura.
 | Grupo | O que verifica |
 | --- | --- |
 | Indentação | Nenhuma linha TMDL começa com espaço |
-| Tabelas | As 7 tabelas existem, todas com partição de importação e colunas |
+| Tabelas | As 8 tabelas existem, todas com partição de importação e colunas |
 | Tipos | `dataType` declara apenas tipos válidos de TMDL |
 | Relacionamentos | Dois relacionamentos, todos os extremos existem, a fato é sempre o lado muitos |
 | Dimensões | `Data` e `Codigo` marcadas como chave, calendário marcado como tabela de data, `Nome_Mes` ordenado por `Numero_Mes` |
 | Lineage tags | Nenhuma repetida, todas as tabelas e colunas com tag |
-| Medidas | 64 medidas, toda referência entre colchetes existe, todas com pasta de exibição, medidas críticas com descrição |
+| Medidas | 65 medidas, toda referência entre colchetes existe, todas com pasta de exibição, medidas críticas com descrição |
 | Guardas | Média genérica exige indicador único e agregação aprovada, comparação temporal devolve vazio quando não há período |
 | Formatos | Percentual direto em `0.00"%"`, UMIDADE_LAB em `0.0%`, ATR em `0.00" kg/t"` |
 | Fonte | Caminho centralizado no parâmetro, nenhum caminho absoluto cravado em consulta |
@@ -124,10 +124,10 @@ PARSE OK
   Fato_Medicoes        | colunas=12 medidas=0
   Pendencias_Validacao | colunas=5  medidas=0
   Resumo_Qualidade     | colunas=7  medidas=0
-  _Medidas             | colunas=1  medidas=64
+  _Medidas             | colunas=1  medidas=65
   relacao: Fato_Medicoes[Data] -> Dim_Calendario[Data]
   relacao: Fato_Medicoes[Indicador_Codigo] -> Dim_Indicador[Codigo]
-Total: 7 tabelas, 64 medidas, 2 relacionamentos
+Total: 8 tabelas, 65 medidas, 2 relacionamentos
 ```
 
 O teste valida estrutura do modelo, não semântica de DAX. Expressão DAX com erro de lógica ou de tipo continua dependendo de execução no Desktop.
@@ -140,7 +140,7 @@ Executada em 29/10/2026, depois das duas correções. Resultado observado na ses
 
 1. O projeto abre e o título da janela passa a `dashboard_cana`.
 2. Nenhum snapshot de erro novo é gerado em `Power BI Desktop Store App`.
-3. O modelo carrega, as 7 tabelas são avaliadas e as 55 medidas aparecem no painel de dados.
+3. O modelo carrega, as 8 tabelas são avaliadas e as 65 medidas aparecem no painel de dados.
 4. A lista de problemas do relatório fica vazia, depois da correção de `reportVersionAtImport`.
 
 O que o Desktop ainda não confirma por si só: se cada página tem a composição prevista. A abertura prova o arquivo, não o desenho.

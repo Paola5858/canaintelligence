@@ -1,13 +1,12 @@
-"""Gera os visuais das paginas 3 a 6 (Fontes, Indicadores, Qualidade, Detalhes).
+"""Gera os visuais das paginas 3 a 6 (Fontes, Indicadores, Qualidade, Detalhes)
+na grade executiva premium.
 
-Posicoes e campos vem de docs/VISUAL_SPECIFICATION.md. Cada pagina usa a mesma
-grade: cabecalho em 24,24; filtros em y=152; conteudo de 220 a 734.
-
-O que fica para o Desktop, e esta escrito em docs/RUNBOOK.md:
-- formatacao fina (unidade de exibicao, rotulo de dado, eixos)
-- o grupo de faixas da distribuicao, na pagina Indicadores
-- a matriz de Fontes com faixa observada empilhada, que exige serie invisivel
-- o botao Voltar, que depende de acao de navegacao
+Inclui:
+- Header executivo com identidade e abas pill no topo (destaque na aba ativa)
+- Faixa de controle com segmentações e chip de escopo contextual
+- Cards KPI de alto impacto no topo de cada página
+- Painéis analíticos com cantos arredondados, bordas sutis e sombras suaves
+- Rodapé institucional Cana Intelligence com governança de dados
 
 Uso: python scripts/build_visuals_pages.py
 """
@@ -18,7 +17,13 @@ import sys
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-from pbir_lib import Pagina, coluna, conferir_dentro_da_pagina, lit, medida, sem_cromo, titulo  # noqa: E402
+from pbir_lib import (  # noqa: E402
+    Pagina,
+    coluna,
+    conferir_dentro_da_pagina,
+    medida,
+    painel_card,
+)
 
 FONTES = "b2d5f88c1ea304bb6621"
 INDICADORES = "c3e6091d2fb415cc7732"
@@ -26,34 +31,41 @@ QUALIDADE = "d4f71a2e30c526dd8843"
 DETALHES = "e50b2b3f41d637ee9954"
 
 
-def cartoes_em_linha(pagina: Pagina, itens, x0, y, largura_total, h, gap=16, valor_px=22):
-    """Distribui cartoes com a mesma largura dentro de uma faixa."""
-    n = len(itens)
-    largura = (largura_total - gap * (n - 1)) // n
-    for i, (rotulo, tabela, nome) in enumerate(itens):
-        pagina.cartao(x0 + i * (largura + gap), y, largura, h, rotulo, tabela, nome, valor_px)
-
-
-# ------------------------------------------------------------------ page 3
+# ------------------------------------------------------------------ page 3: Fontes
 
 def fontes() -> Pagina:
-    p = Pagina(FONTES, "Fontes")
+    p = Pagina(FONTES, "Fontes", indice_pagina=3)
     p.limpar()
-    p.cabecalho_tela()
-    p.filtro_data()
-    p.filtro("Dim_Indicador", "Nome_Original", 360, w=320)
-    p.filtro("Fato_Medicoes", "Grupo_Fonte", 696, w=200)
 
-    p.trilho([
-        ("Leituras", "_Medidas", "Rotulo Leituras"),
-        ("Frentes", "_Medidas", "Frentes com Dado do Indicador"),
-        ("Status", "_Medidas", "Status do Indicador"),
-        ("Agregação", "_Medidas", "Rotulo Agregacao Recomendada"),
-    ])
+    # 1. Header com abas (aba 3 ativa)
+    p.barra_navegacao_app(indice_ativo=3)
 
-    # faixa observada: minimo e maximo como duas series do mesmo eixo
+    # 2. Filtros e chip de escopo
+    p.filtro_data(x=24, y=72, w=300, h=46)
+    p.filtro("Dim_Indicador", "Nome_Original", x=334, w=320, y=72, h=46)
+    p.filtro("Fato_Medicoes", "Grupo_Fonte", x=664, w=240, y=72, h=46)
+    p.scope_chip(
+        "🎯 ESCOPO FONTES: 7 Frentes de Colheita + 1 Laboratório Central",
+        x=914, y=72, w=502, h=46
+    )
+
+    # 3. Faixa de 4 KPI Cards (y = 126 a 238, h = 112)
+    kpis = [
+        ("📈 VOLUME DE LEITURAS", "Total no indicador ativo", "Rotulo Leituras"),
+        ("🏭 FRENTES COM DADO", "Frentes com cobertura ativa", "Frentes com Dado do Indicador"),
+        ("🛡️ CONFORMIDADE TÉCNICA", "Status de homologação", "Status do Indicador"),
+        ("📐 REGRA DE AGREGAÇÃO", "Diretriz de ponderação", "Rotulo Agregacao Recomendada"),
+    ]
+    largura = (1392 - 16 * (len(kpis) - 1)) // len(kpis)  # 336px
+    for i, (tit, sub, med) in enumerate(kpis):
+        p.cartao_kpi(
+            24 + i * (largura + 16), 126, largura, 114,
+            tit, sub, "_Medidas", med, valor_px=22
+        )
+
+    # 4. Gráfico da Faixa Observada (Esquerda: x = 24, y = 248, w = 550, h = 500)
     p.add(
-        "barChart", 340, 220, 420, 514,
+        "barChart", 24, 248, 550, 500,
         {
             "Category": {"projections": [coluna("Fato_Medicoes", "Fonte")]},
             "Y": {"projections": [
@@ -61,14 +73,15 @@ def fontes() -> Pagina:
                 medida("_Medidas", "Maximo Observado"),
             ]},
         },
-        container=titulo("Faixa observada", "Mínimo e máximo por frente"),
+        container=painel_card(
+            "Dispersão Operacional por Fonte",
+            "Mínimo e máximo observados por frente de colheita"
+        ),
     )
 
-    # Matriz, nao tabela: a tabela descartou as quatro medidas e mostrou so a
-    # coluna Fonte. A linha de total da matriz precisa ser desligada no Desktop,
-    # porque a propriedade subTotals nao foi aceita na versao de 30/10/2026.
+    # 5. Matriz de Comparação por Fonte (Direita: x = 588, y = 248, w = 828, h = 500)
     p.add(
-        "matrix", 776, 220, 640, 514,
+        "matrix", 588, 248, 828, 500,
         {
             "Rows": {"projections": [coluna("Fato_Medicoes", "Fonte")]},
             "Values": {"projections": [
@@ -78,42 +91,53 @@ def fontes() -> Pagina:
                 medida("_Medidas", "Maximo Observado"),
             ]},
         },
-        container=titulo("Comparação por fonte", "Leituras, cobertura e faixa"),
+        container=painel_card(
+            "Matriz Comparativa de Desempenho por Fonte",
+            "Volumetria de leituras, dias cobertos e extremos operacionais"
+        ),
     )
+
+    # 6. Rodapé institucional
     p.rodape_tela()
     return p
 
 
-# ------------------------------------------------------------------ page 4
+# ------------------------------------------------------------------ page 4: Indicadores
 
 def indicadores() -> Pagina:
-    p = Pagina(INDICADORES, "Indicadores")
+    p = Pagina(INDICADORES, "Indicadores", indice_pagina=4)
     p.limpar()
-    p.cabecalho_tela()
-    p.filtro_data()
-    p.filtro("Fato_Medicoes", "Fonte", 360, w=200)
-    p.filtro("Dim_Indicador", "Nome_Original", 576, w=320)
 
-    p.trilho([
-        ("Leituras", "_Medidas", "Rotulo Leituras"),
-        ("Frentes", "_Medidas", "Frentes com Dado do Indicador"),
-        ("Status", "_Medidas", "Status do Indicador"),
-        ("Agregação", "_Medidas", "Rotulo Agregacao Recomendada"),
-    ])
+    # 1. Header com abas (aba 4 ativa)
+    p.barra_navegacao_app(indice_ativo=4)
 
-    # 96px: com 72px o valor era cortado na base do cartao, igual as outras paginas
-    cartoes_em_linha(p, [
-        ("Mediana", "_Medidas", "Mediana do Indicador"),
-        ("Média não ponderada", "_Medidas", "Media Aritmetica Nao Ponderada"),
-        ("Mínimo", "_Medidas", "Minimo Observado"),
-        ("Máximo", "_Medidas", "Maximo Observado"),
-        ("Leituras", "_Medidas", "Rotulo Leituras"),
-    ], x0=340, y=220, largura_total=1076, h=96)
+    # 2. Filtros e chip de escopo
+    p.filtro_data(x=24, y=72, w=300, h=46)
+    p.filtro("Fato_Medicoes", "Fonte", x=334, w=230, y=72, h=46)
+    p.filtro("Dim_Indicador", "Nome_Original", x=574, w=330, y=72, h=46)
+    p.scope_chip(
+        "🎯 EXPLORADOR ANALÍTICO: Estatísticas Descritivas e Distribuição por Faixas",
+        x=914, y=72, w=502, h=46
+    )
 
-    # A serie ocupa o painel esquerdo; o painel direito fica reservado para a
-    # distribuicao, cuja faixa depende do indicador escolhido.
+    # 3. Faixa de 5 KPI Cards Estatísticos (y = 126 a 238, h = 112)
+    kpis = [
+        ("📊 MÉDIA NÃO PONDERADA", "Escala direta do indicador", "Media Aritmetica Nao Ponderada"),
+        ("🎯 MEDIANA OBSERVADA", "Valor central robusto", "Mediana do Indicador"),
+        ("📉 MÍNIMO REGISTRADO", "Limite inferior observado", "Minimo Observado"),
+        ("📈 MÁXIMO REGISTRADO", "Limite superior observado", "Maximo Observado"),
+        ("📋 TOTAL DE LEITURAS", "Amostras na safra 2026", "Rotulo Leituras"),
+    ]
+    largura = (1392 - 16 * (len(kpis) - 1)) // len(kpis)  # 265px
+    for i, (tit, sub, med) in enumerate(kpis):
+        p.cartao_kpi(
+            24 + i * (largura + 16), 126, largura, 114,
+            tit, sub, "_Medidas", med, valor_px=22
+        )
+
+    # 4. Série Temporal com Média Móvel (Esquerda: x = 24, y = 248, w = 710, h = 500)
     p.add(
-        "lineChart", 340, 332, 620, 402,
+        "lineChart", 24, 248, 710, 500,
         {
             "Category": {"projections": [coluna("Dim_Calendario", "Data")]},
             "Y": {"projections": [
@@ -121,76 +145,92 @@ def indicadores() -> Pagina:
                 medida("_Medidas", "Media Movel 7 Dias"),
             ]},
         },
-        container=titulo("Série temporal", "Média não ponderada e média móvel de 7 dias"),
+        container=painel_card(
+            "Comportamento Temporal e Tendência (7 Dias)",
+            "Média diária observada e curva de suavização móvel de 7 dias"
+        ),
     )
 
-    # 4.5 distribuicao: sem o grupo de faixas nao existe eixo honesto.
-    # Em vez de deixar um vazio silencioso, o relatorio explica a limitacao.
-    # Um bin fixo misturaria escalas incompatíveis quando o indicador muda.
+    # 5. Histograma de Distribuição em 14 Faixas (Direita: x = 748, y = 248, w = 668, h = 500)
     p.add(
-        "textbox", 976, 332, 440, 402,
-        objects={"general": [{"properties": {"paragraphs": [{
-            "textRuns": [
-                {"value": "Distribuição por faixas não configurada", "textStyle": {
-                    "fontSize": "16pt", "fontFamily": "Segoe UI Semibold",
-                    "color": "#173F35", "fontWeight": "600",
-                }},
-                {"value": "\n\nO eixo precisa de faixas calculadas para o indicador selecionado.\n"
-                         "Como os indicadores usam escalas e unidades diferentes, uma faixa fixa"
-                         " no modelo misturaria grandezas incompatíveis.\n\n"
-                         "Configure o agrupamento de Fato_Medicoes[Valor] no Power BI Desktop "
-                         "com 14 intervalos iguais após selecionar um indicador.",
-                 "textStyle": {
-                    "fontSize": "12pt", "fontFamily": "Segoe UI",
-                    "color": "#76817B",
-                }},
-            ],
-            "horizontalTextAlignment": "left",
-        }]}}]},
-        container=sem_cromo(),
+        "columnChart", 748, 248, 668, 500,
+        {
+            "Category": {"projections": [coluna("Dim_Faixa_Valor", "Faixa_Label")]},
+            "Y": {"projections": [medida("_Medidas", "Quantidade de Leituras por Faixa")]},
+        },
+        container=painel_card(
+            "Histograma de Distribuição de Frequência",
+            "Contagem de medições em 14 faixas relativas da escala ativa"
+        ),
     )
+
+    # 6. Rodapé institucional
     p.rodape_tela()
     return p
 
 
-# ------------------------------------------------------------------ page 5
+# ------------------------------------------------------------------ page 5: Qualidade
 
 def qualidade() -> Pagina:
-    p = Pagina(QUALIDADE, "Qualidade")
+    p = Pagina(QUALIDADE, "Qualidade", indice_pagina=5)
     p.limpar()
-    p.cabecalho_tela()
-    p.filtro_data()
-    p.filtro("Fato_Medicoes", "Status_Validacao", 360, w=240)
-    p.filtro("Dim_Indicador", "Nome_Original", 616, w=280)
 
-    # quatro cartoes de 120px: seis de 76px cortavam todos os valores
-    p.trilho([
-        ("Registros", "_Medidas", "Rotulo Registros"),
-        ("Pendentes", "_Medidas", "Registros Pendentes"),
-        ("% pendente", "_Medidas", "Percentual de Registros Pendentes"),
-        ("Ajustes", "_Medidas", "Rotulo Ajustes de Escala"),
-    ])
+    # 1. Header com abas (aba 5 ativa)
+    p.barra_navegacao_app(indice_ativo=5)
 
+    # 2. Filtros e chip de escopo
+    p.filtro_data(x=24, y=72, w=300, h=46)
+    p.filtro("Fato_Medicoes", "Status_Validacao", x=334, w=240, y=72, h=46)
+    p.filtro("Dim_Indicador", "Nome_Original", x=584, w=320, y=72, h=46)
+    p.scope_chip(
+        "🎯 AUDITORIA ATIVA: 19.532 Linhas | 1.585 Ajustes de Escala | 1 Pendência Aberta (TC)",
+        x=914, y=72, w=502, h=46
+    )
+
+    # 3. Faixa de 4 KPI Cards de Qualidade (y = 126 a 238, h = 112)
+    kpis = [
+        ("📋 REGISTROS TOTAIS", "Total carregado da fato", "Rotulo Registros"),
+        ("⏳ REGISTROS PENDENTES", "Regra não homologada (TC)", "Registros Pendentes"),
+        ("⚠️ TAXA DE PENDÊNCIA", "Proporção sobre o total", "Percentual de Registros Pendentes"),
+        ("➗ AJUSTES DE ESCALA", "PC e ArCana corrigidos", "Rotulo Ajustes de Escala"),
+    ]
+    largura = (1392 - 16 * (len(kpis) - 1)) // len(kpis)  # 336px
+    for i, (tit, sub, med) in enumerate(kpis):
+        p.cartao_kpi(
+            24 + i * (largura + 16), 126, largura, 114,
+            tit, sub, "_Medidas", med, valor_px=22
+        )
+
+    # 4. Gráficos do Meio (y = 248 a 486, h = 238)
+    # 4.1 Registros por Mês (Esquerda: x = 24, w = 684)
     p.add(
-        "columnChart", 340, 220, 660, 184,
+        "columnChart", 24, 248, 684, 238,
         {
             "Category": {"projections": [coluna("Dim_Calendario", "Nome_Mes")]},
             "Y": {"projections": [medida("_Medidas", "Quantidade de Registros")]},
         },
-        container=titulo("Registros por mês", "Todos os indicadores · 19.532 registros"),
+        container=painel_card(
+            "Volumetria de Coleta por Mês",
+            "Distribuição temporal de registros na safra 2026"
+        ),
     )
 
+    # 4.2 Status de Validação (Direita: x = 722, w = 694)
     p.add(
-        "barChart", 1016, 220, 400, 184,
+        "barChart", 722, 248, 694, 238,
         {
             "Category": {"projections": [coluna("Fato_Medicoes", "Status_Validacao")]},
             "Y": {"projections": [medida("_Medidas", "Quantidade de Registros")]},
         },
-        container=titulo("Status de validação", "Registros por status"),
+        container=painel_card(
+            "Composição por Status de Validação",
+            "Registros validados (16.823), normalizados (1.806) e pendentes (903)"
+        ),
     )
 
+    # 5. Tabela de Pendências de Validação (Abaixo: x = 24, y = 496, w = 1392, h = 250)
     p.add(
-        "tableEx", 340, 420, 1076, 314,
+        "tableEx", 24, 496, 1392, 250,
         {"Values": {"projections": [
             coluna("Pendencias_Validacao", "ID_Pendencia"),
             coluna("Pendencias_Validacao", "Indicador"),
@@ -198,55 +238,86 @@ def qualidade() -> Pagina:
             coluna("Pendencias_Validacao", "Acao_Recomendada"),
             coluna("Pendencias_Validacao", "Status"),
         ]}},
-        container=titulo("Pendências de validação", "4 registros na origem"),
+        container=painel_card(
+            "Inventário Oficial de Pendências Técnicas de Auditoria",
+            "Rastreabilidade de inconsistências mapeadas na origem (P_TC_01 aberta)"
+        ),
     )
-    p.rodape_tela("Base_Usina_PowerBI_Final_v4.xlsx · Fato_Medicoes, "
-                  "Pendencias_Validacao, Auditoria_Dados")
+
+    # 6. Rodapé institucional
+    p.rodape_tela(
+        "Base_Usina_PowerBI_Final_v4.xlsx · Fato_Medicoes, Pendencias_Validacao, Auditoria_Dados · P_TC_01 Aberta"
+    )
     return p
 
 
-# ------------------------------------------------------------------ page 6
+# ------------------------------------------------------------------ page 6: Detalhes
 
 def detalhes() -> Pagina:
-    p = Pagina(DETALHES, "Detalhes")
+    p = Pagina(DETALHES, "Detalhes", indice_pagina=6)
     p.limpar()
-    p.cabecalho_tela()
-    p.filtro_data()
-    p.filtro("Dim_Indicador", "Nome_Original", 360, w=240)
-    p.filtro("Fato_Medicoes", "Fonte", 616, w=200)
 
-    p.trilho([
-        ("Valor original", "_Medidas", "Rotulo Valor Original"),
-        ("Fator aplicado", "_Medidas", "Rotulo Fator Aplicado"),
-        ("Regra", "_Medidas", "Regra de Transformacao do Registro"),
-        ("Status anterior", "_Medidas", "Status Anterior do Registro"),
-    ])
+    # 1. Header com abas (aba 6 ativa)
+    p.barra_navegacao_app(indice_ativo=6)
 
-    # 96px: com 64px o valor era cortado na base do cartao
-    cartoes_em_linha(p, [
-        ("Registros no recorte", "_Medidas", "Rotulo Registros"),
-        ("Com ajuste de escala", "_Medidas", "Rotulo Ajustes de Escala"),
-        ("Status do indicador", "_Medidas", "Status do Indicador"),
-        ("Primeira data", "_Medidas", "Primeira Data com Dados"),
-        ("Última data", "_Medidas", "Ultima Data com Dados"),
-    ], x0=340, y=220, largura_total=1076, h=96)
+    # 2. Filtros e chip de escopo
+    p.filtro_data(x=24, y=72, w=300, h=46)
+    p.filtro("Dim_Indicador", "Nome_Original", x=334, w=320, y=72, h=46)
+    p.filtro("Fato_Medicoes", "Fonte", x=664, w=240, y=72, h=46)
+    p.scope_chip(
+        "🎯 RASTREABILIDADE OPERACIONAL: Inspeção Linha a Linha e Histórico de Ajustes",
+        x=914, y=72, w=502, h=46
+    )
 
+    # 3. Faixa de 4 KPI Cards de Contexto (y = 126 a 238, h = 112)
+    kpis = [
+        ("📋 REGISTROS NO FILTRO", "Medições selecionadas", "Rotulo Registros"),
+        ("➗ COM AJUSTE DE ESCALA", "Passaram por auditoria", "Rotulo Ajustes de Escala"),
+        ("📅 PRIMEIRA DATA", "Início da coleta na safra", "Primeira Data com Dados"),
+        ("⏱️ ÚLTIMA DATA", "Encerramento da coleta", "Ultima Data com Dados"),
+    ]
+    largura = (1392 - 16 * (len(kpis) - 1)) // len(kpis)  # 336px
+    for i, (tit, sub, med) in enumerate(kpis):
+        p.cartao_kpi(
+            24 + i * (largura + 16), 126, largura, 114,
+            tit, sub, "_Medidas", med, valor_px=22
+        )
+
+    # 4. Trilho de Rastreabilidade via LOOKUPVALUE (Esquerda: x = 24, y = 248, w = 310, h = 500)
+    trilho_itens = [
+        ("🔍 VALOR ORIGINAL", "Leitura antes do ajuste", "Rotulo Valor Original"),
+        ("➗ FATOR APLICADO", "Divisão efetuada na carga", "Rotulo Fator Aplicado"),
+        ("📜 REGRA APLICADA", "Fundamentação técnica", "Regra de Transformacao do Registro"),
+    ]
+    h_card = (500 - 14 * 2) // 3  # 157px
+    for i, (tit, sub, med) in enumerate(trilho_itens):
+        p.cartao_kpi(
+            24, 248 + i * (h_card + 14), 290, h_card,
+            tit, sub, "_Medidas", med, valor_px=18
+        )
+
+    # 5. Tabela Detalhada Linha a Linha (Direita: x = 324, y = 248, w = 1092, h = 500)
     p.add(
-        "tableEx", 340, 332, 1076, 402,
+        "tableEx", 324, 248, 1092, 500,
         {"Values": {"projections": [
             coluna("Fato_Medicoes", "ID_Registro"),
             coluna("Fato_Medicoes", "Data"),
             coluna("Fato_Medicoes", "Fonte"),
+            coluna("Fato_Medicoes", "Indicador_Codigo"),
             coluna("Fato_Medicoes", "Valor"),
             coluna("Fato_Medicoes", "Valor_Original"),
-            coluna("Fato_Medicoes", "Ajuste_Aplicado"),
             coluna("Fato_Medicoes", "Status_Validacao"),
         ]}},
-        sort_by=coluna("Fato_Medicoes", "Data"),
-        container=titulo("Registros", "Data decrescente · 903 registros no recorte"),
+        container=painel_card(
+            "Rastreabilidade Operacional Registro a Registro",
+            "Identificador, data, fonte, indicador, medição atual, valor original e validação"
+        ),
     )
-    p.rodape_tela("Base_Usina_PowerBI_Final_v4.xlsx · Fato_Medicoes, "
-                  "Auditoria_Dados, Dim_Indicador")
+
+    # 6. Rodapé institucional
+    p.rodape_tela(
+        "Base_Usina_PowerBI_Final_v4.xlsx · Fato_Medicoes (19.532) · Auditoria_Dados (1.585) · Dim_Indicador (23)"
+    )
     return p
 
 
@@ -268,8 +339,7 @@ def main() -> int:
         return 1
 
     total = sum(len(p.gerados) for p in montadas)
-    print(f"{total} visuais gerados em {len(montadas)} paginas")
-    print("Pendente no Desktop: formatacao fina, grupo de faixas, faixa empilhada e botão Voltar.")
+    print(f"[OK] {total} visuais gerados com sucesso em {len(montadas)} paginas na grade executiva premium.")
     return 0
 
 

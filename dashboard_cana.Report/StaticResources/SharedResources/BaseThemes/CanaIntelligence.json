@@ -3,8 +3,8 @@
   "dataColors": [
     "#4E7966",
     "#173F35",
-    "#A8B9A0",
     "#C17A4A",
+    "#A8B9A0",
     "#76817B",
     "#B94D4D",
     "#8FAF9C",
@@ -15,13 +15,13 @@
   "bad": "#B94D4D",
   "maximum": "#173F35",
   "center": "#A8B9A0",
-  "minimum": "#F7F6F0",
+  "minimum": "#EEF1EA",
   "foreground": "#25312D",
   "foregroundNeutralSecondary": "#76817B",
   "foregroundNeutralTertiary": "#A8B9A0",
   "background": "#FFFFFF",
-  "backgroundLight": "#F7F6F0",
-  "backgroundNeutral": "#EFEDE6",
+  "backgroundLight": "#EEF1EA",
+  "backgroundNeutral": "#E8EDE5",
   "tableAccent": "#4E7966",
   "textClasses": {
     "callout": {
@@ -64,36 +64,29 @@
             "show": true,
             "color": {
               "solid": {
-                "color": "#EFEDE6"
+                "color": "#D8DDD5"
               }
             },
-            "radius": 16
+            "radius": 12
           }
         ],
         "dropShadow": [
           {
-            "show": false
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#173F35"
+              }
+            },
+            "transparency": 94,
+            "blur": 12,
+            "angle": 135,
+            "distance": 3
           }
         ],
         "visualHeader": [
           {
-            "show": true,
-            "background": {
-              "solid": {
-                "color": "#FFFFFF"
-              }
-            },
-            "foreground": {
-              "solid": {
-                "color": "#76817B"
-              }
-            },
-            "border": {
-              "solid": {
-                "color": "#FFFFFF"
-              }
-            },
-            "transparency": 0
+            "show": false
           }
         ],
         "title": [
@@ -150,10 +143,30 @@
           {
             "color": {
               "solid": {
-              "color": "#EEF1EA"
+                "color": "#EEF1EA"
               }
             },
             "transparency": 0
+          }
+        ]
+      }
+    },
+    "card": {
+      "*": {
+        "labels": [
+          {
+            "color": {
+              "solid": {
+                "color": "#173F35"
+              }
+            },
+            "fontFamily": "Segoe UI Semibold",
+            "fontSize": 28
+          }
+        ],
+        "categoryLabels": [
+          {
+            "show": false
           }
         ]
       }
@@ -174,7 +187,7 @@
               }
             },
             "fontSize": 9,
-            "fontFamily": "Segoe UI"
+            "fontFamily": "Segoe UI Semibold"
           }
         ],
         "items": [

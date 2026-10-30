@@ -2,53 +2,199 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000014",
   "position": {
-    "x": 994,
-    "y": 220,
+    "x": 324,
+    "y": 248,
     "z": 1014,
-    "width": 202,
-    "height": 96,
+    "width": 1092,
+    "height": 500,
     "tabOrder": 14
   },
   "visual": {
-    "visualType": "card",
+    "visualType": "tableEx",
     "query": {
       "queryState": {
         "Values": {
           "projections": [
             {
               "field": {
-                "Measure": {
+                "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "_Medidas"
+                      "Entity": "Fato_Medicoes"
                     }
                   },
-                  "Property": "Primeira Data com Dados"
+                  "Property": "ID_Registro"
                 }
               },
-              "queryRef": "_Medidas.Primeira Data com Dados",
-              "nativeQueryRef": "Primeira Data com Dados"
+              "queryRef": "Fato_Medicoes.ID_Registro",
+              "nativeQueryRef": "ID_Registro",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fato_Medicoes"
+                    }
+                  },
+                  "Property": "Data"
+                }
+              },
+              "queryRef": "Fato_Medicoes.Data",
+              "nativeQueryRef": "Data",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fato_Medicoes"
+                    }
+                  },
+                  "Property": "Fonte"
+                }
+              },
+              "queryRef": "Fato_Medicoes.Fonte",
+              "nativeQueryRef": "Fonte",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fato_Medicoes"
+                    }
+                  },
+                  "Property": "Indicador_Codigo"
+                }
+              },
+              "queryRef": "Fato_Medicoes.Indicador_Codigo",
+              "nativeQueryRef": "Indicador_Codigo",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fato_Medicoes"
+                    }
+                  },
+                  "Property": "Valor"
+                }
+              },
+              "queryRef": "Fato_Medicoes.Valor",
+              "nativeQueryRef": "Valor",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fato_Medicoes"
+                    }
+                  },
+                  "Property": "Valor_Original"
+                }
+              },
+              "queryRef": "Fato_Medicoes.Valor_Original",
+              "nativeQueryRef": "Valor_Original",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fato_Medicoes"
+                    }
+                  },
+                  "Property": "Status_Validacao"
+                }
+              },
+              "queryRef": "Fato_Medicoes.Status_Validacao",
+              "nativeQueryRef": "Status_Validacao",
+              "active": true
             }
           ]
         }
       }
     },
     "drillFilterOtherVisuals": true,
-    "objects": {
-      "labels": [
+    "visualContainerObjects": {
+      "background": [
         {
           "properties": {
-            "fontSize": {
+            "show": {
               "expr": {
                 "Literal": {
-                  "Value": "22D"
+                  "Value": "true"
                 }
               }
             },
-            "fontFamily": {
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
               "expr": {
                 "Literal": {
-                  "Value": "'Segoe UI Semibold'"
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#D8DDD5'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             },
@@ -62,25 +208,38 @@
                   }
                 }
               }
-            }
-          }
-        }
-      ],
-      "categoryLabels": [
-        {
-          "properties": {
-            "show": {
+            },
+            "transparency": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "94D"
+                }
+              }
+            },
+            "blur": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "angle": {
+              "expr": {
+                "Literal": {
+                  "Value": "135D"
+                }
+              }
+            },
+            "distance": {
+              "expr": {
+                "Literal": {
+                  "Value": "3D"
                 }
               }
             }
           }
         }
-      ]
-    },
-    "visualContainerObjects": {
+      ],
       "title": [
         {
           "properties": {
@@ -94,7 +253,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Primeira data'"
+                  "Value": "'Rastreabilidade Operacional Registro a Registro'"
                 }
               }
             },
@@ -104,6 +263,44 @@
                   "expr": {
                     "Literal": {
                       "Value": "'#173F35'"
+                    }
+                  }
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Identificador, data, fonte, indicador, medição atual, valor original e validação'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#76817B'"
                     }
                   }
                 }

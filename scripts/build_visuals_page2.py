@@ -1,287 +1,121 @@
-"""Gera os visuais da pagina 2 (Evolucao) no definition do relatorio PBIR.
+"""Gera os visuais da pagina 2 (Evolucao) na grade executiva premium.
 
-Mesmo contrato do gerador da pagina 1: as posicoes seguem a grade de
-docs/DESIGN_SYSTEM.md e docs/VISUAL_SPECIFICATION.md, e o schema usado e
-visualContainer/1.4.0, que o Desktop aceita.
-
-O que este gerador NAO faz, e continua sendo trabalho de Desktop:
-- formatacao fina (unidades de exibicao, rotulos de dado, eixos)
-- o trilho do indicador, que e um bloco de cartoes e caixa de texto montado na mao
-- o periodo anterior, que depende da segmentacao de datas estar ativa
+Inclui:
+- Header executivo com identidade e abas pill no topo (destaque na aba Evolução)
+- Faixa de controle com segmentações e chip de escopo temporal
+- Trilho lateral à esquerda com 4 cards contextuais
+- Gráfico de série temporal diária ampliado
+- Gráfico de sazonalidade mensal da safra
+- Bloco analítico de comparação temporal (Média Atual, Média Anterior, Variação %)
+- Rodapé institucional Cana Intelligence
 
 Uso: python scripts/build_visuals_page2.py
 """
 
 from __future__ import annotations
 
-import json
 import sys
-from pathlib import Path
-
-from pbir_lib import MODO_DROPDOWN, limpar_visuais
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-RAIZ = Path(__file__).resolve().parent.parent
-PAGINA = RAIZ / "dashboard_cana.Report" / "definition" / "pages" / "a1c4e77b0d92f3aa5510"
-SCHEMA = (
-    "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/"
-    "visualContainer/1.4.0/schema.json"
+from pbir_lib import (  # noqa: E402
+    Pagina,
+    coluna,
+    conferir_dentro_da_pagina,
+    medida,
+    painel_card,
 )
 
-contador = 0
-gerados: list[tuple[str, str, int, int, int, int]] = []
+PAGINA = "a1c4e77b0d92f3aa5510"
 
 
-def lit(valor: str) -> dict:
-    return {"expr": {"Literal": {"Value": valor}}}
+def evolucao() -> Pagina:
+    p = Pagina(PAGINA, "Evolução", indice_pagina=2)
+    p.limpar()
 
+    # 1. Header com identidade e abas de navegação (aba 2 ativa)
+    p.barra_navegacao_app(indice_ativo=2)
 
-def cor(hexadecimal: str) -> dict:
-    return {"solid": {"color": lit("'" + hexadecimal + "'")}}
-
-
-def texto(t: str) -> dict:
-    return lit("'" + t.replace("'", "''") + "'")
-
-
-def inteiro(n: int) -> dict:
-    return lit(f"{n}D")
-
-
-def medida(tabela: str, nome: str) -> dict:
-    return {
-        "field": {"Measure": {"Expression": {"SourceRef": {"Entity": tabela}}, "Property": nome}},
-        "queryRef": f"{tabela}.{nome}",
-        "nativeQueryRef": nome,
-    }
-
-
-def coluna(tabela: str, nome: str) -> dict:
-    return {
-        "field": {"Column": {"Expression": {"SourceRef": {"Entity": tabela}}, "Property": nome}},
-        "queryRef": f"{tabela}.{nome}",
-        "nativeQueryRef": nome,
-        "active": True,
-    }
-
-
-def novo_visual(tipo, x, y, w, h, query_state=None, objects=None, container=None):
-    global contador
-    contador += 1
-    nome = "v" + str(contador).zfill(19)
-    visual = {"visualType": tipo}
-    if query_state is not None:
-        visual["query"] = {"queryState": query_state}
-    visual["drillFilterOtherVisuals"] = True
-    if objects:
-        visual["objects"] = objects
-    if container:
-        visual["visualContainerObjects"] = container
-    dados = {
-        "$schema": SCHEMA,
-        "name": nome,
-        "position": {"x": x, "y": y, "z": 1000 + contador, "width": w, "height": h, "tabOrder": contador},
-        "visual": visual,
-    }
-    pasta = PAGINA / "visuals" / nome
-    pasta.mkdir(parents=True, exist_ok=True)
-    (pasta / "visual.json").write_text(json.dumps(dados, ensure_ascii=False, indent=2), encoding="utf-8")
-    gerados.append((nome, tipo, x, y, w, h))
-
-
-def titulo(titulo_texto, subtitulo_texto=None):
-    container = {
-        "title": [{"properties": {
-            "show": lit("true"),
-            "text": texto(titulo_texto),
-            "fontColor": cor("#173F35"),
-            "alignment": texto("left"),
-        }}]
-    }
-    if subtitulo_texto:
-        container["subTitle"] = [{"properties": {
-            "show": lit("true"),
-            "text": texto(subtitulo_texto),
-            "fontColor": cor("#76817B"),
-            "alignment": texto("left"),
-        }}]
-    return container
-
-
-def sem_cromo():
-    return {
-        "background": [{"properties": {"show": lit("false")}}],
-        "border": [{"properties": {"show": lit("false")}}],
-        "dropShadow": [{"properties": {"show": lit("false")}}],
-    }
-
-
-def cabecalho(titulo_pagina: str):
-    return {
-        "general": [{"properties": {"paragraphs": [{
-            "textRuns": [
-                {"value": "CANA INTELLIGENCE", "textStyle": {
-                    "fontSize": "20pt",
-                    "fontFamily": "Segoe UI Semibold",
-                    "color": "#173F35",
-                    "fontWeight": "600",
-                }},
-                {"value": "     " + titulo_pagina, "textStyle": {
-                    "fontSize": "12pt",
-                    "fontFamily": "Segoe UI",
-                    "color": "#25312D",
-                }},
-            ],
-            "horizontalTextAlignment": "left",
-        }, {
-            "textRuns": [{"value": "ANÁLISE DE COBERTURA · INDICADORES DE PROCESSO · BASE OPERACIONAL",
-                           "textStyle": {
-                               "fontSize": "8pt",
-                               "fontFamily": "Segoe UI",
-                               "color": "#76817B",
-                           }}],
-            "horizontalTextAlignment": "left",
-        }]}}]
-    }
-
-
-def main() -> int:
-    if not PAGINA.exists():
-        print(f"pagina nao encontrada: {PAGINA}")
-        return 1
-
-    limpar_visuais(PAGINA)
-
-    # 2.1 cabecalho
-    novo_visual("textbox", 24, 24, 1392, 48, objects=cabecalho("Evolução"), container=sem_cromo())
-
-    novo_visual(
-        "textbox", 24, 72, 40, 24,
-        objects={"general": [{"properties": {"paragraphs": [{
-            "textRuns": [{"value": "", "textStyle": {"fontSize": "1pt"}}],
-        }]}}]},
-        container={
-            "background": [{"properties": {"show": lit("true"), "color": cor("#C17A4A")}}],
-            "border": [{"properties": {"show": lit("false")}}],
-            "dropShadow": [{"properties": {"show": lit("false")}}],
-        },
+    # 2. Faixa de filtros com chip de escopo
+    p.filtro_data(x=24, y=72, w=300, h=46)
+    p.filtro("Fato_Medicoes", "Fonte", x=334, w=230, y=72, h=46)
+    p.filtro("Dim_Indicador", "Nome_Original", x=574, w=330, y=72, h=46)
+    p.scope_chip(
+        "🎯 ESCOPO TEMPORAL: Janela 04/01 a 11/12/2026  |  274 Dias com Leituras",
+        x=914, y=72, w=502, h=46
     )
 
-    novo_visual(
-        "textbox", 0, 0, 40, 24,
-        objects={"general": [{"properties": {"paragraphs": [{
-            "textRuns": [{"value": "", "textStyle": {"fontSize": "1pt"}}],
-        }]}}]},
-        container={
-            "background": [{"properties": {"show": lit("true"), "color": cor("#173F35")}}],
-            "border": [{"properties": {"show": lit("false")}}],
-            "dropShadow": [{"properties": {"show": lit("false")}}],
-        },
-    )
+    # 3. Trilho do Indicador à esquerda (4 cards: x = 24, w = 290, y = 126 a 748, h = 622)
+    trilho_itens = [
+        ("📈 VOLUME DE LEITURAS", "Contagem no período", "Rotulo Leituras"),
+        ("🏭 FRENTES COM DADO", "Frentes que medem", "Frentes com Dado do Indicador"),
+        ("🛡️ CONFORMIDADE TÉCNICA", "Status homologado", "Status do Indicador"),
+        ("📐 REGRA DE AGREGAÇÃO", "Diretriz da dimensão", "Rotulo Agregacao Recomendada"),
+    ]
+    h_card = (622 - 12 * 3) // 4  # 146px
+    for i, (tit, sub, med) in enumerate(trilho_itens):
+        h_atual = h_card if i < 3 else (622 - 3 * (h_card + 12))
+        p.cartao_kpi(
+            24, 126 + i * (h_card + 12), 290, h_atual,
+            tit, sub, "_Medidas", med, valor_px=20
+        )
 
-    # filtros: periodo, fonte e indicador
-    novo_visual("slicer", 24, 152, 320, 40,
-                {"Values": {"projections": [coluna("Dim_Calendario", "Data")]}},
-                objects=MODO_DROPDOWN, container=sem_cromo())
-    novo_visual("slicer", 360, 152, 200, 44,
-                {"Values": {"projections": [coluna("Fato_Medicoes", "Fonte")]}},
-                objects=MODO_DROPDOWN, container=sem_cromo())
-    novo_visual("slicer", 576, 152, 320, 44,
-                {"Values": {"projections": [coluna("Dim_Indicador", "Nome_Original")]}},
-                objects=MODO_DROPDOWN, container=sem_cromo())
-
-    # 2.3 serie diaria: linha sem marcador visivel, largura zero quando configurado no Desktop
-    novo_visual(
-        "lineChart", 340, 220, 1076, 286,
+    # 4. Gráfico Principal Superior: Série Diária Ampla (x = 324, y = 126, w = 1092, h = 368)
+    p.add(
+        "lineChart", 324, 126, 1092, 368,
         {
             "Category": {"projections": [coluna("Dim_Calendario", "Data")]},
             "Y": {"projections": [medida("_Medidas", "Media Aritmetica Nao Ponderada")]},
         },
-        objects={"labels": [{"properties": {"show": lit("false")}}]},
-        container=titulo("Série diária", "Média aritmética não ponderada"),
+        container=painel_card(
+            "Comportamento Temporal Contínuo do Indicador",
+            "Série diária da média aritmética ao longo da safra 2026"
+        ),
     )
 
-    # 2.4 media mensal
-    novo_visual(
-        "lineChart", 340, 522, 620, 212,
+    # 5. Gráfico Inferior Esquerdo: Sazonalidade Mensal (x = 324, y = 504, w = 590, h = 244)
+    p.add(
+        "lineChart", 324, 504, 590, 244,
         {
             "Category": {"projections": [coluna("Dim_Calendario", "Nome_Mes")]},
             "Y": {"projections": [medida("_Medidas", "Media Aritmetica Nao Ponderada")]},
         },
-        container=titulo("Média mensal", "Média das leituras do mês"),
+        container=painel_card(
+            "Sazonalidade Mensal da Safra",
+            "Média consolidada por mês da colheita e moagem"
+        ),
     )
 
-    # 2.5 comparacao de periodos: tres cartoes, porque quatro colunas de medida
-    # em 440px geravam barra de rolagem horizontal e nenhuma leitura
+    # 6. Bloco Inferior Direito: Comparação de Períodos (3 cards: x = 924, y = 504, w = 492, h = 244)
     comparacao = [
-        ("Média atual", "Media Aritmetica Nao Ponderada"),
-        ("Média anterior", "Rotulo Media do Periodo Anterior"),
-        ("Variação %", "Rotulo Variacao Percentual"),
+        ("📅 PERÍODO ATUAL", "Média na janela", "Media Aritmetica Nao Ponderada"),
+        ("⏮️ PERÍODO ANTERIOR", "Média deslocada", "Rotulo Media do Periodo Anterior"),
+        ("📊 VARIAÇÃO %", "Diferença relativa", "Rotulo Variacao Percentual"),
     ]
-    largura_cartao = (440 - 8 * (len(comparacao) - 1)) // len(comparacao)
-    for indice, (rotulo, nome_medida) in enumerate(comparacao):
-        novo_visual(
-            "card", 976 + indice * (largura_cartao + 8), 522, largura_cartao, 212,
-            {"Values": {"projections": [medida("_Medidas", nome_medida)]}},
-            objects={
-                "labels": [{"properties": {
-                    "fontSize": inteiro(18),
-                    "fontFamily": texto("Segoe UI Semibold"),
-                    "color": cor("#173F35"),
-                }}],
-                "categoryLabels": [{"properties": {"show": lit("false")}}],
-            },
-            container=titulo(rotulo),
+    w_comp = (492 - 12 * 2) // 3  # 156px
+    for i, (tit, sub, med) in enumerate(comparacao):
+        p.cartao_kpi(
+            924 + i * (w_comp + 12), 504, w_comp, 244,
+            tit, sub, "_Medidas", med, valor_px=18
         )
 
-    # trilho do indicador: quatro cartoes abertos na coluna de 300px
-    trilho = [
-        ("Leituras", "Rotulo Leituras"),
-        ("Frentes", "Frentes com Dado do Indicador"),
-        ("Status", "Status do Indicador"),
-        ("Agregação", "Rotulo Agregacao Recomendada"),
-    ]
-    for indice, (rotulo, nome_medida) in enumerate(trilho):
-        novo_visual(
-            "card", 24, 220 + indice * 128, 300, 120,
-            {"Values": {"projections": [medida("_Medidas", nome_medida)]}},
-            objects={
-                "labels": [{"properties": {
-                    "fontSize": inteiro(22),
-                    "fontFamily": texto("Segoe UI Semibold"),
-                    "color": cor("#173F35"),
-                }}],
-                # sem o rotulo de categoria: ele repete o titulo e corta o valor
-                "categoryLabels": [{"properties": {"show": lit("false")}}],
-            },
-            container=titulo(rotulo),
-        )
+    # 7. Rodapé institucional
+    p.rodape_tela()
+    return p
 
-    # rodape com a origem do dado
-    novo_visual(
-        "textbox", 24, 750, 1392, 36,
-        objects={
-            "general": [{"properties": {"paragraphs": [{
-                "textRuns": [{
-                    "value": ("Base_Usina_PowerBI_Final_v4.xlsx · Fato_Medicoes, "
-                              "Dim_Indicador, Dim_Calendario"),
-                    "textStyle": {
-                        "fontSize": "9pt",
-                        "fontFamily": "Segoe UI",
-                        "color": "#76817B",
-                    },
-                }],
-                "horizontalTextAlignment": "left",
-            }]}}]
-        },
-        container=sem_cromo(),
-    )
 
-    print(f"{len(gerados)} visuais gerados em {PAGINA.name} (Evolução)")
-    for nome, tipo, x, y, w, h in gerados:
-        print(f"  {nome} {tipo:<12} {x:>4},{y:<4} {w}x{h}")
-    print("\nPendente no Desktop: formatacao fina (unidade de exibicao, eixos, rotulos).")
+def main() -> int:
+    pagina = evolucao()
+    print(pagina.relatorio())
+
+    problemas = conferir_dentro_da_pagina(pagina)
+    if problemas:
+        print("\nPROBLEMAS DE GRADE")
+        for item in problemas:
+            print("  - " + item)
+        return 1
+
+    print("\n[OK] Pagina 2 (Evolucao) gerada com sucesso na grade executiva premium.")
     return 0
 
 

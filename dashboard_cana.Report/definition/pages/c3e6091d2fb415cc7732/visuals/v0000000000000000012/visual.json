@@ -2,18 +2,37 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000012",
   "position": {
-    "x": 558,
-    "y": 220,
+    "x": 24,
+    "y": 248,
     "z": 1012,
-    "width": 202,
-    "height": 96,
+    "width": 710,
+    "height": 500,
     "tabOrder": 12
   },
   "visual": {
-    "visualType": "card",
+    "visualType": "lineChart",
     "query": {
       "queryState": {
-        "Values": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Dim_Calendario"
+                    }
+                  },
+                  "Property": "Data"
+                }
+              },
+              "queryRef": "Dim_Calendario.Data",
+              "nativeQueryRef": "Data",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
           "projections": [
             {
               "field": {
@@ -28,27 +47,96 @@
               },
               "queryRef": "_Medidas.Media Aritmetica Nao Ponderada",
               "nativeQueryRef": "Media Aritmetica Nao Ponderada"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Media Movel 7 Dias"
+                }
+              },
+              "queryRef": "_Medidas.Media Movel 7 Dias",
+              "nativeQueryRef": "Media Movel 7 Dias"
             }
           ]
         }
       }
     },
     "drillFilterOtherVisuals": true,
-    "objects": {
-      "labels": [
+    "visualContainerObjects": {
+      "background": [
         {
           "properties": {
-            "fontSize": {
+            "show": {
               "expr": {
                 "Literal": {
-                  "Value": "22D"
+                  "Value": "true"
                 }
               }
             },
-            "fontFamily": {
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
               "expr": {
                 "Literal": {
-                  "Value": "'Segoe UI Semibold'"
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#D8DDD5'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             },
@@ -62,25 +150,38 @@
                   }
                 }
               }
-            }
-          }
-        }
-      ],
-      "categoryLabels": [
-        {
-          "properties": {
-            "show": {
+            },
+            "transparency": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "94D"
+                }
+              }
+            },
+            "blur": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "angle": {
+              "expr": {
+                "Literal": {
+                  "Value": "135D"
+                }
+              }
+            },
+            "distance": {
+              "expr": {
+                "Literal": {
+                  "Value": "3D"
                 }
               }
             }
           }
         }
-      ]
-    },
-    "visualContainerObjects": {
+      ],
       "title": [
         {
           "properties": {
@@ -94,7 +195,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Média não ponderada'"
+                  "Value": "'Comportamento Temporal e Tendência (7 Dias)'"
                 }
               }
             },
@@ -104,6 +205,44 @@
                   "expr": {
                     "Literal": {
                       "Value": "'#173F35'"
+                    }
+                  }
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Média diária observada e curva de suavização móvel de 7 dias'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#76817B'"
                     }
                   }
                 }

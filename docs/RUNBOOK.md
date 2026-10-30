@@ -133,7 +133,7 @@ O que continua manual no Desktop, depois de gerar:
 | --- | --- | --- |
 | Unidade de exibição | Todas | Formatar visual, Valor da chamada, Unidades de exibição, Nenhuma |
 | Segmentação em lista suspensa | Todas | Configurações da segmentação, Estilo, Lista suspensa |
-| Distribuição | Indicadores | Agrupar dados em `Fato_Medicoes[Valor]`, 14 intervalos iguais |
+| Distribuição | Indicadores | Já calculada pelo modelo em 14 faixas relativas ao indicador; não criar grupo manual |
 | Faixa empilhada | Fontes | Série de mínimo com cor igual ao fundo, série de amplitude por cima |
 | Botão Voltar | Detalhes | Botão com ação de navegação para a página de origem |
 

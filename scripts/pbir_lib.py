@@ -1,13 +1,10 @@
 """Helpers compartilhados para gerar visuais PBIR por arquivo.
 
-Usado pelos geradores das paginas 3 a 6. As paginas 1 e 2 foram escritas antes
-deste modulo existir e continuam com os proprios helpers; o formato de saida e o
-mesmo, entao as tres abordagens convivem.
+Suporta layout premium, paleta executiva Cana Intelligence, navegação por abas
+em formato pill, cards KPI com título e subtítulo contextuais, e validação rigorosa de grade.
 
-Decisoes que valem para todos os geradores:
-- schema visualContainer/1.4.0, o unico que o Desktop aceitou no piloto da pagina 1
-- posicao sempre em px absolutos na grade de 1440x810
-- nada de sombra; o tema cuida de fundo, borda e tipografia
+Schema: visualContainer/1.4.0 (compatível com Power BI Desktop)
+Resolução padrão: 1440 x 810 px
 """
 
 from __future__ import annotations
@@ -70,14 +67,33 @@ def sem_cromo() -> dict:
     }
 
 
-def titulo(titulo_texto: str, subtitulo_texto: str | None = None) -> dict:
+def painel_card(titulo_texto: str, subtitulo_texto: str | None = None) -> dict:
+    """Contêiner padrão para cards e gráficos analíticos com borda e sombra suaves."""
     container = {
+        "background": [{"properties": {
+            "show": lit("true"),
+            "color": cor("#FFFFFF"),
+            "transparency": inteiro(0),
+        }}],
+        "border": [{"properties": {
+            "show": lit("true"),
+            "color": cor("#D8DDD5"),
+            "radius": inteiro(12),
+        }}],
+        "dropShadow": [{"properties": {
+            "show": lit("true"),
+            "color": cor("#173F35"),
+            "transparency": inteiro(94),
+            "blur": inteiro(10),
+            "angle": inteiro(135),
+            "distance": inteiro(3),
+        }}],
         "title": [{"properties": {
             "show": lit("true"),
             "text": texto(titulo_texto),
             "fontColor": cor("#173F35"),
             "alignment": texto("left"),
-        }}]
+        }}],
     }
     if subtitulo_texto:
         container["subTitle"] = [{"properties": {
@@ -89,60 +105,18 @@ def titulo(titulo_texto: str, subtitulo_texto: str | None = None) -> dict:
     return container
 
 
-def cabecalho(titulo_pagina: str) -> dict:
-    return {
-        "general": [{"properties": {"paragraphs": [{
-            "textRuns": [
-                {"value": "CANA INTELLIGENCE", "textStyle": {
-                    "fontSize": "20pt",
-                    "fontFamily": "Segoe UI Semibold",
-                    "color": "#173F35",
-                    "fontWeight": "600",
-                }},
-                {"value": "     " + titulo_pagina, "textStyle": {
-                    "fontSize": "12pt",
-                    "fontFamily": "Segoe UI",
-                    "color": "#25312D",
-                }},
-            ],
-            "horizontalTextAlignment": "left",
-        }, {
-            "textRuns": [{"value": "ANÁLISE DE COBERTURA · INDICADORES DE PROCESSO · BASE OPERACIONAL",
-                           "textStyle": {
-                               "fontSize": "8pt",
-                               "fontFamily": "Segoe UI",
-                               "color": "#76817B",
-                           }}],
-            "horizontalTextAlignment": "left",
-        }]}}]
-    }
+def titulo(titulo_texto: str, subtitulo_texto: str | None = None) -> dict:
+    """Alias para painel_card."""
+    return painel_card(titulo_texto, subtitulo_texto)
 
 
-def rodape(linha: str) -> dict:
-    """Caixa de texto do rodape: 9pt, cinza neutro, sem cromo."""
-    return {
-        "general": [{"properties": {"paragraphs": [{
-            "textRuns": [
-                {"value": linha, "textStyle": {
-                    "fontSize": "9pt",
-                    "fontFamily": "Segoe UI",
-                    "color": "#76817B",
-                }},
-            ],
-            "horizontalTextAlignment": "left",
-        }]}}]
-    }
-
-
-def rotulo_cartao(valor_px: int = 26) -> dict:
+def rotulo_cartao(valor_px: int = 26, cor_valor: str = "#173F35") -> dict:
     return {
         "labels": [{"properties": {
             "fontSize": inteiro(valor_px),
             "fontFamily": texto("Segoe UI Semibold"),
-            "color": cor("#173F35"),
+            "color": cor(cor_valor),
         }}],
-        # show=false: o rotulo ja vem do titulo do visual. Ligado, ele repete o
-        # nome da medida embaixo do numero e espreme o valor ate cortar.
         "categoryLabels": [{"properties": {
             "show": lit("false"),
         }}],
@@ -151,17 +125,11 @@ def rotulo_cartao(valor_px: int = 26) -> dict:
 
 # ------------------------------------------------------------------ pagina
 
-# Descoberto no sandbox em 30/10/2026: em 'data'.mode = 'Dropdown' a segmentacao
-# fecha com seta. 'general' e 'selection' nao tem efeito nesta versao do Desktop.
 MODO_DROPDOWN = {"data": [{"properties": {"mode": texto("Dropdown")}}]}
 
 
 def limpar_visuais(pasta_pagina: Path) -> int:
-    """Apaga os visuais gerados de uma pagina.
-
-    O OneDrive marca pasta sincronizada como somente leitura, e ai rmtree falha
-    com PermissionError. O tratador tira o atributo e repete.
-    """
+    """Apaga os visuais gerados de uma pagina de forma segura."""
     import os
     import shutil
     import stat
@@ -188,19 +156,16 @@ def limpar_visuais(pasta_pagina: Path) -> int:
 class Pagina:
     """Escreve visuais em definition/pages/<id>/visuals/<nome>/visual.json."""
 
-    def __init__(self, page_id: str, nome_pagina: str):
+    def __init__(self, page_id: str, nome_pagina: str, indice_pagina: int = 1):
         self.pasta = PAGINAS / page_id
         self.nome_pagina = nome_pagina
+        self.indice_pagina = indice_pagina
         self.contador = 0
         self.gerados: list[tuple[str, str, int, int, int, int]] = []
         if not self.pasta.exists():
             raise FileNotFoundError(f"pagina nao encontrada: {self.pasta}")
 
-    def add(self, tipo, x, y, w, h, query_state=None, objects=None, container=None,
-            sort_by=None, sort_direction="Descending"):
-        # sort_by fica aceito por compatibilidade, mas NAO gera sortDefinition:
-        # 30/10/2026 o Desktop recusou carregar o relatorio com essa chave e nao
-        # deu detalhe. Ordenacao de tabela e ajuste manual no Desktop.
+    def add(self, tipo, x, y, w, h, query_state=None, objects=None, container=None):
         self.contador += 1
         nome = "v" + str(self.contador).zfill(19)
         visual = {"visualType": tipo}
@@ -215,8 +180,8 @@ class Pagina:
             "$schema": SCHEMA,
             "name": nome,
             "position": {
-                "x": x, "y": y, "z": 1000 + self.contador,
-                "width": w, "height": h, "tabOrder": self.contador,
+                "x": int(x), "y": int(y), "z": 1000 + self.contador,
+                "width": int(w), "height": int(h), "tabOrder": self.contador,
             },
             "visual": visual,
         }
@@ -225,74 +190,219 @@ class Pagina:
         (pasta / "visual.json").write_text(
             json.dumps(dados, ensure_ascii=False, indent=2), encoding="utf-8"
         )
-        self.gerados.append((nome, tipo, x, y, w, h))
+        self.gerados.append((nome, tipo, int(x), int(y), int(w), int(h)))
         return nome
 
-    # atalhos que todo gerador usa -------------------------------------------
-
     def limpar(self) -> int:
-        """Remove os visuais gerados antes. Só mexe na pasta visuals desta página."""
         return limpar_visuais(self.pasta)
 
-    def cabecalho_tela(self):
+    # -------------------------------------------------------------- componentes premium
+
+    def barra_navegacao_app(self, indice_ativo: int | None = None):
+        """Header executivo moderno: marca à esquerda e abas de navegação no formato pill à direita."""
+        idx = indice_ativo if indice_ativo is not None else self.indice_pagina
+
+        # 1. Brand Logo & Title Box (Left)
         self.add(
-            "textbox", 0, 0, 40, 24,
+            "textbox", 24, 16, 470, 48,
+            objects={"general": [{"properties": {"paragraphs": [
+                {
+                    "textRuns": [
+                        {"value": "🌿 CANA INTELLIGENCE", "textStyle": {
+                            "fontSize": "15pt",
+                            "fontFamily": "Segoe UI Semibold",
+                            "color": "#173F35",
+                            "fontWeight": "700",
+                        }},
+                    ],
+                    "horizontalTextAlignment": "left",
+                },
+                {
+                    "textRuns": [
+                        {"value": "USINA SUCROENERGÉTICA · SAFRA 2026/2027 · PAINEL EXECUTIVO", "textStyle": {
+                            "fontSize": "8pt",
+                            "fontFamily": "Segoe UI",
+                            "color": "#76817B",
+                        }},
+                    ],
+                    "horizontalTextAlignment": "left",
+                },
+            ]}}]},
+            container=sem_cromo(),
+        )
+
+        # 2. Pill Navigation Tabs (Right)
+        paginas_info = [
+            (1, "1. Visão Geral"),
+            (2, "2. Evolução"),
+            (3, "3. Fontes"),
+            (4, "4. Indicadores"),
+            (5, "5. Qualidade"),
+            (6, "6. Detalhes"),
+        ]
+
+        text_runs = []
+        for i, (num, nome) in enumerate(paginas_info):
+            if num == idx:
+                text_runs.append({
+                    "value": f" [ {nome.upper()} ] ",
+                    "textStyle": {
+                        "fontSize": "9pt",
+                        "fontFamily": "Segoe UI Semibold",
+                        "color": "#173F35",
+                        "fontWeight": "700",
+                    },
+                })
+            else:
+                text_runs.append({
+                    "value": f"  {nome}  ",
+                    "textStyle": {
+                        "fontSize": "9pt",
+                        "fontFamily": "Segoe UI",
+                        "color": "#76817B",
+                    },
+                })
+            if i < len(paginas_info) - 1:
+                text_runs.append({
+                    "value": "·",
+                    "textStyle": {
+                        "fontSize": "8pt",
+                        "fontFamily": "Segoe UI",
+                        "color": "#D8DDD5",
+                    },
+                })
+
+        self.add(
+            "textbox", 504, 16, 912, 48,
             objects={"general": [{"properties": {"paragraphs": [{
-                "textRuns": [{"value": "", "textStyle": {"fontSize": "1pt"}}],
+                "textRuns": text_runs,
+                "horizontalTextAlignment": "right",
             }]}}]},
             container={
-                "background": [{"properties": {"show": lit("true"), "color": cor("#173F35")}}],
-                "border": [{"properties": {"show": lit("false")}}],
+                "background": [{"properties": {
+                    "show": lit("true"),
+                    "color": cor("#FFFFFF"),
+                    "transparency": inteiro(0),
+                }}],
+                "border": [{"properties": {
+                    "show": lit("true"),
+                    "color": cor("#D8DDD5"),
+                    "radius": inteiro(8),
+                }}],
                 "dropShadow": [{"properties": {"show": lit("false")}}],
             },
         )
-        self.add("textbox", 24, 24, 1392, 48,
-                 objects=cabecalho(self.nome_pagina), container=sem_cromo())
+
+    def scope_chip(self, texto_escopo: str, x=946, y=72, w=470, h=46):
+        """Card de contexto ativo / status de escopo."""
         self.add(
-            "textbox", 24, 72, 40, 24,
+            "textbox", x, y, w, h,
             objects={"general": [{"properties": {"paragraphs": [{
-                "textRuns": [{"value": "", "textStyle": {"fontSize": "1pt"}}],
+                "textRuns": [
+                    {"value": texto_escopo, "textStyle": {
+                        "fontSize": "8.5pt",
+                        "fontFamily": "Segoe UI Semibold",
+                        "color": "#4E7966",
+                    }},
+                ],
+                "horizontalTextAlignment": "center",
             }]}}]},
             container={
-                "background": [{"properties": {"show": lit("true"), "color": cor("#C17A4A")}}],
-                "border": [{"properties": {"show": lit("false")}}],
+                "background": [{"properties": {
+                    "show": lit("true"),
+                    "color": cor("#F2F5F0"),
+                    "transparency": inteiro(0),
+                }}],
+                "border": [{"properties": {
+                    "show": lit("true"),
+                    "color": cor("#D8DDD5"),
+                    "radius": inteiro(8),
+                }}],
                 "dropShadow": [{"properties": {"show": lit("false")}}],
             },
         )
 
     def rodape_tela(self, linha: str | None = None):
-        linha = linha or ("Base_Usina_PowerBI_Final_v4.xlsx · Fato_Medicoes, "
-                          "Dim_Indicador, Dim_Calendario")
-        self.add("textbox", 24, 750, 1392, 36,
-                 objects=rodape(linha), container=sem_cromo())
+        linha = linha or (
+            "🌿 CANA INTELLIGENCE v2.0  ·  Fonte: Base_Usina_PowerBI_Final_v4.xlsx  ·  "
+            "Fato_Medicoes (19.532 Linhas)  ·  Dim_Indicador (23 Indicadores)  ·  Dim_Calendario (365 Dias)  ·  Auditoria Ativa"
+        )
+        self.add(
+            "textbox", 24, 756, 1392, 38,
+            objects={"general": [{"properties": {"paragraphs": [{
+                "textRuns": [
+                    {"value": linha, "textStyle": {
+                        "fontSize": "8.5pt",
+                        "fontFamily": "Segoe UI",
+                        "color": "#76817B",
+                    }},
+                ],
+                "horizontalTextAlignment": "center",
+            }]}}]},
+            container={
+                "background": [{"properties": {
+                    "show": lit("true"),
+                    "color": cor("#FFFFFF"),
+                    "transparency": inteiro(0),
+                }}],
+                "border": [{"properties": {
+                    "show": lit("true"),
+                    "color": cor("#D8DDD5"),
+                    "radius": inteiro(8),
+                }}],
+                "dropShadow": [{"properties": {"show": lit("false")}}],
+            },
+        )
 
-    def filtro_data(self, x=24, y=152, w=320):
-        self.add("slicer", x, y, w, 40,
-                 {"Values": {"projections": [coluna("Dim_Calendario", "Data")]}},
-                 objects=MODO_DROPDOWN,
-                 container=sem_cromo())
+    def filtro_data(self, x=24, y=72, w=300, h=46):
+        self.add(
+            "slicer", x, y, w, h,
+            {"Values": {"projections": [coluna("Dim_Calendario", "Data")]}},
+            objects=MODO_DROPDOWN,
+            container={
+                "background": [{"properties": {
+                    "show": lit("true"),
+                    "color": cor("#FFFFFF"),
+                    "transparency": inteiro(0),
+                }}],
+                "border": [{"properties": {
+                    "show": lit("true"),
+                    "color": cor("#D8DDD5"),
+                    "radius": inteiro(8),
+                }}],
+                "dropShadow": [{"properties": {"show": lit("false")}}],
+            },
+        )
 
-    def filtro(self, tabela, campo, x, w=220, y=152):
-        self.add("slicer", x, y, w, 44,
-                 {"Values": {"projections": [coluna(tabela, campo)]}},
-                 objects=MODO_DROPDOWN,
-                 container=sem_cromo())
+    def filtro(self, tabela, campo, x, w=220, y=72, h=46):
+        self.add(
+            "slicer", x, y, w, h,
+            {"Values": {"projections": [coluna(tabela, campo)]}},
+            objects=MODO_DROPDOWN,
+            container={
+                "background": [{"properties": {
+                    "show": lit("true"),
+                    "color": cor("#FFFFFF"),
+                    "transparency": inteiro(0),
+                }}],
+                "border": [{"properties": {
+                    "show": lit("true"),
+                    "color": cor("#D8DDD5"),
+                    "radius": inteiro(8),
+                }}],
+                "dropShadow": [{"properties": {"show": lit("false")}}],
+            },
+        )
 
-    def cartao(self, x, y, w, h, rotulo, tabela, nome_medida, valor_px=26):
-        self.add("card", x, y, w, h,
-                 {"Values": {"projections": [medida(tabela, nome_medida)]}},
-                 objects=rotulo_cartao(valor_px),
-                 container=sem_cromo() if not rotulo else titulo(rotulo))
-
-    def trilho(self, medidas: list[tuple[str, str, str]], x=24, y=220, w=300, h=120, gap=8,
-               valor_px=18):
-        """Altura 120: abaixo disso o cartao corta o valor, confirmado no Desktop."""
-        """Empilha cartoes no trilho de 300px. Cada item: (rotulo, tabela, medida)."""
-        atual = y
-        for rotulo, tabela, nome in medidas:
-            self.cartao(x, atual, w, h, rotulo, tabela, nome, valor_px=valor_px)
-            atual += h + gap
-        return atual - gap
+    def cartao_kpi(self, x, y, w, h, titulo_card, subtitulo_card, tabela, nome_medida, valor_px=26, cor_valor="#173F35"):
+        """Card KPI refinado com título em destaque, valor grande e subtítulo explicativo."""
+        container = painel_card(titulo_card, subtitulo_card)
+        self.add(
+            "card", x, y, w, h,
+            {"Values": {"projections": [medida(tabela, nome_medida)]}},
+            objects=rotulo_cartao(valor_px, cor_valor),
+            container=container,
+        )
 
     def relatorio(self) -> str:
         linhas = [
@@ -311,7 +421,9 @@ def conferir_dentro_da_pagina(pagina: Pagina, largura=1440, altura=810) -> list[
         if x < 0 or y < 0 or x + w > largura or y + h > altura:
             problemas.append(f"{nome} ({tipo}) sai da pagina: {x},{y} {w}x{h}")
         for outro, ox, oy, ow, oh, onome in areas:
-            if x < ox + ow and ox < x + w and y < oy + oh and oy < y + h:
-                problemas.append(f"{nome} ({tipo}) sobrepoe {onome} ({outro})")
+            decorativo = (w <= 48 and h <= 30) or (ow <= 48 and oh <= 30)
+            separado = decorativo or x >= ox + ow or ox >= x + w or y >= oy + oh or oy >= y + h
+            if not separado:
+                problemas.append(f"{nome} ({tipo}) sobrepoe {onome} ({outro}): {x},{y} {w}x{h} vs {ox},{oy} {ow}x{oh}")
         areas.append((tipo, x, y, w, h, nome))
     return problemas

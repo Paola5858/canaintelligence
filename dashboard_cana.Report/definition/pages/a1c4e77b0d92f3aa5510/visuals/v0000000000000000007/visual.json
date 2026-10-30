@@ -2,37 +2,18 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000007",
   "position": {
-    "x": 340,
-    "y": 220,
+    "x": 24,
+    "y": 126,
     "z": 1007,
-    "width": 1076,
-    "height": 286,
+    "width": 290,
+    "height": 146,
     "tabOrder": 7
   },
   "visual": {
-    "visualType": "lineChart",
+    "visualType": "card",
     "query": {
       "queryState": {
-        "Category": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Dim_Calendario"
-                    }
-                  },
-                  "Property": "Data"
-                }
-              },
-              "queryRef": "Dim_Calendario.Data",
-              "nativeQueryRef": "Data",
-              "active": true
-            }
-          ]
-        },
-        "Y": {
+        "Values": {
           "projections": [
             {
               "field": {
@@ -42,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Media Aritmetica Nao Ponderada"
+                  "Property": "Rotulo Leituras"
                 }
               },
-              "queryRef": "_Medidas.Media Aritmetica Nao Ponderada",
-              "nativeQueryRef": "Media Aritmetica Nao Ponderada"
+              "queryRef": "_Medidas.Rotulo Leituras",
+              "nativeQueryRef": "Rotulo Leituras"
             }
           ]
         }
@@ -55,6 +36,37 @@
     "drillFilterOtherVisuals": true,
     "objects": {
       "labels": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "20D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI Semibold'"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#173F35'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryLabels": [
         {
           "properties": {
             "show": {
@@ -69,6 +81,120 @@
       ]
     },
     "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#D8DDD5'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#173F35'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "94D"
+                }
+              }
+            },
+            "blur": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "angle": {
+              "expr": {
+                "Literal": {
+                  "Value": "135D"
+                }
+              }
+            },
+            "distance": {
+              "expr": {
+                "Literal": {
+                  "Value": "3D"
+                }
+              }
+            }
+          }
+        }
+      ],
       "title": [
         {
           "properties": {
@@ -82,7 +208,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Série diária'"
+                  "Value": "'📈 VOLUME DE LEITURAS'"
                 }
               }
             },
@@ -120,7 +246,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Média aritmética não ponderada'"
+                  "Value": "'Contagem no período'"
                 }
               }
             },

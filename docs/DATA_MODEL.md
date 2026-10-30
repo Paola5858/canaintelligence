@@ -54,7 +54,7 @@ Tabelas de apoio, sem relacionamento com a fato:
 | `Auditoria_Dados` | 1.585 | Histórico da normalização de escala de PC e ArCana |
 | `Pendencias_Validacao` | 4 | Pendências técnicas declaradas pela origem |
 | `Resumo_Qualidade` | 1 | Resumo oficial da carga, oculta no modelo |
-| `_Medidas` | 0 | Tabela sintética que hospeda as 64 medidas |
+| `_Medidas` | 0 | Tabela sintética que hospeda as 65 medidas |
 
 ## Relacionamentos
 

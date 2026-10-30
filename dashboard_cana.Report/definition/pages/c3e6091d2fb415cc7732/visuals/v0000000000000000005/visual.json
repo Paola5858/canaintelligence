@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000005",
   "position": {
-    "x": 360,
-    "y": 152,
+    "x": 574,
+    "y": 72,
     "z": 1005,
-    "width": 200,
-    "height": 44,
+    "width": 330,
+    "height": 46,
     "tabOrder": 5
   },
   "visual": {
@@ -20,14 +20,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Fato_Medicoes"
+                      "Entity": "Dim_Indicador"
                     }
                   },
-                  "Property": "Fonte"
+                  "Property": "Nome_Original"
                 }
               },
-              "queryRef": "Fato_Medicoes.Fonte",
-              "nativeQueryRef": "Fonte",
+              "queryRef": "Dim_Indicador.Nome_Original",
+              "nativeQueryRef": "Nome_Original",
               "active": true
             }
           ]
@@ -57,7 +57,25 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
                 }
               }
             }
@@ -70,7 +88,25 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#D8DDD5'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
                 }
               }
             }

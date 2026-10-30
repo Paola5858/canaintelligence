@@ -2,32 +2,50 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000003",
   "position": {
-    "x": 0,
-    "y": 0,
+    "x": 24,
+    "y": 72,
     "z": 1003,
-    "width": 40,
-    "height": 24,
+    "width": 300,
+    "height": 46,
     "tabOrder": 3
   },
   "visual": {
-    "visualType": "textbox",
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Dim_Calendario"
+                    }
+                  },
+                  "Property": "Data"
+                }
+              },
+              "queryRef": "Dim_Calendario.Data",
+              "nativeQueryRef": "Data",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
     "drillFilterOtherVisuals": true,
     "objects": {
-      "general": [
+      "data": [
         {
           "properties": {
-            "paragraphs": [
-              {
-                "textRuns": [
-                  {
-                    "value": "",
-                    "textStyle": {
-                      "fontSize": "1pt"
-                    }
-                  }
-                ]
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
               }
-            ]
+            }
           }
         }
       ]
@@ -48,9 +66,16 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#173F35'"
+                      "Value": "'#FFFFFF'"
                     }
                   }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
                 }
               }
             }
@@ -63,7 +88,25 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#D8DDD5'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
                 }
               }
             }

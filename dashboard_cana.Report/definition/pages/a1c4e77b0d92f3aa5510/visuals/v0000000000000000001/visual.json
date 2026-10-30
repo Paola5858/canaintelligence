@@ -3,9 +3,9 @@
   "name": "v0000000000000000001",
   "position": {
     "x": 24,
-    "y": 24,
+    "y": 16,
     "z": 1001,
-    "width": 1392,
+    "width": 470,
     "height": 48,
     "tabOrder": 1
   },
@@ -20,20 +20,12 @@
               {
                 "textRuns": [
                   {
-                    "value": "CANA INTELLIGENCE",
+                    "value": "🌿 CANA INTELLIGENCE",
                     "textStyle": {
-                      "fontSize": "20pt",
+                      "fontSize": "15pt",
                       "fontFamily": "Segoe UI Semibold",
                       "color": "#173F35",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "     Evolução",
-                    "textStyle": {
-                      "fontSize": "12pt",
-                      "fontFamily": "Segoe UI",
-                      "color": "#25312D"
+                      "fontWeight": "700"
                     }
                   }
                 ],
@@ -42,7 +34,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "ANÁLISE DE COBERTURA · INDICADORES DE PROCESSO · BASE OPERACIONAL",
+                    "value": "USINA SUCROENERGÉTICA · SAFRA 2026/2027 · PAINEL EXECUTIVO",
                     "textStyle": {
                       "fontSize": "8pt",
                       "fontFamily": "Segoe UI",

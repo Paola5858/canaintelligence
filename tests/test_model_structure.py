@@ -22,6 +22,7 @@ TABLES_DIR = MODEL_DIR / "tables"
 EXPECTED_TABLES = {
     "Fato_Medicoes",
     "Dim_Calendario",
+    "Dim_Faixa_Valor",
     "Dim_Indicador",
     "Auditoria_Dados",
     "Pendencias_Validacao",
@@ -221,8 +222,8 @@ check("Parametro e marcado como consulta de parametro",
 # 10. Power Query ---------------------------------------------------------
 source_errors: list[str] = []
 for name, table in tables.items():
-    if name == "_Medidas":
-        # Tabela sintetica, criada com #table para hospedar as medidas.
+    if name in {"_Medidas", "Dim_Faixa_Valor"}:
+        # Tabelas sinteticas, criadas com #table, nao dependem do Excel.
         continue
     text = table["text"]
     if "File.Contents ( CaminhoDaBase )" not in text:

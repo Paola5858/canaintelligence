@@ -2,50 +2,35 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000006",
   "position": {
-    "x": 576,
-    "y": 152,
+    "x": 914,
+    "y": 72,
     "z": 1006,
-    "width": 320,
-    "height": 44,
+    "width": 502,
+    "height": 46,
     "tabOrder": 6
   },
   "visual": {
-    "visualType": "slicer",
-    "query": {
-      "queryState": {
-        "Values": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Dim_Indicador"
-                    }
-                  },
-                  "Property": "Nome_Original"
-                }
-              },
-              "queryRef": "Dim_Indicador.Nome_Original",
-              "nativeQueryRef": "Nome_Original",
-              "active": true
-            }
-          ]
-        }
-      }
-    },
+    "visualType": "textbox",
     "drillFilterOtherVisuals": true,
     "objects": {
-      "data": [
+      "general": [
         {
           "properties": {
-            "mode": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Dropdown'"
-                }
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "🎯 ESCOPO TEMPORAL: Janela 04/01 a 11/12/2026  |  274 Dias com Leituras",
+                    "textStyle": {
+                      "fontSize": "8.5pt",
+                      "fontFamily": "Segoe UI Semibold",
+                      "color": "#4E7966"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "center"
               }
-            }
+            ]
           }
         }
       ]
@@ -57,7 +42,25 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#F2F5F0'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
                 }
               }
             }
@@ -70,7 +73,25 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#D8DDD5'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
                 }
               }
             }

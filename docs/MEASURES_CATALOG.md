@@ -1,6 +1,6 @@
 # Catálogo de medidas
 
-64 medidas na tabela `_Medidas`, organizadas em 7 pastas de exibição. Todas em português, com nome curto e descrição quando o nome não basta. O recorte inicial seguro é ATR, usado quando o slicer de indicador está em Todos; o usuário pode trocar para qualquer indicador.
+65 medidas na tabela `_Medidas`, organizadas em 7 pastas de exibição. Todas em português, com nome curto e descrição quando o nome não basta. O recorte inicial seguro é ATR, usado quando o slicer de indicador está em Todos; o usuário pode trocar para qualquer indicador.
 
 ## Regra que governa o catálogo
 

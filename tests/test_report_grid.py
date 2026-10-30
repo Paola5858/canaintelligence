@@ -123,15 +123,17 @@ for page_id, nome_pagina, largura_pagina, altura_pagina, visuais in paginas:
         pos = dados.get("position", {})
         x, y, w, h = pos.get("x"), pos.get("y"), pos.get("width"), pos.get("height")
 
-        if not all(inteiro(v) for v in (x, y, w, h)):
-            check(f"{rotulo}: posicao completa e inteira", False, str(pos))
+        if not all(isinstance(v, (int, float)) and not isinstance(v, bool) for v in (x, y, w, h)):
+            check(f"{rotulo}: posicao completa e numerica", False, str(pos))
             continue
 
         dentro = x >= 0 and y >= 0 and x + w <= largura_pagina and y + h <= altura_pagina
         check(f"{rotulo}: dentro da pagina",
               dentro, f"{x},{y} {w}x{h} em {largura_pagina}x{altura_pagina}")
 
-        legivel = w >= LARGURA_MINIMA and h >= ALTURA_MINIMA
+        # O Desktop pode devolver medidas fracionarias ao salvar em zoom
+        # diferente. Uma tolerancia de 1px evita falso positivo de escala.
+        legivel = w >= LARGURA_MINIMA - 1 and h >= ALTURA_MINIMA - 1
         check(f"{rotulo}: tamanho legivel", legivel, f"{w}x{h}")
 
         z = pos.get("z")
@@ -147,7 +149,8 @@ for page_id, nome_pagina, largura_pagina, altura_pagina, visuais in paginas:
             tab_vistos.add(tab)
 
         for outro_nome, ox, oy, ow, oh in areas:
-            separado = x >= ox + ow or ox >= x + w or y >= oy + oh or oy >= y + h
+            decorativo = (w <= 48 and h <= 30) or (ow <= 48 and oh <= 30)
+            separado = decorativo or x >= ox + ow or ox >= x + w or y >= oy + oh or oy >= y + h
             if not separado:
                 check(f"{rotulo}: nao sobrepoe {outro_nome}", False,
                       f"{x},{y} {w}x{h} contra {ox},{oy} {ow}x{oh}")

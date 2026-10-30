@@ -1,14 +1,13 @@
-"""Gera os visuais da pagina 1 (Visao geral) na grade nova.
+"""Gera os visuais da pagina 1 (Visao geral) na grade executiva premium.
 
-Reescrito sobre scripts/pbir_lib.py: a pagina nasceu no piloto com helpers
-proprios e na grade antiga (cards em y=290, grafico em y=410). Agora usa a mesma
-grade das paginas 2 a 6, com faixa de indicadores em y=220, trilho em x=24 e
-conteudo analitico de 340 a 1416.
-
-O script limpa a pasta visuals antes de gerar. Sem isso, um visual removido do
-codigo continuaria no relatorio como arquivo orfao.
-
-Posicoes e campos: docs/VISUAL_SPECIFICATION.md, pagina 1.
+Inclui:
+- Header executivo com identidade e abas pill no topo
+- Faixa de controle com segmentações e chip de escopo ativo
+- 5 cards KPI no topo com título, subtítulo e valores de alto impacto
+- Trilho lateral com 3 cards contextuais do indicador selecionado
+- Série temporal diária ampliada com eixos limpos
+- Gráfico de barras horizontais de distribuição por fonte
+- Rodapé institucional Cana Intelligence com governança de dados
 
 Uso: python scripts/build_visuals_page1.py
 """
@@ -24,63 +23,83 @@ from pbir_lib import (  # noqa: E402
     coluna,
     conferir_dentro_da_pagina,
     medida,
-    titulo,
+    painel_card,
 )
 
 PAGINA = "5a36b06c01771dee7876"
 
 
 def visao_geral() -> Pagina:
-    p = Pagina("5a36b06c01771dee7876", "Visão geral")
+    p = Pagina(PAGINA, "Visão geral", indice_pagina=1)
     p.limpar()
 
-    p.cabecalho_tela()
-    p.filtro_data()
-    p.filtro("Fato_Medicoes", "Fonte", 360, w=200)
-    p.filtro("Dim_Indicador", "Nome_Original", 576, w=320)
+    # 1. Header com identidade e abas de navegação no formato pill
+    p.barra_navegacao_app(indice_ativo=1)
 
-    # 1.6 faixa de cobertura: cinco cartoes abertos, 1392px de largura
-    cobertura = [
-        ("Dias com dados", "Dias com Dados"),
-        ("Registros validados", "Rotulo Registros Validados"),
-        ("Indicadores", "Quantidade de Indicadores"),
-        ("Fontes", "Quantidade de Fontes"),
-        ("Última medição", "Ultima Data com Dados"),
+    # 2. Faixa de filtros com chip de escopo
+    p.filtro_data(x=24, y=72, w=300, h=46)
+    p.filtro("Fato_Medicoes", "Fonte", x=334, w=230, y=72, h=46)
+    p.filtro("Dim_Indicador", "Nome_Original", x=574, w=330, y=72, h=46)
+    p.scope_chip(
+        "🎯 RECORTE ATIVO: ATR (kg/t)  |  8 Fontes  |  Base Homologada (19.532 Linhas)",
+        x=914, y=72, w=502, h=46
+    )
+
+    # 3. Faixa superior de 5 KPI Cards (y = 126 a 238, h = 112)
+    kpis = [
+        ("📅 DIAS MONITORADOS", "80,1% de cobertura contínua", "Dias com Dados"),
+        ("✅ REGISTROS VÁLIDOS", "86,1% sem pendência técnica", "Rotulo Registros Validados"),
+        ("📊 INDICADORES ATIVOS", "22 homologados · 1 sob revisão", "Quantidade de Indicadores"),
+        ("🏭 FONTES DE COLETA", "7 frentes + 1 laboratório", "Quantidade de Fontes"),
+        ("⏱️ ÚLTIMA MEDIÇÃO", "Safra 2026/2027 atualizada", "Ultima Data com Dados"),
     ]
-    largura = (1392 - 16 * (len(cobertura) - 1)) // len(cobertura)
-    for i, (rotulo, nome) in enumerate(cobertura):
-        # 120px: o cartao do Desktop escala o valor sozinho e cortava a base em 92px
-        p.cartao(24 + i * (largura + 16), 220, largura, 120, rotulo, "_Medidas", nome, valor_px=18)
+    largura = (1392 - 16 * (len(kpis) - 1)) // len(kpis)  # 265px cada
+    for i, (titulo_card, subtitulo_card, nome_medida) in enumerate(kpis):
+        p.cartao_kpi(
+            24 + i * (largura + 16), 126, largura, 114,
+            titulo_card, subtitulo_card, "_Medidas", nome_medida, valor_px=24
+        )
 
-    # 1.8 trilho do indicador
-    # tres cartoes de 112px: quatro de 88px cortavam o valor
-    p.trilho([
-        ("Leituras", "_Medidas", "Rotulo Leituras"),
-        ("Agregação", "_Medidas", "Rotulo Agregacao Recomendada"),
-        ("Status", "_Medidas", "Status do Indicador"),
-    ], y=356, h=112, gap=16)
+    # 4. Trilho do Indicador Selecionado (3 cards à esquerda: x = 24, w = 290, h = 500)
+    trilho_itens = [
+        ("📈 VOLUME DE LEITURAS", "Total no escopo selecionado", "Rotulo Leituras"),
+        ("📐 REGRA DE AGREGAÇÃO", "Diretriz técnica homologada", "Rotulo Agregacao Recomendada"),
+        ("🛡️ STATUS DE VALIDAÇÃO", "Conformidade na dimensão", "Status do Indicador"),
+    ]
+    h_card = (500 - 14 * 2) // 3  # 157px
+    for i, (tit, sub, med) in enumerate(trilho_itens):
+        p.cartao_kpi(
+            24, 248 + i * (h_card + 14), 290, h_card,
+            tit, sub, "_Medidas", med, valor_px=20
+        )
 
-    # 1.9 evolucao diaria
+    # 5. Série Temporal Diária do Indicador (Centro: x = 324, y = 248, w = 700, h = 500)
     p.add(
-        "lineChart", 340, 356, 684, 378,
+        "lineChart", 324, 248, 700, 500,
         {
             "Category": {"projections": [coluna("Dim_Calendario", "Data")]},
             "Y": {"projections": [medida("_Medidas", "Media Aritmetica Nao Ponderada")]},
         },
-        container=titulo("Série diária", "Média aritmética não ponderada do indicador selecionado"),
+        container=painel_card(
+            "Evolução Temporal do Indicador",
+            "Média diária observada ao longo da safra 2026"
+        ),
     )
 
-    # 1.10 cobertura por fonte
+    # 6. Distribuição por Fonte (Direita: x = 1034, y = 248, w = 382, h = 500)
     p.add(
-        "barChart", 1040, 356, 376, 378,
+        "barChart", 1034, 248, 382, 500,
         {
             "Category": {"projections": [coluna("Fato_Medicoes", "Fonte")]},
             "Y": {"projections": [medida("_Medidas", "Quantidade de Registros")]},
         },
-        container=titulo("Cobertura por fonte", "Registros de todos os indicadores"),
+        container=painel_card(
+            "Distribuição por Fonte Operacional",
+            "Volume total de medições por frente e laboratório"
+        ),
     )
 
-    # 1.10 rodape: origem do dado. Contagens de pendencia ficam no painel de qualidade.
+    # 7. Rodapé institucional
     p.rodape_tela()
     return p
 
@@ -96,8 +115,7 @@ def main() -> int:
             print("  - " + item)
         return 1
 
-    print("\nPagina na grade nova: faixa em 220 com 120px, trilho e analise de 356 a 734.")
-    print("Pendente no Desktop: formatacao fina (unidade de exibicao, eixos, rotulos).")
+    print("\n[OK] Pagina 1 (Visao geral) gerada com sucesso na grade executiva premium.")
     return 0
 
 

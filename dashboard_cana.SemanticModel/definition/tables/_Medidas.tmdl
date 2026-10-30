@@ -94,12 +94,6 @@ table _Medidas
 		displayFolder: 00 | Base e qualidade
 		lineageTag: 24cc7b5c-742d-4383-8744-3bbdd18ed3e1
 
-	/// Numero de leituras do indicador no contexto. Sempre valido, independente da unidade.
-	/// Indicador exploratorio padrao quando o slicer abre em Todos.
-	measure 'Codigo do Indicador no Contexto' = SELECTEDVALUE ( Dim_Indicador[Codigo], "ATR" )
-		displayFolder: 05 | Formatação e UX
-		lineageTag: 5f1a0b11-1c2d-4e3f-9a00-ca1a00000007
-
 	measure 'Quantidade de Leituras' =
 			VAR Codigo = [Codigo do Indicador no Contexto]
 			RETURN CALCULATE ( COUNTROWS ( Fato_Medicoes ), Dim_Indicador[Codigo] = Codigo )
@@ -389,6 +383,12 @@ table _Medidas
 		displayFolder: 06 | Rastreabilidade
 		lineageTag: 5f1a0b11-1c2d-4e3f-9a00-ca1a00000006
 
+	/// Numero de leituras do indicador no contexto. Sempre valido, independente da unidade.
+	/// Indicador exploratorio padrao quando o slicer abre em Todos.
+	measure 'Codigo do Indicador no Contexto' = SELECTEDVALUE ( Dim_Indicador[Codigo], "ATR" )
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 5f1a0b11-1c2d-4e3f-9a00-ca1a00000007
+
 	/// Texto de estado para os cartoes de comparacao quando a janela nao possui periodo anterior.
 	measure 'Rotulo Media do Periodo Anterior' = IF ( ISBLANK ( [Media do Periodo Anterior] ), "Dados insuficientes", FORMAT ( [Media do Periodo Anterior], "0.00" ) )
 		displayFolder: 05 | Formatação e UX
@@ -397,6 +397,28 @@ table _Medidas
 	measure 'Rotulo Variacao Percentual' = IF ( ISBLANK ( [Variacao Percentual vs Periodo Anterior] ), "Dados insuficientes", FORMAT ( [Variacao Percentual vs Periodo Anterior], "0.00%" ) )
 		displayFolder: 05 | Formatação e UX
 		lineageTag: 5f1a0b11-1c2d-4e3f-9a00-ca1a00000009
+
+	/// Conta leituras em 14 faixas relativas a escala do indicador. A tabela de faixas e desconectada de proposito.
+	measure 'Quantidade de Leituras por Faixa' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			VAR Ordem = SELECTEDVALUE ( Dim_Faixa_Valor[Faixa_Ordem] )
+			VAR Minimo = CALCULATE ( MIN ( Fato_Medicoes[Valor] ), Dim_Indicador[Codigo] = Codigo )
+			VAR Maximo = CALCULATE ( MAX ( Fato_Medicoes[Valor] ), Dim_Indicador[Codigo] = Codigo )
+			VAR Largura = DIVIDE ( Maximo - Minimo, 14 )
+			VAR Inicio = Minimo + ( Ordem - 1 ) * Largura
+			VAR Fim = IF ( Ordem = 14, Maximo + 0.0000001, Minimo + Ordem * Largura )
+			RETURN
+				IF (
+					NOT ISBLANK ( Ordem ) && Largura > 0,
+					CALCULATE (
+						COUNTROWS ( Fato_Medicoes ),
+						Dim_Indicador[Codigo] = Codigo,
+						Fato_Medicoes[Valor] >= Inicio,
+						Fato_Medicoes[Valor] < Fim
+					)
+				)
+		displayFolder: 01 | Indicadores
+		lineageTag: 5f1a0b11-1c2d-4e3f-9a1a00000010
 
 	column Placeholder
 		dataType: string
