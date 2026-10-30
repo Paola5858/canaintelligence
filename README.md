@@ -9,8 +9,8 @@ Fonte única de dados: `data/Base_Usina_PowerBI_Final_v4.xlsx`. Todas as contage
 | Item | Estado |
 | --- | --- |
 | Modelo semântico aceito pelo parser oficial | Sim, 7 tabelas, 64 medidas, 2 relacionamentos |
-| Evidência de abertura no Power BI Desktop | Capturas históricas em `.kombai/tmp`; não verificável nesta sessão |
-| Modelo semântico em TMDL | Implementado, 6 tabelas e 64 medidas |
+| Evidência de abertura no Power BI Desktop | 29/10/2026 (duas sessões verificadas) |
+| Modelo semântico em TMDL | Implementado, 7 tabelas e 64 medidas |
 | Relacionamentos | 2, ambos de um para muitos e filtro simples |
 | Páginas do relatório | 6 criadas, todas na grade nova. 95 visuais gerados por script e conferidos pela suíte de grade. O estado inicial usa ATR como recorte exploratório e a distribuição de Indicadores exibe uma explicação honesta da limitação |
 | Tema visual | Implementado em `CanaIntelligence.json`, revisado para a grade nova (painel branco, raio 12, borda hairline, coluna e segmentação com padrão) |
@@ -18,7 +18,9 @@ Fonte única de dados: `data/Base_Usina_PowerBI_Final_v4.xlsx`. Todas as contage
 | Testes de dados | 47 verificações, todas aprovadas |
 | Testes de estrutura do modelo | 32 verificações, todas aprovadas |
 | Testes de estrutura do relatório | 44 verificações, todas aprovadas |
-| Visuais nativos | Declarados em PBIR e validados estruturalmente; acabamento fino ainda depende do Desktop |
+| Testes de grade dos visuais | 484 verificações, 6 páginas, 95 visuais, todas aprovadas |
+| Testes de campos dos visuais | 192 verificações, todas aprovadas |
+| Total de verificações automatizadas | 800, todas aprovadas (30/10/2026) |
 
 As páginas e os visuais declarativos existem. O que ainda depende do Desktop é o acabamento fino e a configuração manual de recursos que a versão atual não aceita no PBIR, como agrupamento dinâmico em faixas e a ação do botão Voltar.
 

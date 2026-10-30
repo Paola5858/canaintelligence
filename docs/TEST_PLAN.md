@@ -1,21 +1,25 @@
 # Plano de teste e resultados
 
-Data de referência dos resultados: 29/10/2026.
+Data de referência dos resultados: 30/10/2026 (última rodada completa).
 
 ## Resumo
 
-| Suite | Verificações | Aprovadas | Falhas | Executada |
+| Suite | Verificações | Aprovadas | Falhas | Executada em |
 | --- | --- | --- | --- | --- |
-| `tests/test_data_contract.py` | 47 | 47 | 0 | Sim |
-| `tests/test_model_structure.py` | 31 | 31 | 0 | Sim |
-| `tests/test_report_structure.py` | 43 | 43 | 0 | Sim |
-| `tests/test_report_grid.py` | 419 | 419 | 0 | Sim |
-| `tests/test_report_fields.py` | 192 | 192 | 0 | Sim |
-| `tests/test_tmdl_parser.py` (parser oficial do Power BI) | 1 | 1 | 0 | Sim |
-| Total automatizado | 733 | 733 | 0 | Sim |
-| Abertura do relatório no Power BI Desktop | 2 | 2 | 0 | Sim, em 29/10/2026 (antes e depois da migração da grade) |
-| Execução de DAX | 0 | 0 | 0 | **Não** |
-| Renderização de visuais | 0 | 0 | 0 | **Não** |
+| `tests/test_data_contract.py` | 47 | 47 | 0 | 30/10/2026 |
+| `tests/test_model_structure.py` | 32 | 32 | 0 | 30/10/2026 |
+| `tests/test_report_structure.py` | 44 | 44 | 0 | 30/10/2026 |
+| `tests/test_report_grid.py` | 484 | 484 | 0 | 30/10/2026 |
+| `tests/test_report_fields.py` | 192 | 192 | 0 | 30/10/2026 |
+| `tests/test_tmdl_parser.py` (parser oficial do Power BI) | 1 | 1 | 0 | 30/10/2026 |
+| **Total automatizado** | **800** | **800** | **0** | 30/10/2026 |
+| Abertura do relatório no Power BI Desktop | 2 | 2 | 0 | 29/10/2026 (antes e depois da migração da grade) |
+| Execução de DAX | 0 | 0 | 0 | **Não** (gabarito disponível em §7) |
+| Renderização de visuais | 3/6 páginas | — | — | 29/10/2026 (parcial; ver §9) |
+
+```powershell
+python tests/run_tests.py
+```
 
 ```powershell
 python tests/run_tests.py
@@ -110,17 +114,17 @@ Resultado atual: 192 verificações, 192 aprovadas, 95 visuais e 44 referências
 
 Esse teste existe porque os testes estáticos não pegavam o defeito que mais importa: sintaxe que o parser recusa. Foi ele que reproduziu o erro de abertura relatado em 29/10/2026.
 
-Resultado atual:
+Resultado atual (30/10/2026):
 
 ```text
 PARSE OK
-  Auditoria_Dados    | colunas=11 medidas=0
-  Dim_Calendario     | colunas=9  medidas=0
-  Dim_Indicador      | colunas=10 medidas=0
-  Fato_Medicoes      | colunas=12 medidas=0
-  Pendencias_Validacao | colunas=5 medidas=0
-  Resumo_Qualidade   | colunas=7  medidas=0
-  _Medidas           | colunas=1  medidas=55
+  Auditoria_Dados      | colunas=11 medidas=0
+  Dim_Calendario       | colunas=9  medidas=0
+  Dim_Indicador        | colunas=10 medidas=0
+  Fato_Medicoes        | colunas=12 medidas=0
+  Pendencias_Validacao | colunas=5  medidas=0
+  Resumo_Qualidade     | colunas=7  medidas=0
+  _Medidas             | colunas=1  medidas=64
   relacao: Fato_Medicoes[Data] -> Dim_Calendario[Data]
   relacao: Fato_Medicoes[Indicador_Codigo] -> Dim_Indicador[Codigo]
 Total: 7 tabelas, 64 medidas, 2 relacionamentos
