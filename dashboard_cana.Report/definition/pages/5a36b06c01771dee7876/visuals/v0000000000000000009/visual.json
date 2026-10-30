@@ -2,32 +2,33 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000009",
   "position": {
-    "x": 305,
-    "y": 126,
+    "x": 24,
+    "y": 72,
     "z": 1009,
-    "width": 265,
-    "height": 114,
+    "width": 300,
+    "height": 80,
     "tabOrder": 9
   },
   "visual": {
-    "visualType": "card",
+    "visualType": "slicer",
     "query": {
       "queryState": {
         "Values": {
           "projections": [
             {
               "field": {
-                "Measure": {
+                "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "_Medidas"
+                      "Entity": "Dim_Calendario"
                     }
                   },
-                  "Property": "Rotulo Registros Validados"
+                  "Property": "Data"
                 }
               },
-              "queryRef": "_Medidas.Rotulo Registros Validados",
-              "nativeQueryRef": "Rotulo Registros Validados"
+              "queryRef": "Dim_Calendario.Data",
+              "nativeQueryRef": "Data",
+              "active": true
             }
           ]
         }
@@ -35,20 +36,48 @@
     },
     "drillFilterOtherVisuals": true,
     "objects": {
-      "labels": [
+      "data": [
         {
           "properties": {
-            "fontSize": {
+            "mode": {
               "expr": {
                 "Literal": {
-                  "Value": "24D"
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "header": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             },
-            "fontFamily": {
+            "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Aptos Display'"
+                  "Value": "'Período'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             },
@@ -57,16 +86,54 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#173F35'"
+                      "Value": "'#FFFFFF'"
                     }
                   }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
                 }
               }
             }
           }
         }
       ],
-      "categoryLabels": [
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#D8DDD5'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
         {
           "properties": {
             "show": {
@@ -78,79 +145,35 @@
             }
           }
         }
-      ]
-    },
-    "visualContainerObjects": {
-      "title": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'REGISTROS VÁLIDOS'"
-                }
-              }
-            },
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#173F35'"
-                    }
-                  }
-                }
-              }
-            },
-            "alignment": {
-              "expr": {
-                "Literal": {
-                  "Value": "'left'"
-                }
-              }
-            }
-          }
-        }
       ],
-      "subTitle": [
+      "padding": [
         {
           "properties": {
-            "show": {
+            "top": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "8D"
                 }
               }
             },
-            "text": {
+            "bottom": {
               "expr": {
                 "Literal": {
-                  "Value": "'86,1% sem pendência técnica'"
+                  "Value": "8D"
                 }
               }
             },
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#76817B'"
-                    }
-                  }
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
                 }
               }
             },
-            "alignment": {
+            "right": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "8D"
                 }
               }
             }

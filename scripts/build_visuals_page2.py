@@ -37,13 +37,14 @@ def evolucao() -> Pagina:
     p.barra_navegacao_app(indice_ativo=2)
 
     # 2. Faixa de filtros com chip de escopo
-    p.filtro_data(x=24, y=72, w=300, h=46)
-    p.filtro("Fato_Medicoes", "Fonte", x=334, w=230, y=72, h=46)
-    p.filtro("Dim_Indicador", "Nome_Original", x=574, w=330, y=72, h=46)
+    p.filtro_data(x=24, y=72, w=300, h=80)
+    p.filtro("Fato_Medicoes", "Fonte", x=334, w=230, y=72, h=80)
+    p.filtro("Dim_Indicador", "Nome_Original", x=574, w=330, y=72, h=80)
     p.scope_chip(
         "ESCOPO TEMPORAL  ·  04/01 a 11/12/2026  ·  274 dias com leituras",
-        x=914, y=72, w=502, h=46
+        x=914, y=72, w=404, h=80
     )
+    p.limpar_filtros_button()
 
     # 3. Trilho do Indicador à esquerda (4 cards: x = 24, w = 290, y = 126 a 748, h = 622)
     trilho_itens = [
@@ -52,17 +53,17 @@ def evolucao() -> Pagina:
         ("CONFORMIDADE TÉCNICA", "Status homologado", "Status do Indicador"),
         ("REGRA RECOMENDADA", "Diretriz técnica Dim_Indicador", "Rotulo Regra Recomendada Curta"),
     ]
-    h_card = (622 - 12 * 3) // 4  # 146px
+    h_card = 136
     for i, (tit, sub, med) in enumerate(trilho_itens):
-        h_atual = h_card if i < 3 else (622 - 3 * (h_card + 12))
+        h_atual = h_card
         p.cartao_kpi(
-            24, 126 + i * (h_card + 12), 290, h_atual,
+            24, 160 + i * (h_card + 12), 290, h_atual,
             tit, sub, "_Medidas", med, valor_px=20
         )
 
     # 4. Gráfico Principal Superior: Série Diária Ampla (x = 324, y = 126, w = 1092, h = 368)
     p.add(
-        "lineChart", 324, 126, 1092, 368,
+        "lineChart", 324, 160, 1092, 340,
         {
             "Category": {"projections": [coluna("Dim_Calendario", "Data")]},
             "Y": {"projections": [medida("_Medidas", "Media Aritmetica Nao Ponderada")]},
@@ -75,7 +76,7 @@ def evolucao() -> Pagina:
 
     # 5. Gráfico Inferior Esquerdo: Sazonalidade Mensal (x = 324, y = 504, w = 590, h = 244)
     p.add(
-        "lineChart", 324, 504, 590, 244,
+        "lineChart", 324, 516, 590, 232,
         {
             "Category": {"projections": [coluna("Dim_Calendario", "Nome_Mes")]},
             "Y": {"projections": [medida("_Medidas", "Media Aritmetica Nao Ponderada")]},
@@ -95,7 +96,7 @@ def evolucao() -> Pagina:
     w_comp = (492 - 12 * 2) // 3  # 156px
     for i, (tit, sub, med) in enumerate(comparacao):
         p.cartao_kpi(
-            924 + i * (w_comp + 12), 504, w_comp, 244,
+            924 + i * (w_comp + 12), 516, w_comp, 232,
             tit, sub, "_Medidas", med, valor_px=18
         )
 

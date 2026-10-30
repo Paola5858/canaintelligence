@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "v0000000000000000015",
   "position": {
-    "x": 24,
-    "y": 590,
+    "x": 305.0322580645161,
+    "y": 159.48387096774192,
     "z": 1015,
-    "width": 290,
-    "height": 157,
+    "height": 113.03225806451613,
+    "width": 264.77419354838707,
     "tabOrder": 15
   },
   "visual": {
@@ -23,17 +23,16 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Status do Indicador"
+                  "Property": "Rotulo Registros Validados"
                 }
               },
-              "queryRef": "_Medidas.Status do Indicador",
-              "nativeQueryRef": "Status do Indicador"
+              "queryRef": "_Medidas.Rotulo Registros Validados",
+              "nativeQueryRef": "Rotulo Registros Validados"
             }
           ]
         }
       }
     },
-    "drillFilterOtherVisuals": true,
     "objects": {
       "labels": [
         {
@@ -41,7 +40,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "20D"
+                  "Value": "24D"
                 }
               }
             },
@@ -94,7 +93,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'STATUS DE VALIDAÇÃO'"
+                  "Value": "'REGISTROS VÁLIDOS'"
                 }
               }
             },
@@ -132,7 +131,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Conformidade na dimensão'"
+                  "Value": "'86,1% sem pendência técnica'"
                 }
               }
             },
@@ -157,6 +156,7 @@
           }
         }
       ]
-    }
+    },
+    "drillFilterOtherVisuals": true
   }
 }

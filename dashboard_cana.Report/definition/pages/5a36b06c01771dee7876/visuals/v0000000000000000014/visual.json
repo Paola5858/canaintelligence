@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "v0000000000000000014",
   "position": {
-    "x": 24,
-    "y": 419,
+    "x": 24.774193548387096,
+    "y": 159.48387096774192,
     "z": 1014,
-    "width": 290,
-    "height": 157,
+    "height": 113.03225806451613,
+    "width": 264.77419354838707,
     "tabOrder": 14
   },
   "visual": {
@@ -23,17 +23,16 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Rotulo Regra Recomendada Curta"
+                  "Property": "Dias com Dados"
                 }
               },
-              "queryRef": "_Medidas.Rotulo Regra Recomendada Curta",
-              "nativeQueryRef": "Rotulo Regra Recomendada Curta"
+              "queryRef": "_Medidas.Dias com Dados",
+              "nativeQueryRef": "Dias com Dados"
             }
           ]
         }
       }
     },
-    "drillFilterOtherVisuals": true,
     "objects": {
       "labels": [
         {
@@ -41,7 +40,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "20D"
+                  "Value": "24D"
                 }
               }
             },
@@ -94,7 +93,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'REGRA RECOMENDADA'"
+                  "Value": "'DIAS MONITORADOS'"
                 }
               }
             },
@@ -132,7 +131,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Diretriz técnica Dim_Indicador'"
+                  "Value": "'80,1% de cobertura contínua'"
                 }
               }
             },
@@ -157,6 +156,7 @@
           }
         }
       ]
-    }
+    },
+    "drillFilterOtherVisuals": true
   }
 }

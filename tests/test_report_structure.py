@@ -74,6 +74,23 @@ for page_id in ordem:
     check(f"{page_id}: declara schema", "$schema" in page)
     nomes.append(str(page.get("displayName", "")))
 
+    # A navegação do cabeçalho precisa ser composta por botões com destino
+    # explícito. Texto em caixa não é navegação, por mais convincente que pareça.
+    links: list[str] = []
+    for visual_file in sorted((PAGES / page_id / "visuals").glob("*/visual.json")):
+        visual = load(visual_file).get("visual", {})
+        if visual.get("visualType") != "actionButton":
+            continue
+        for link in visual.get("visualContainerObjects", {}).get("visualLink", []):
+            props = link.get("properties", {})
+            tipo = props.get("type", {}).get("expr", {}).get("Literal", {}).get("Value", "")
+            pagina = props.get("navigationSection", {}).get("expr", {}).get("Literal", {}).get("Value")
+            if str(tipo).strip("'") == "PageNavigation" and pagina:
+                links.append(str(pagina).strip("'"))
+    check(f"{page_id}: navbar tem seis destinos reais",
+          len(links) == len(ordem) and set(links) == set(ordem),
+          f"{len(links)} links: {links}")
+
 check("Nomes das paginas na ordem certa",
       nomes == ["Visão geral", "Evolução", "Fontes", "Indicadores", "Qualidade", "Detalhes"],
       str(nomes))

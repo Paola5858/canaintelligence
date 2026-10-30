@@ -1,17 +1,16 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "v0000000000000000002",
   "position": {
     "x": 24,
     "y": 8,
     "z": 1002,
-    "width": 470,
     "height": 48,
+    "width": 470,
     "tabOrder": 2
   },
   "visual": {
     "visualType": "textbox",
-    "drillFilterOtherVisuals": true,
     "objects": {
       "general": [
         {
@@ -22,27 +21,24 @@
                   {
                     "value": "CANA INTELLIGENCE",
                     "textStyle": {
-                      "fontSize": "15pt",
                       "fontFamily": "Aptos Display",
-                      "color": "#FFFFFF",
-                      "fontWeight": "700"
+                      "fontSize": "15pt",
+                      "color": "#173f35"
                     }
                   }
-                ],
-                "horizontalTextAlignment": "left"
+                ]
               },
               {
                 "textRuns": [
                   {
                     "value": "USINA SUCROENERGÉTICA · SAFRA 2026/2027 · PAINEL EXECUTIVO",
                     "textStyle": {
-                      "fontSize": "8pt",
                       "fontFamily": "Aptos",
-                      "color": "#D8DDD5"
+                      "fontSize": "8pt",
+                      "color": "#76817b"
                     }
                   }
-                ],
-                "horizontalTextAlignment": "left"
+                ]
               }
             ]
           }
@@ -89,6 +85,7 @@
           }
         }
       ]
-    }
+    },
+    "drillFilterOtherVisuals": true
   }
 }

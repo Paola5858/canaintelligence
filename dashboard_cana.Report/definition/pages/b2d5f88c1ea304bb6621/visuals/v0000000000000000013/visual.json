@@ -2,101 +2,34 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000013",
   "position": {
-    "x": 588,
-    "y": 248,
+    "x": 1330,
+    "y": 72,
     "z": 1013,
-    "width": 828,
-    "height": 500,
+    "width": 86,
+    "height": 80,
     "tabOrder": 13
   },
   "visual": {
-    "visualType": "matrix",
-    "query": {
-      "queryState": {
-        "Rows": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Fato_Medicoes"
-                    }
-                  },
-                  "Property": "Fonte"
-                }
-              },
-              "queryRef": "Fato_Medicoes.Fonte",
-              "nativeQueryRef": "Fonte",
-              "active": true
-            }
-          ]
-        },
-        "Values": {
-          "projections": [
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Medidas"
-                    }
-                  },
-                  "Property": "Quantidade de Leituras"
-                }
-              },
-              "queryRef": "_Medidas.Quantidade de Leituras",
-              "nativeQueryRef": "Quantidade de Leituras"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Medidas"
-                    }
-                  },
-                  "Property": "Dias com Dado da Fonte"
-                }
-              },
-              "queryRef": "_Medidas.Dias com Dado da Fonte",
-              "nativeQueryRef": "Dias com Dado da Fonte"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Medidas"
-                    }
-                  },
-                  "Property": "Minimo Observado"
-                }
-              },
-              "queryRef": "_Medidas.Minimo Observado",
-              "nativeQueryRef": "Minimo Observado"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Medidas"
-                    }
-                  },
-                  "Property": "Maximo Observado"
-                }
-              },
-              "queryRef": "_Medidas.Maximo Observado",
-              "nativeQueryRef": "Maximo Observado"
-            }
-          ]
-        }
-      }
-    },
+    "visualType": "actionButton",
     "drillFilterOtherVisuals": true,
-    "visualContainerObjects": {
-      "title": [
+    "objects": {
+      "icon": [
+        {
+          "properties": {
+            "shapeType": {
+              "expr": {
+                "Literal": {
+                  "Value": "'blank'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        }
+      ],
+      "text": [
         {
           "properties": {
             "show": {
@@ -105,11 +38,15 @@
                   "Value": "true"
                 }
               }
-            },
+            }
+          }
+        },
+        {
+          "properties": {
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Matriz Comparativa de Desempenho por Fonte'"
+                  "Value": "'LIMPAR'"
                 }
               }
             },
@@ -124,17 +61,87 @@
                 }
               }
             },
-            "alignment": {
+            "bold": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        }
+      ],
+      "fill": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
           }
+        },
+        {
+          "properties": {
+            "fillColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
         }
       ],
-      "subTitle": [
+      "outline": [
+        {
+          "properties": {
+            "lineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#D8DDD5'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "visualLink": [
         {
           "properties": {
             "show": {
@@ -144,28 +151,49 @@
                 }
               }
             },
-            "text": {
+            "type": {
               "expr": {
                 "Literal": {
-                  "Value": "'Volumetria de leituras, dias cobertos e extremos operacionais'"
+                  "Value": "'ClearAllSlicers'"
                 }
               }
-            },
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#76817B'"
-                    }
-                  }
-                }
-              }
-            },
-            "alignment": {
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }

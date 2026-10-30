@@ -40,18 +40,6 @@ table _Medidas
 		displayFolder: 00 | Base e qualidade
 		lineageTag: 2d4d4312-45ff-4e1f-a805-b648d42c665e
 
-	/// Pendencias cujo tratamento analitico foi aplicado, mas a correcao no sistema legado continua aberta.
-	measure 'Pendencias Abertas na Origem' = COUNTROWS ( FILTER ( Pendencias_Validacao, CONTAINSSTRING ( Pendencias_Validacao[Status], "Aberta" ) ) )
-		formatString: #,##0
-		displayFolder: 00 | Base e qualidade
-		lineageTag: 2d4d4312-45ff-4e1f-a805-b648d42c6660
-
-	/// Pendencias tratadas na fato ou documentadas para exibicao, sem declarar correcao no legado.
-	measure 'Pendencias Tratadas na Analitica' = COUNTROWS ( FILTER ( Pendencias_Validacao, CONTAINSSTRING ( Pendencias_Validacao[Status], "Resolvida na Fato" ) || CONTAINSSTRING ( Pendencias_Validacao[Status], "Documentada" ) ) )
-		formatString: #,##0
-		displayFolder: 00 | Base e qualidade
-		lineageTag: 2d4d4312-45ff-4e1f-a805-b648d42c6661
-
 	measure 'Registros Normalizados' = CALCULATE ( COUNTROWS ( Fato_Medicoes ), Fato_Medicoes[Status_Validacao] = "Normalizado" )
 		formatString: #,##0
 		displayFolder: 00 | Base e qualidade
@@ -333,52 +321,6 @@ table _Medidas
 		displayFolder: 05 | Formatação e UX
 		lineageTag: 29c75797-fd88-454a-98c5-3588c60dee74
 
-	/// Regra recomendada pela dimensao, separada do calculo efetivamente exibido na tela.
-	measure 'Rotulo Regra Recomendada' =
-			VAR Codigo = [Codigo do Indicador no Contexto]
-			VAR Regra = CALCULATE ( SELECTEDVALUE ( Dim_Indicador[Tipo_Agregacao_Recomendada] ), Dim_Indicador[Codigo] = Codigo )
-			RETURN COALESCE ( Regra, "Regra nao definida" )
-		displayFolder: 05 | Formatação e UX
-		lineageTag: 29c75797-fd88-454a-98c5-3588c60dee75
-
-	/// Versão concisa para cartões. Palavra única para nunca truncar na UI.
-	measure 'Rotulo Regra Recomendada Curta' =
-			VAR Codigo = [Codigo do Indicador no Contexto]
-			VAR Regra = CALCULATE ( SELECTEDVALUE ( Dim_Indicador[Tipo_Agregacao_Recomendada] ), Dim_Indicador[Codigo] = Codigo )
-			RETURN
-				SWITCH (
-					TRUE (),
-					Codigo = "TC", "Pendente",
-					CONTAINSSTRING ( Regra, "Ponderada" ), "Ponderada",
-					CONTAINSSTRING ( Regra, "Logarítmica" ) || CONTAINSSTRING ( Regra, "Logaritmica" ), "Logarítmica",
-					CONTAINSSTRING ( Regra, "Aritmética" ) || CONTAINSSTRING ( Regra, "Aritmetica" ), "Aritmética",
-					COALESCE ( Regra, "Pendente" )
-				)
-		displayFolder: 05 | Formatação e UX
-		lineageTag: 29c75797-fd88-454a-98c5-3588c60dee78
-
-	/// Calculo usado nesta versao. Nao e uma homologacao da regra recomendada.
-	measure 'Rotulo Agregacao Utilizada' =
-			VAR Codigo = [Codigo do Indicador no Contexto]
-			RETURN IF ( Codigo = "TC", "Nenhum calculo agregado: TC pendente", "Media aritmetica nao ponderada (exploratoria)" )
-		displayFolder: 05 | Formatação e UX
-		lineageTag: 29c75797-fd88-454a-98c5-3588c60dee76
-
-	/// Aviso curto para impedir que a media exploratoria seja lida como ponderacao homologada.
-	measure 'Aviso Agregacao Utilizada' =
-			VAR Codigo = [Codigo do Indicador no Contexto]
-			VAR Regra = CALCULATE ( SELECTEDVALUE ( Dim_Indicador[Tipo_Agregacao_Recomendada] ), Dim_Indicador[Codigo] = Codigo )
-			RETURN
-				SWITCH (
-					TRUE (),
-					Codigo = "TC", "TC bloqueado: unidade e regra tecnica pendentes (P_TC_01)",
-					CONTAINSSTRING ( Regra, "Ponderada" ), "Ponderacao por TC indisponivel: media aritmetica exploratoria",
-					CONTAINSSTRING ( Regra, "Logaritmica" ), "Media aritmetica exibida apenas como aproximacao exploratoria",
-					BLANK ()
-				)
-		displayFolder: 05 | Formatação e UX
-		lineageTag: 29c75797-fd88-454a-98c5-3588c60dee77
-
 	/// Usado para impedir que o indicador TC seja lido como tonelagem ou qualquer grandeza validada.
 	measure 'Aviso Unidade Desconhecida' =
 			VAR Codigo = [Codigo do Indicador no Contexto]
@@ -433,11 +375,11 @@ table _Medidas
 
 	/// Exibe o valor original pré-ajuste do registro selecionado ou o total auditado quando nada estiver filtrado.
 	measure 'Rotulo Valor Original' =
-			VAR Id = SELECTEDVALUE ( Fato_Medicoes[ID_Registro] )
+			VAR RegistroSelecionado = SELECTEDVALUE ( Fato_Medicoes[ID_Registro] )
 			VAR ValorOrig = [Valor Original do Registro]
 			RETURN
 				IF (
-					ISBLANK ( Id ),
+					ISBLANK ( RegistroSelecionado ),
 					FORMAT ( [Registros com Ajuste de Escala], "#,##0" ),
 					IF ( ISBLANK ( ValorOrig ), "Sem ajuste", FORMAT ( ValorOrig, "#,##0.00" ) )
 				)
@@ -446,35 +388,16 @@ table _Medidas
 
 	/// Exibe o fator aplicado ao registro selecionado ou o resumo dos fatores vigentes quando nada estiver filtrado.
 	measure 'Rotulo Fator Aplicado' =
-			VAR Id = SELECTEDVALUE ( Fato_Medicoes[ID_Registro] )
+			VAR RegistroSelecionado = SELECTEDVALUE ( Fato_Medicoes[ID_Registro] )
 			VAR Fator = [Fator Aplicado do Registro]
 			RETURN
 				IF (
-					ISBLANK ( Id ),
+					ISBLANK ( RegistroSelecionado ),
 					"÷ 100 / 1.000",
 					IF ( ISBLANK ( Fator ), "1× (Sem fator)", "÷ " & FORMAT ( Fator, "#,##0" ) )
 				)
 		displayFolder: 06 | Rastreabilidade
 		lineageTag: 5f1a0b11-1c2d-4e3f-9a00-ca1a00000006
-
-	/// Exibe a regra do registro selecionado ou o resumo das regras homologadas quando nada estiver filtrado.
-	measure 'Rotulo Regra Aplicada' =
-			VAR Id = SELECTEDVALUE ( Fato_Medicoes[ID_Registro] )
-			VAR Regra = [Regra de Transformacao do Registro]
-			RETURN
-				IF (
-					ISBLANK ( Id ),
-					"2 Regras Ativas",
-					SWITCH (
-						TRUE (),
-						CONTAINSSTRING ( Regra, "1000" ) || CONTAINSSTRING ( Regra, "1.000" ), "Divisão por 1.000",
-						CONTAINSSTRING ( Regra, "100" ), "Divisão por 100",
-						Regra = "Sem auditoria" || ISBLANK ( Regra ), "Sem ajuste",
-						"Regra registrada"
-					)
-				)
-		displayFolder: 06 | Rastreabilidade
-		lineageTag: 5f1a0b11-1c2d-4e3f-9a1a00000011
 
 	/// Numero de leituras do indicador no contexto. Sempre valido, independente da unidade.
 	/// Indicador exploratorio padrao quando o slicer abre em Todos.
@@ -525,6 +448,83 @@ table _Medidas
 				)
 		displayFolder: 01 | Indicadores
 		lineageTag: 5f1a0b11-1c2d-4e3f-9a1a00000010
+
+	/// Pendencias cujo tratamento analitico foi aplicado, mas a correcao no sistema legado continua aberta.
+	measure 'Pendencias Abertas na Origem' = COUNTROWS ( FILTER ( Pendencias_Validacao, CONTAINSSTRING ( Pendencias_Validacao[Status], "Aberta" ) ) )
+		formatString: #,##0
+		displayFolder: 00 | Base e qualidade
+		lineageTag: 2d4d4312-45ff-4e1f-a805-b648d42c6660
+
+	/// Pendencias tratadas na fato ou documentadas para exibicao, sem declarar correcao no legado.
+	measure 'Pendencias Tratadas na Analitica' = COUNTROWS ( FILTER ( Pendencias_Validacao, CONTAINSSTRING ( Pendencias_Validacao[Status], "Resolvida na Fato" ) || CONTAINSSTRING ( Pendencias_Validacao[Status], "Documentada" ) ) )
+		formatString: #,##0
+		displayFolder: 00 | Base e qualidade
+		lineageTag: 2d4d4312-45ff-4e1f-a805-b648d42c6661
+
+	/// Regra recomendada pela dimensao, separada do calculo efetivamente exibido na tela.
+	measure 'Rotulo Regra Recomendada' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			VAR Regra = CALCULATE ( SELECTEDVALUE ( Dim_Indicador[Tipo_Agregacao_Recomendada] ), Dim_Indicador[Codigo] = Codigo )
+			RETURN COALESCE ( Regra, "Regra nao definida" )
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 29c75797-fd88-454a-98c5-3588c60dee75
+
+	/// Versão concisa para cartões. Palavra única para nunca truncar na UI.
+	measure 'Rotulo Regra Recomendada Curta' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			VAR Regra = CALCULATE ( SELECTEDVALUE ( Dim_Indicador[Tipo_Agregacao_Recomendada] ), Dim_Indicador[Codigo] = Codigo )
+			RETURN
+				SWITCH (
+					TRUE (),
+					Codigo = "TC", "Pendente",
+					CONTAINSSTRING ( Regra, "Ponderada" ), "Ponderada",
+					CONTAINSSTRING ( Regra, "Logarítmica" ) || CONTAINSSTRING ( Regra, "Logaritmica" ), "Logarítmica",
+					CONTAINSSTRING ( Regra, "Aritmética" ) || CONTAINSSTRING ( Regra, "Aritmetica" ), "Aritmética",
+					COALESCE ( Regra, "Pendente" )
+				)
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 29c75797-fd88-454a-98c5-3588c60dee78
+
+	/// Calculo usado nesta versao. Nao e uma homologacao da regra recomendada.
+	measure 'Rotulo Agregacao Utilizada' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			RETURN IF ( Codigo = "TC", "Nenhum calculo agregado: TC pendente", "Media aritmetica nao ponderada (exploratoria)" )
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 29c75797-fd88-454a-98c5-3588c60dee76
+
+	/// Aviso curto para impedir que a media exploratoria seja lida como ponderacao homologada.
+	measure 'Aviso Agregacao Utilizada' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			VAR Regra = CALCULATE ( SELECTEDVALUE ( Dim_Indicador[Tipo_Agregacao_Recomendada] ), Dim_Indicador[Codigo] = Codigo )
+			RETURN
+				SWITCH (
+					TRUE (),
+					Codigo = "TC", "TC bloqueado: unidade e regra tecnica pendentes (P_TC_01)",
+					CONTAINSSTRING ( Regra, "Ponderada" ), "Ponderacao por TC indisponivel: media aritmetica exploratoria",
+					CONTAINSSTRING ( Regra, "Logaritmica" ), "Media aritmetica exibida apenas como aproximacao exploratoria",
+					BLANK ()
+				)
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 29c75797-fd88-454a-98c5-3588c60dee77
+
+	/// Exibe a regra do registro selecionado ou o resumo das regras homologadas quando nada estiver filtrado.
+	measure 'Rotulo Regra Aplicada' =
+			VAR RegistroSelecionado = SELECTEDVALUE ( Fato_Medicoes[ID_Registro] )
+			VAR Regra = [Regra de Transformacao do Registro]
+			RETURN
+				IF (
+					ISBLANK ( RegistroSelecionado ),
+					"2 Regras Ativas",
+					SWITCH (
+						TRUE (),
+						CONTAINSSTRING ( Regra, "1000" ) || CONTAINSSTRING ( Regra, "1.000" ), "Divisão por 1.000",
+						CONTAINSSTRING ( Regra, "100" ), "Divisão por 100",
+						Regra = "Sem auditoria" || ISBLANK ( Regra ), "Sem ajuste",
+						"Regra registrada"
+					)
+				)
+		displayFolder: 06 | Rastreabilidade
+		lineageTag: 5f1a0b11-1c2d-4e3f-9a1a00000011
 
 	column Placeholder
 		dataType: string

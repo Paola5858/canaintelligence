@@ -110,7 +110,26 @@ def rotulo_cartao(valor_px: int = 24, cor_valor: str = "#173F35") -> dict:
 
 # ------------------------------------------------------------------ pagina
 
-MODO_DROPDOWN = {"data": [{"properties": {"mode": texto("Dropdown")}}]}
+def modo_dropdown(rotulo: str) -> dict:
+    """Dropdown com cabeçalho explícito, para a seleção não virar adivinhação."""
+    return {
+        "data": [{"properties": {"mode": texto("Dropdown")}}],
+        "header": [{"properties": {
+            "show": lit("true"),
+            "text": texto(rotulo),
+        }}],
+    }
+
+
+def padding_slicer() -> dict:
+    # Qualquer VCO tira o padding herdado do tema. Sem isso o Power BI encosta
+    # o cabeçalho no contorno e corta a seleção, especialmente no dropdown.
+    return {"padding": [{"properties": {
+        "top": inteiro(8),
+        "bottom": inteiro(8),
+        "left": inteiro(8),
+        "right": inteiro(8),
+    }}]}
 
 
 def limpar_visuais(pasta_pagina: Path) -> int:
@@ -184,7 +203,12 @@ class Pagina:
     # -------------------------------------------------------------- componentes premium
 
     def barra_navegacao_app(self, indice_ativo: int | None = None):
-        """Header executivo moderno: marca à esquerda e abas de navegação no formato pill à direita."""
+        """Cabeçalho e navegação real do relatório.
+
+        A versão anterior desenhava cinco abas como texto dentro de uma caixa.
+        Bonito, sim; clicável, não. Cada aba agora é um actionButton com
+        PageNavigation explícito, inclusive na página atualmente aberta.
+        """
         idx = indice_ativo if indice_ativo is not None else self.indice_pagina
 
         # 1. Faixa superior de marca. O contraste vem da composicao, nao de emoji.
@@ -194,8 +218,8 @@ class Pagina:
                 "textRuns": [{"value": "", "textStyle": {"fontSize": "1pt"}}]
             }]}}]},
             container={
-                "background": [{"properties": {"show": lit("true"), "color": cor("#173F35")}}],
-                "border": [{"properties": {"show": lit("false")}}],
+                "background": [{"properties": {"show": lit("true"), "color": cor("#F5F7F2")}}],
+                "border": [{"properties": {"show": lit("true"), "color": cor("#D8DDD5")}}],
                 "dropShadow": [{"properties": {"show": lit("false")}}],
             },
         )
@@ -209,7 +233,7 @@ class Pagina:
                         {"value": "CANA INTELLIGENCE", "textStyle": {
                             "fontSize": "15pt",
                             "fontFamily": "Aptos Display",
-                            "color": "#FFFFFF",
+                            "color": "#173F35",
                             "fontWeight": "700",
                         }},
                     ],
@@ -220,7 +244,7 @@ class Pagina:
                         {"value": "USINA SUCROENERGÉTICA · SAFRA 2026/2027 · PAINEL EXECUTIVO", "textStyle": {
                             "fontSize": "8pt",
                             "fontFamily": "Aptos",
-                            "color": "#D8DDD5",
+                            "color": "#76817B",
                         }},
                     ],
                     "horizontalTextAlignment": "left",
@@ -229,83 +253,116 @@ class Pagina:
             container=sem_cromo(),
         )
 
-        # 3. Navegacao horizontal em pill container executivo
+        # 3. Navegação horizontal em botões reais, não em texto decorativo.
         paginas_info = [
-            (1, "Visão Geral"),
-            (2, "Evolução"),
-            (3, "Fontes"),
-            (4, "Indicadores"),
-            (5, "Qualidade"),
-            (6, "Detalhes"),
+            (1, "Visão Geral", "5a36b06c01771dee7876"),
+            (2, "Evolução", "a1c4e77b0d92f3aa5510"),
+            (3, "Fontes", "b2d5f88c1ea304bb6621"),
+            (4, "Indicadores", "c3e6091d2fb415cc7732"),
+            (5, "Qualidade", "d4f71a2e30c526dd8843"),
+            (6, "Detalhes", "e50b2b3f41d637ee9954"),
         ]
 
-        text_runs = []
-        for i, (num, nome) in enumerate(paginas_info):
-            if num == idx:
-                text_runs.append({
-                    "value": f" [ {nome.upper()} ] ",
-                    "textStyle": {
-                        "fontSize": "9pt",
-                        "fontFamily": "Aptos Display",
-                        "color": "#173F35",
-                        "fontWeight": "700",
-                    },
-                })
-            else:
-                text_runs.append({
-                    "value": f" {nome} ",
-                    "textStyle": {
-                        "fontSize": "9pt",
-                        "fontFamily": "Aptos",
-                        "color": "#5C6D65",
-                    },
-                })
-            if i < len(paginas_info) - 1:
-                text_runs.append({
-                    "value": " · ",
-                    "textStyle": {
-                        "fontSize": "8.5pt",
-                        "fontFamily": "Aptos",
-                        "color": "#B8C4BD",
-                    },
-                })
+        x0, y0, w, gap, h = 504, 10, 146, 4, 44
+        for num, nome, page_id in paginas_info:
+            ativo = num == idx
+            texto_cor = "#FFFFFF" if ativo else "#365247"
+            fill_cor = "#173F35" if ativo else "#FFFFFF"
+            fill_transparencia = 0 if ativo else 78
+            self.add(
+                "actionButton", x0 + (num - 1) * (w + gap), y0, w, h,
+                objects={
+                    "icon": [
+                        {"properties": {"show": lit("false")}},
+                        {
+                            "properties": {
+                                "shapeType": {"expr": {"Literal": {"Value": "'blank'"}}},
+                                "placement": texto("left"),
+                            },
+                            "selector": {"id": "default"},
+                        },
+                    ],
+                    "text": [
+                        {"properties": {"show": lit("true")}},
+                        {
+                            "properties": {
+                                "text": texto(nome),
+                                "fontColor": cor(texto_cor),
+                                "fontSize": inteiro(10),
+                                "bold": lit("true" if ativo else "false"),
+                                "horizontalAlignment": texto("center"),
+                            },
+                            "selector": {"id": "default"},
+                        },
+                    ],
+                    "fill": [
+                        {"properties": {"show": lit("true")}},
+                        {
+                            "properties": {
+                                "fillColor": cor(fill_cor),
+                                "transparency": inteiro(fill_transparencia),
+                            },
+                            "selector": {"id": "default"},
+                        }, {
+                        "properties": {
+                            "fillColor": cor("#FFFFFF"),
+                            "transparency": inteiro(70),
+                        },
+                        "selector": {"id": "hover"},
+                    }, {
+                        "properties": {
+                            "fillColor": cor("#D8E7DB"),
+                            "transparency": inteiro(0),
+                        },
+                        "selector": {"id": "selected"},
+                    }],
+                    "outline": [{"properties": {"show": lit("false")}}],
+                    "shape": [
+                        {"properties": {
+                            "tileShape": texto("rectangleRounded"),
+                            "roundEdge": inteiro(12),
+                        }},
+                        {"properties": {
+                            "tileShape": texto("rectangleRounded"),
+                        }, "selector": {"id": "default"}},
+                    ],
+                },
+                container={
+                    "visualLink": [{"properties": {
+                        "show": lit("true"),
+                        "type": texto("PageNavigation"),
+                        "navigationSection": texto(page_id),
+                    }}],
+                    "background": [{"properties": {"show": lit("false")}}],
+                    "border": [{"properties": {"show": lit("false")}}],
+                    "visualHeader": [{"properties": {"show": lit("false")}}],
+                },
+            )
 
-        self.add(
-            "textbox", 504, 12, 912, 40,
-            objects={"general": [{"properties": {"paragraphs": [{
-                "textRuns": text_runs,
-                "horizontalTextAlignment": "right",
-            }]}}]},
-            container={
-                "background": [{"properties": {
-                    "show": lit("true"),
-                    "color": cor("#F4F7F2"),
-                    "transparency": inteiro(0),
-                }}],
-                "border": [{"properties": {
-                    "show": lit("true"),
-                    "color": cor("#D8DDD5"),
-                    "radius": inteiro(16),
-                }}],
-                "dropShadow": [{"properties": {"show": lit("false")}}],
-            },
-        )
-
-    def scope_chip(self, texto_escopo: str, x=946, y=72, w=470, h=46):
+    def scope_chip(self, texto_escopo: str, x=946, y=72, w=470, h=80):
         """Card de contexto ativo / status de escopo."""
+        partes = [parte.strip() for parte in texto_escopo.split("·", 1)]
+        paragrafos = [{
+            "textRuns": [{"value": partes[0], "textStyle": {
+                "fontSize": "9.5pt",
+                "fontFamily": "Segoe UI Semibold",
+                "color": "#173F35",
+                "fontWeight": "700",
+            }}],
+            "horizontalTextAlignment": "center",
+        }]
+        if len(partes) == 2:
+            paragrafos.append({
+                "textRuns": [{"value": partes[1], "textStyle": {
+                    "fontSize": "10pt",
+                    "fontFamily": "Segoe UI",
+                    "color": "#365247",
+                }}],
+                "horizontalTextAlignment": "center",
+            })
         self.add(
             "textbox", x, y, w, h,
-            objects={"general": [{"properties": {"paragraphs": [{
-                "textRuns": [
-                    {"value": texto_escopo, "textStyle": {
-                        "fontSize": "8.5pt",
-                        "fontFamily": "Aptos",
-                        "color": "#173F35",
-                        "fontWeight": "600",
-                    }},
-                ],
-                "horizontalTextAlignment": "center",
-            }]}}]},
+            objects={"general": [{"properties": {"paragraphs": paragrafos}}]},
             container={
                 "background": [{"properties": {
                     "show": lit("true"),
@@ -318,6 +375,46 @@ class Pagina:
                     "radius": inteiro(12),
                 }}],
                 "dropShadow": [{"properties": {"show": lit("false")}}],
+            },
+        )
+
+    def limpar_filtros_button(self, x=1330, y=72, w=86, h=80):
+        """Botao nativo para limpar todos os slicers da pagina atual."""
+        self.add(
+            "actionButton", x, y, w, h,
+            objects={
+                "icon": [{
+                    "properties": {"shapeType": {"expr": {"Literal": {"Value": "'blank'"}}}},
+                    "selector": {"id": "default"},
+                }],
+                "text": [
+                    {"properties": {"show": lit("true")}},
+                    {"properties": {
+                        "text": texto("LIMPAR"),
+                        "fontColor": cor("#173F35"),
+                        "bold": lit("true"),
+                        "fontSize": inteiro(9),
+                    }, "selector": {"id": "default"}},
+                ],
+                "fill": [
+                    {"properties": {"show": lit("true")}},
+                    {"properties": {
+                        "fillColor": cor("#FFFFFF"),
+                        "transparency": inteiro(0),
+                    }, "selector": {"id": "default"}},
+                ],
+                "outline": [{"properties": {
+                    "lineColor": cor("#D8DDD5"),
+                }, "selector": {"id": "default"}}],
+            },
+            container={
+                "visualLink": [{"properties": {
+                    "show": lit("true"),
+                    "type": texto("ClearAllSlicers"),
+                }}],
+                "background": [{"properties": {"show": lit("false")}}],
+                "border": [{"properties": {"show": lit("false")}}],
+                "visualHeader": [{"properties": {"show": lit("false")}}],
             },
         )
 
@@ -353,11 +450,11 @@ class Pagina:
             },
         )
 
-    def filtro_data(self, x=24, y=72, w=300, h=46):
+    def filtro_data(self, x=24, y=72, w=300, h=80):
         self.add(
             "slicer", x, y, w, h,
             {"Values": {"projections": [coluna("Dim_Calendario", "Data")]}},
-            objects=MODO_DROPDOWN,
+            objects=modo_dropdown("Período"),
             container={
                 "background": [{"properties": {
                     "show": lit("true"),
@@ -370,14 +467,21 @@ class Pagina:
                     "radius": inteiro(8),
                 }}],
                 "dropShadow": [{"properties": {"show": lit("false")}}],
+                **padding_slicer(),
             },
         )
 
-    def filtro(self, tabela, campo, x, w=220, y=72, h=46):
+    def filtro(self, tabela, campo, x, w=220, y=72, h=80):
+        rotulos = {
+            "Fonte": "Fonte de coleta",
+            "Nome_Original": "Indicador",
+            "Grupo_Fonte": "Grupo de fonte",
+            "Status_Validacao": "Status de validação",
+        }
         self.add(
             "slicer", x, y, w, h,
             {"Values": {"projections": [coluna(tabela, campo)]}},
-            objects=MODO_DROPDOWN,
+            objects=modo_dropdown(rotulos.get(campo, campo.replace("_", " "))),
             container={
                 "background": [{"properties": {
                     "show": lit("true"),
@@ -390,6 +494,7 @@ class Pagina:
                     "radius": inteiro(8),
                 }}],
                 "dropShadow": [{"properties": {"show": lit("false")}}],
+                **padding_slicer(),
             },
         )
 

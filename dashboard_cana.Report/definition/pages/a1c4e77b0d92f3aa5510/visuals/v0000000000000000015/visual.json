@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000015",
   "position": {
-    "x": 1092,
-    "y": 504,
+    "x": 24,
+    "y": 308,
     "z": 1015,
-    "width": 156,
-    "height": 244,
+    "width": 290,
+    "height": 136,
     "tabOrder": 15
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Rotulo Media do Periodo Anterior"
+                  "Property": "Frentes com Dado do Indicador"
                 }
               },
-              "queryRef": "_Medidas.Rotulo Media do Periodo Anterior",
-              "nativeQueryRef": "Rotulo Media do Periodo Anterior"
+              "queryRef": "_Medidas.Frentes com Dado do Indicador",
+              "nativeQueryRef": "Frentes com Dado do Indicador"
             }
           ]
         }
@@ -41,7 +41,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "18D"
+                  "Value": "20D"
                 }
               }
             },
@@ -94,7 +94,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'PERÍODO ANTERIOR'"
+                  "Value": "'FRENTES COM DADO'"
                 }
               }
             },
@@ -132,7 +132,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Comparativo histórico'"
+                  "Value": "'Frentes que medem'"
                 }
               }
             },

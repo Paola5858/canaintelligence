@@ -30,8 +30,8 @@
       "color": "#173F35"
     },
     "title": {
-      "fontFace": "Aptos Display",
-      "fontSize": 12,
+      "fontFace": "Segoe UI Variable Display",
+      "fontSize": 14,
       "color": "#173F35"
     },
     "header": {
@@ -104,7 +104,7 @@
             },
             "alignment": "left",
             "fontSize": 12,
-            "fontFamily": "Segoe UI Semibold"
+            "fontFamily": "Segoe UI Variable Display"
           }
         ],
         "subTitle": [
@@ -186,7 +186,7 @@
                 "color": "#FFFFFF"
               }
             },
-            "fontSize": 9,
+            "fontSize": 12,
             "fontFamily": "Segoe UI Semibold"
           }
         ],
@@ -202,7 +202,7 @@
                 "color": "#FFFFFF"
               }
             },
-            "fontSize": 10,
+            "fontSize": 11,
             "fontFamily": "Segoe UI"
           }
         ]

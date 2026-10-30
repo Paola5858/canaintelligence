@@ -24,7 +24,7 @@
                     "textStyle": {
                       "fontSize": "15pt",
                       "fontFamily": "Aptos Display",
-                      "color": "#FFFFFF",
+                      "color": "#173F35",
                       "fontWeight": "700"
                     }
                   }
@@ -38,7 +38,7 @@
                     "textStyle": {
                       "fontSize": "8pt",
                       "fontFamily": "Aptos",
-                      "color": "#D8DDD5"
+                      "color": "#76817B"
                     }
                   }
                 ],

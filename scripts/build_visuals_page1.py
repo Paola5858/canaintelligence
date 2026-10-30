@@ -37,13 +37,14 @@ def visao_geral() -> Pagina:
     p.barra_navegacao_app(indice_ativo=1)
 
     # 2. Faixa de filtros com chip de escopo
-    p.filtro_data(x=24, y=72, w=300, h=46)
-    p.filtro("Fato_Medicoes", "Fonte", x=334, w=230, y=72, h=46)
-    p.filtro("Dim_Indicador", "Nome_Original", x=574, w=330, y=72, h=46)
+    p.filtro_data(x=24, y=72, w=300, h=80)
+    p.filtro("Fato_Medicoes", "Fonte", x=334, w=230, y=72, h=80)
+    p.filtro("Dim_Indicador", "Nome_Original", x=574, w=330, y=72, h=80)
     p.scope_chip(
         "RECORTE ATIVO  ·  ATR (kg/t)  ·  8 fontes  ·  19.532 linhas",
-        x=914, y=72, w=502, h=46
+        x=914, y=72, w=404, h=80
     )
+    p.limpar_filtros_button()
 
     # 3. Faixa superior de 5 KPI Cards (y = 126 a 238, h = 112)
     kpis = [
@@ -56,7 +57,7 @@ def visao_geral() -> Pagina:
     largura = (1392 - 16 * (len(kpis) - 1)) // len(kpis)  # 265px cada
     for i, (titulo_card, subtitulo_card, nome_medida) in enumerate(kpis):
         p.cartao_kpi(
-            24 + i * (largura + 16), 126, largura, 114,
+            24 + i * (largura + 16), 160, largura, 96,
             titulo_card, subtitulo_card, "_Medidas", nome_medida, valor_px=24
         )
 
@@ -66,16 +67,16 @@ def visao_geral() -> Pagina:
         ("REGRA RECOMENDADA", "Diretriz técnica Dim_Indicador", "Rotulo Regra Recomendada Curta"),
         ("STATUS DE VALIDAÇÃO", "Conformidade na dimensão", "Status do Indicador"),
     ]
-    h_card = (500 - 14 * 2) // 3  # 157px
+    h_card = 150
     for i, (tit, sub, med) in enumerate(trilho_itens):
         p.cartao_kpi(
-            24, 248 + i * (h_card + 14), 290, h_card,
+            24, 272 + i * (h_card + 12), 290, h_card,
             tit, sub, "_Medidas", med, valor_px=20
         )
 
     # 5. Série Temporal Diária do Indicador (Centro: x = 324, y = 248, w = 700, h = 500)
     p.add(
-        "lineChart", 324, 248, 700, 500,
+        "lineChart", 324, 272, 700, 476,
         {
             "Category": {"projections": [coluna("Dim_Calendario", "Data")]},
             "Y": {"projections": [medida("_Medidas", "Media Aritmetica Nao Ponderada")]},
@@ -88,7 +89,7 @@ def visao_geral() -> Pagina:
 
     # 6. Distribuição por Fonte (Direita: x = 1034, y = 248, w = 382, h = 500)
     p.add(
-        "barChart", 1034, 248, 382, 500,
+        "barChart", 1034, 272, 382, 476,
         {
             "Category": {"projections": [coluna("Fato_Medicoes", "Fonte")]},
             "Y": {"projections": [medida("_Medidas", "Quantidade de Registros")]},

@@ -3,121 +3,51 @@
   "name": "v0000000000000000003",
   "position": {
     "x": 504,
-    "y": 12,
+    "y": 10,
     "z": 1003,
-    "width": 912,
-    "height": 40,
+    "width": 146,
+    "height": 44,
     "tabOrder": 3
   },
   "visual": {
-    "visualType": "textbox",
+    "visualType": "actionButton",
     "drillFilterOtherVisuals": true,
     "objects": {
-      "general": [
+      "icon": [
         {
           "properties": {
-            "paragraphs": [
-              {
-                "textRuns": [
-                  {
-                    "value": " Visão Geral ",
-                    "textStyle": {
-                      "fontSize": "9pt",
-                      "fontFamily": "Aptos",
-                      "color": "#5C6D65"
-                    }
-                  },
-                  {
-                    "value": " · ",
-                    "textStyle": {
-                      "fontSize": "8.5pt",
-                      "fontFamily": "Aptos",
-                      "color": "#B8C4BD"
-                    }
-                  },
-                  {
-                    "value": " Evolução ",
-                    "textStyle": {
-                      "fontSize": "9pt",
-                      "fontFamily": "Aptos",
-                      "color": "#5C6D65"
-                    }
-                  },
-                  {
-                    "value": " · ",
-                    "textStyle": {
-                      "fontSize": "8.5pt",
-                      "fontFamily": "Aptos",
-                      "color": "#B8C4BD"
-                    }
-                  },
-                  {
-                    "value": " Fontes ",
-                    "textStyle": {
-                      "fontSize": "9pt",
-                      "fontFamily": "Aptos",
-                      "color": "#5C6D65"
-                    }
-                  },
-                  {
-                    "value": " · ",
-                    "textStyle": {
-                      "fontSize": "8.5pt",
-                      "fontFamily": "Aptos",
-                      "color": "#B8C4BD"
-                    }
-                  },
-                  {
-                    "value": " Indicadores ",
-                    "textStyle": {
-                      "fontSize": "9pt",
-                      "fontFamily": "Aptos",
-                      "color": "#5C6D65"
-                    }
-                  },
-                  {
-                    "value": " · ",
-                    "textStyle": {
-                      "fontSize": "8.5pt",
-                      "fontFamily": "Aptos",
-                      "color": "#B8C4BD"
-                    }
-                  },
-                  {
-                    "value": " Qualidade ",
-                    "textStyle": {
-                      "fontSize": "9pt",
-                      "fontFamily": "Aptos",
-                      "color": "#5C6D65"
-                    }
-                  },
-                  {
-                    "value": " · ",
-                    "textStyle": {
-                      "fontSize": "8.5pt",
-                      "fontFamily": "Aptos",
-                      "color": "#B8C4BD"
-                    }
-                  },
-                  {
-                    "value": " [ DETALHES ] ",
-                    "textStyle": {
-                      "fontSize": "9pt",
-                      "fontFamily": "Aptos Display",
-                      "color": "#173F35",
-                      "fontWeight": "700"
-                    }
-                  }
-                ],
-                "horizontalTextAlignment": "right"
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
               }
-            ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "shapeType": {
+              "expr": {
+                "Literal": {
+                  "Value": "'blank'"
+                }
+              }
+            },
+            "placement": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
           }
         }
-      ]
-    },
-    "visualContainerObjects": {
-      "background": [
+      ],
+      "text": [
         {
           "properties": {
             "show": {
@@ -126,13 +56,126 @@
                   "Value": "true"
                 }
               }
+            }
+          }
+        },
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Visão Geral'"
+                }
+              }
             },
-            "color": {
+            "fontColor": {
               "solid": {
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#F4F7F2'"
+                      "Value": "'#365247'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "horizontalAlignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'center'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        }
+      ],
+      "fill": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "fillColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "78D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        },
+        {
+          "properties": {
+            "fillColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "70D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "hover"
+          }
+        },
+        {
+          "properties": {
+            "fillColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#D8E7DB'"
                     }
                   }
                 }
@@ -145,10 +188,62 @@
                 }
               }
             }
+          },
+          "selector": {
+            "id": "selected"
           }
         }
       ],
-      "border": [
+      "outline": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "shape": [
+        {
+          "properties": {
+            "tileShape": {
+              "expr": {
+                "Literal": {
+                  "Value": "'rectangleRounded'"
+                }
+              }
+            },
+            "roundEdge": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "tileShape": {
+              "expr": {
+                "Literal": {
+                  "Value": "'rectangleRounded'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "visualLink": [
         {
           "properties": {
             "show": {
@@ -158,28 +253,50 @@
                 }
               }
             },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#D8DDD5'"
-                    }
-                  }
+            "type": {
+              "expr": {
+                "Literal": {
+                  "Value": "'PageNavigation'"
                 }
               }
             },
-            "radius": {
+            "navigationSection": {
               "expr": {
                 "Literal": {
-                  "Value": "16D"
+                  "Value": "'5a36b06c01771dee7876'"
                 }
               }
             }
           }
         }
       ],
-      "dropShadow": [
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
         {
           "properties": {
             "show": {

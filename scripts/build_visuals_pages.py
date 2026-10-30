@@ -41,13 +41,14 @@ def fontes() -> Pagina:
     p.barra_navegacao_app(indice_ativo=3)
 
     # 2. Filtros e chip de escopo
-    p.filtro_data(x=24, y=72, w=300, h=46)
-    p.filtro("Dim_Indicador", "Nome_Original", x=334, w=320, y=72, h=46)
-    p.filtro("Fato_Medicoes", "Grupo_Fonte", x=664, w=240, y=72, h=46)
+    p.filtro_data(x=24, y=72, w=300, h=80)
+    p.filtro("Dim_Indicador", "Nome_Original", x=334, w=320, y=72, h=80)
+    p.filtro("Fato_Medicoes", "Grupo_Fonte", x=664, w=240, y=72, h=80)
     p.scope_chip(
         "ESCOPO FONTES  ·  7 frentes de colheita  ·  laboratório central",
-        x=914, y=72, w=502, h=46
+        x=914, y=72, w=404, h=80
     )
+    p.limpar_filtros_button()
 
     # 3. Faixa de 4 KPI Cards (y = 126 a 238, h = 112)
     kpis = [
@@ -59,13 +60,13 @@ def fontes() -> Pagina:
     largura = (1392 - 16 * (len(kpis) - 1)) // len(kpis)  # 336px
     for i, (tit, sub, med) in enumerate(kpis):
         p.cartao_kpi(
-            24 + i * (largura + 16), 126, largura, 114,
+            24 + i * (largura + 16), 160, largura, 96,
             tit, sub, "_Medidas", med, valor_px=22
         )
 
     # 4. Gráfico da Faixa Observada (Esquerda: x = 24, y = 248, w = 550, h = 500)
     p.add(
-        "barChart", 24, 248, 550, 500,
+        "barChart", 24, 272, 550, 476,
         {
             "Category": {"projections": [coluna("Fato_Medicoes", "Fonte")]},
             "Y": {"projections": [
@@ -81,7 +82,7 @@ def fontes() -> Pagina:
 
     # 5. Matriz de Comparação por Fonte (Direita: x = 588, y = 248, w = 828, h = 500)
     p.add(
-        "matrix", 588, 248, 828, 500,
+        "matrix", 588, 272, 828, 476,
         {
             "Rows": {"projections": [coluna("Fato_Medicoes", "Fonte")]},
             "Values": {"projections": [
@@ -112,17 +113,18 @@ def indicadores() -> Pagina:
     p.barra_navegacao_app(indice_ativo=4)
 
     # 2. Filtros e chip de escopo
-    p.filtro_data(x=24, y=72, w=300, h=46)
-    p.filtro("Fato_Medicoes", "Fonte", x=334, w=230, y=72, h=46)
-    p.filtro("Dim_Indicador", "Nome_Original", x=574, w=330, y=72, h=46)
+    p.filtro_data(x=24, y=72, w=300, h=80)
+    p.filtro("Fato_Medicoes", "Fonte", x=334, w=230, y=72, h=80)
+    p.filtro("Dim_Indicador", "Nome_Original", x=574, w=330, y=72, h=80)
     p.scope_chip(
         "EXPLORADOR ANALÍTICO  ·  estatísticas descritivas  ·  distribuição por faixas",
-        x=914, y=72, w=502, h=46
+        x=914, y=72, w=404, h=80
     )
+    p.limpar_filtros_button()
 
     # 3. Faixa de 5 KPI Cards Estatísticos (y = 126 a 238, h = 112)
     kpis = [
-        ("MÉDIA NÃO PONDERADA", "Escala direta do indicador", "Media Aritmetica Nao Ponderada"),
+        ("MÉDIA OBSERVADA", "Não ponderada · TC pendente de homologação", "Media Aritmetica Nao Ponderada"),
         ("MEDIANA OBSERVADA", "Valor central robusto", "Mediana do Indicador"),
         ("MÍNIMO REGISTRADO", "Limite inferior observado", "Minimo Observado"),
         ("MÁXIMO REGISTRADO", "Limite superior observado", "Maximo Observado"),
@@ -131,13 +133,13 @@ def indicadores() -> Pagina:
     largura = (1392 - 16 * (len(kpis) - 1)) // len(kpis)  # 265px
     for i, (tit, sub, med) in enumerate(kpis):
         p.cartao_kpi(
-            24 + i * (largura + 16), 126, largura, 114,
+            24 + i * (largura + 16), 160, largura, 96,
             tit, sub, "_Medidas", med, valor_px=22
         )
 
     # 4. Série Temporal com Média Móvel (Esquerda: x = 24, y = 248, w = 710, h = 500)
     p.add(
-        "lineChart", 24, 248, 710, 500,
+        "lineChart", 24, 272, 710, 476,
         {
             "Category": {"projections": [coluna("Dim_Calendario", "Data")]},
             "Y": {"projections": [
@@ -153,7 +155,7 @@ def indicadores() -> Pagina:
 
     # 5. Histograma de Distribuição em 14 Faixas (Direita: x = 748, y = 248, w = 668, h = 500)
     p.add(
-        "columnChart", 748, 248, 668, 500,
+        "columnChart", 748, 272, 668, 476,
         {
             "Category": {"projections": [coluna("Dim_Faixa_Valor", "Faixa_Label")]},
             "Y": {"projections": [medida("_Medidas", "Quantidade de Leituras por Faixa")]},
@@ -179,13 +181,14 @@ def qualidade() -> Pagina:
     p.barra_navegacao_app(indice_ativo=5)
 
     # 2. Filtros e chip de escopo
-    p.filtro_data(x=24, y=72, w=300, h=46)
-    p.filtro("Fato_Medicoes", "Status_Validacao", x=334, w=240, y=72, h=46)
-    p.filtro("Dim_Indicador", "Nome_Original", x=584, w=320, y=72, h=46)
+    p.filtro_data(x=24, y=72, w=300, h=80)
+    p.filtro("Fato_Medicoes", "Status_Validacao", x=334, w=240, y=72, h=80)
+    p.filtro("Dim_Indicador", "Nome_Original", x=584, w=320, y=72, h=80)
     p.scope_chip(
         "AUDITORIA ATIVA  ·  19.532 linhas  ·  1.585 ajustes  ·  TC pendente",
-        x=914, y=72, w=502, h=46
+        x=914, y=72, w=404, h=80
     )
+    p.limpar_filtros_button()
 
     # 3. Faixa de 4 KPI Cards de Qualidade (y = 126 a 238, h = 112)
     kpis = [
@@ -197,14 +200,14 @@ def qualidade() -> Pagina:
     largura = (1392 - 16 * (len(kpis) - 1)) // len(kpis)  # 336px
     for i, (tit, sub, med) in enumerate(kpis):
         p.cartao_kpi(
-            24 + i * (largura + 16), 126, largura, 114,
+            24 + i * (largura + 16), 160, largura, 96,
             tit, sub, "_Medidas", med, valor_px=22
         )
 
     # 4. Gráficos do Meio (y = 248 a 486, h = 238)
     # 4.1 Registros por Mês (Esquerda: x = 24, w = 684)
     p.add(
-        "columnChart", 24, 248, 684, 238,
+        "columnChart", 24, 272, 684, 206,
         {
             "Category": {"projections": [coluna("Dim_Calendario", "Nome_Mes")]},
             "Y": {"projections": [medida("_Medidas", "Quantidade de Registros")]},
@@ -217,7 +220,7 @@ def qualidade() -> Pagina:
 
     # 4.2 Status de Validação (Direita: x = 722, w = 694)
     p.add(
-        "barChart", 722, 248, 694, 238,
+        "barChart", 722, 272, 694, 206,
         {
             "Category": {"projections": [coluna("Fato_Medicoes", "Status_Validacao")]},
             "Y": {"projections": [medida("_Medidas", "Quantidade de Registros")]},
@@ -230,7 +233,7 @@ def qualidade() -> Pagina:
 
     # 5. Tabela de Pendências de Validação (Abaixo: x = 24, y = 496, w = 1392, h = 250)
     p.add(
-        "tableEx", 24, 496, 1392, 250,
+        "tableEx", 24, 494, 1392, 254,
         {"Values": {"projections": [
             coluna("Pendencias_Validacao", "ID_Pendencia"),
             coluna("Pendencias_Validacao", "Indicador"),
@@ -261,13 +264,14 @@ def detalhes() -> Pagina:
     p.barra_navegacao_app(indice_ativo=6)
 
     # 2. Filtros e chip de escopo
-    p.filtro_data(x=24, y=72, w=300, h=46)
-    p.filtro("Dim_Indicador", "Nome_Original", x=334, w=320, y=72, h=46)
-    p.filtro("Fato_Medicoes", "Fonte", x=664, w=240, y=72, h=46)
+    p.filtro_data(x=24, y=72, w=300, h=80)
+    p.filtro("Dim_Indicador", "Nome_Original", x=334, w=320, y=72, h=80)
+    p.filtro("Fato_Medicoes", "Fonte", x=664, w=240, y=72, h=80)
     p.scope_chip(
         "RASTREABILIDADE OPERACIONAL  ·  inspeção linha a linha  ·  histórico de ajustes",
-        x=914, y=72, w=502, h=46
+        x=914, y=72, w=404, h=80
     )
+    p.limpar_filtros_button()
 
     # 3. Faixa de 4 KPI Cards de Contexto (y = 126 a 238, h = 112)
     kpis = [
@@ -279,7 +283,7 @@ def detalhes() -> Pagina:
     largura = (1392 - 16 * (len(kpis) - 1)) // len(kpis)  # 336px
     for i, (tit, sub, med) in enumerate(kpis):
         p.cartao_kpi(
-            24 + i * (largura + 16), 126, largura, 114,
+            24 + i * (largura + 16), 160, largura, 96,
             tit, sub, "_Medidas", med, valor_px=22
         )
 
@@ -289,16 +293,16 @@ def detalhes() -> Pagina:
         ("FATOR APLICADO", "Divisão efetuada na carga", "Rotulo Fator Aplicado"),
         ("REGRA APLICADA", "Fundamentação técnica", "Rotulo Regra Aplicada"),
     ]
-    h_card = (500 - 14 * 2) // 3  # 157px
+    h_card = 150
     for i, (tit, sub, med) in enumerate(trilho_itens):
         p.cartao_kpi(
-            24, 248 + i * (h_card + 14), 290, h_card,
+            24, 272 + i * (h_card + 12), 290, h_card,
             tit, sub, "_Medidas", med, valor_px=18
         )
 
     # 5. Tabela Detalhada Linha a Linha (Direita: x = 324, y = 248, w = 1092, h = 500)
     p.add(
-        "tableEx", 324, 248, 1092, 500,
+        "tableEx", 324, 272, 1092, 476,
         {"Values": {"projections": [
             coluna("Fato_Medicoes", "ID_Registro"),
             coluna("Fato_Medicoes", "Data"),

@@ -1,60 +1,54 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "v0000000000000000012",
   "position": {
-    "x": 324,
-    "y": 126,
+    "x": 913.54838709677415,
+    "y": 72.774193548387089,
     "z": 1012,
-    "width": 1092,
-    "height": 368,
+    "height": 78.967741935483872,
+    "width": 402.58064516129031,
     "tabOrder": 12
   },
   "visual": {
-    "visualType": "lineChart",
-    "query": {
-      "queryState": {
-        "Category": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Dim_Calendario"
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "ESCOPO TEMPORAL",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI Semibold",
+                      "fontSize": "14pt",
+                      "color": "#173f35"
                     }
-                  },
-                  "Property": "Data"
-                }
+                  }
+                ],
+                "horizontalTextAlignment": "center"
               },
-              "queryRef": "Dim_Calendario.Data",
-              "nativeQueryRef": "Data",
-              "active": true
-            }
-          ]
-        },
-        "Y": {
-          "projections": [
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Medidas"
+              {
+                "textRuns": [
+                  {
+                    "value": "04/01 a 11/12/2026  ·  274 dias com leituras",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "14pt",
+                      "color": "#365247"
                     }
-                  },
-                  "Property": "Media Aritmetica Nao Ponderada"
-                }
-              },
-              "queryRef": "_Medidas.Media Aritmetica Nao Ponderada",
-              "nativeQueryRef": "Media Aritmetica Nao Ponderada"
-            }
-          ]
+                  }
+                ],
+                "horizontalTextAlignment": "center"
+              }
+            ]
+          }
         }
-      }
+      ]
     },
-    "drillFilterOtherVisuals": true,
     "visualContainerObjects": {
-      "title": [
+      "background": [
         {
           "properties": {
             "show": {
@@ -64,35 +58,28 @@
                 }
               }
             },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Comportamento Temporal Contínuo do Indicador'"
-                }
-              }
-            },
-            "fontColor": {
+            "color": {
               "solid": {
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#173F35'"
+                      "Value": "'#F2F5F0'"
                     }
                   }
                 }
               }
             },
-            "alignment": {
+            "transparency": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "0D"
                 }
               }
             }
           }
         }
       ],
-      "subTitle": [
+      "border": [
         {
           "properties": {
             "show": {
@@ -102,34 +89,41 @@
                 }
               }
             },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Série diária não ponderada; ponderação por TC bloqueada até P_TC_01'"
-                }
-              }
-            },
-            "fontColor": {
+            "color": {
               "solid": {
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#76817B'"
+                      "Value": "'#D8DDD5'"
                     }
                   }
                 }
               }
             },
-            "alignment": {
+            "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }
           }
         }
       ]
-    }
+    },
+    "drillFilterOtherVisuals": true
   }
 }

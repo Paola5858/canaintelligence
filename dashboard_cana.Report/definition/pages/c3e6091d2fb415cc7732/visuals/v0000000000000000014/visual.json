@@ -1,38 +1,19 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "v0000000000000000014",
   "position": {
-    "x": 748,
-    "y": 248,
+    "x": 24.774193548387096,
+    "y": 159.48387096774192,
     "z": 1014,
-    "width": 668,
-    "height": 500,
+    "height": 113.03225806451613,
+    "width": 264.77419354838707,
     "tabOrder": 14
   },
   "visual": {
-    "visualType": "columnChart",
+    "visualType": "card",
     "query": {
       "queryState": {
-        "Category": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Dim_Faixa_Valor"
-                    }
-                  },
-                  "Property": "Faixa_Label"
-                }
-              },
-              "queryRef": "Dim_Faixa_Valor.Faixa_Label",
-              "nativeQueryRef": "Faixa_Label",
-              "active": true
-            }
-          ]
-        },
-        "Y": {
+        "Values": {
           "projections": [
             {
               "field": {
@@ -42,17 +23,62 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Quantidade de Leituras por Faixa"
+                  "Property": "Media Aritmetica Nao Ponderada"
                 }
               },
-              "queryRef": "_Medidas.Quantidade de Leituras por Faixa",
-              "nativeQueryRef": "Quantidade de Leituras por Faixa"
+              "queryRef": "_Medidas.Media Aritmetica Nao Ponderada",
+              "nativeQueryRef": "Media Aritmetica Nao Ponderada"
             }
           ]
         }
       }
     },
-    "drillFilterOtherVisuals": true,
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "22D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Aptos Display'"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#173F35'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryLabels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "visualContainerObjects": {
       "title": [
         {
@@ -67,7 +93,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Histograma de Distribuição de Frequência'"
+                  "Value": "'MÉDIA OBSERVADA'"
                 }
               }
             },
@@ -105,7 +131,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Contagem em 14 faixas relativas; não representa limite técnico homologado'"
+                  "Value": "'Não ponderada · TC pendente de homologação'"
                 }
               }
             },
@@ -130,6 +156,7 @@
           }
         }
       ]
-    }
+    },
+    "drillFilterOtherVisuals": true
   }
 }
