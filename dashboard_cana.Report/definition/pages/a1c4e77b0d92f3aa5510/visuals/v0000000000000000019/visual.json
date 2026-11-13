@@ -1,13 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
   "name": "v0000000000000000019",
   "position": {
     "x": 324,
     "y": 516,
-    "z": 1019,
-    "width": 590,
+    "z": 18000,
     "height": 232,
-    "tabOrder": 19
+    "width": 590,
+    "tabOrder": 18000
   },
   "visual": {
     "visualType": "lineChart",
@@ -52,7 +52,6 @@
         }
       }
     },
-    "drillFilterOtherVisuals": true,
     "visualContainerObjects": {
       "title": [
         {
@@ -130,6 +129,7 @@
           }
         }
       ]
-    }
+    },
+    "drillFilterOtherVisuals": true
   }
 }

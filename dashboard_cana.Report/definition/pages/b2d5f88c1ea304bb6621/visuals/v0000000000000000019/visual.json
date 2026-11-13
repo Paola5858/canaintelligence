@@ -1,13 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
   "name": "v0000000000000000019",
   "position": {
-    "x": 588.38709677419354,
-    "y": 284.90322580645159,
-    "z": 1019,
+    "x": 585.86641880228387,
+    "y": 286.04966139954854,
+    "z": 18000,
     "height": 462.96774193548384,
     "width": 828.38709677419354,
-    "tabOrder": 19
+    "tabOrder": 18000
   },
   "visual": {
     "visualType": "matrix",
@@ -27,8 +27,7 @@
                 }
               },
               "queryRef": "Fato_Medicoes.Fonte",
-              "nativeQueryRef": "Fonte",
-              "active": true
+              "nativeQueryRef": "Fonte"
             }
           ]
         },

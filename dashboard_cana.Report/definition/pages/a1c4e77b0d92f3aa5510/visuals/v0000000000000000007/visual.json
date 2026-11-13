@@ -1,17 +1,16 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
   "name": "v0000000000000000007",
   "position": {
     "x": 1104,
     "y": 10,
-    "z": 1007,
-    "width": 146,
+    "z": 6000,
     "height": 44,
-    "tabOrder": 7
+    "width": 146,
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "actionButton",
-    "drillFilterOtherVisuals": true,
     "objects": {
       "icon": [
         {
@@ -309,6 +308,7 @@
           }
         }
       ]
-    }
+    },
+    "drillFilterOtherVisuals": true
   }
 }
