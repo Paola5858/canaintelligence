@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000026",
   "position": {
-    "x": 24,
-    "y": 300,
-    "z": 3026,
-    "width": 312,
-    "height": 46,
+    "x": 1024,
+    "y": 176,
+    "z": 3056,
+    "width": 360,
+    "height": 44,
     "tabOrder": 35
   },
   "isHidden": true,
@@ -44,7 +44,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'GERÊNCIA · VALIDAÇÃO'"
+                  "Value": "'Visão estratégica'"
                 }
               }
             },
@@ -229,14 +229,14 @@
             "tooltip": {
               "expr": {
                 "Literal": {
-                  "Value": "'GERÊNCIA · VALIDAÇÃO'"
+                  "Value": "'Visão estratégica'"
                 }
               }
             },
             "navigationSection": {
               "expr": {
                 "Literal": {
-                  "Value": "'e8b52d04f71c3a9265bb'"
+                  "Value": "'f6172b40a8c94d3ea101'"
                 }
               }
             }

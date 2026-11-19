@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000027",
   "position": {
-    "x": 24,
-    "y": 358,
-    "z": 3027,
-    "width": 312,
-    "height": 46,
+    "x": 1024,
+    "y": 224,
+    "z": 3057,
+    "width": 360,
+    "height": 44,
     "tabOrder": 36
   },
   "isHidden": true,
@@ -44,7 +44,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'FUNCIONÁRIO · CONSULTA'"
+                  "Value": "'Governança e qualidade'"
                 }
               }
             },
@@ -53,7 +53,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#FFFFFF'"
+                      "Value": "'#173F35'"
                     }
                   }
                 }
@@ -105,7 +105,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#173F35'"
+                      "Value": "'#EEF1EA'"
                     }
                   }
                 }
@@ -229,14 +229,14 @@
             "tooltip": {
               "expr": {
                 "Literal": {
-                  "Value": "'FUNCIONÁRIO · CONSULTA'"
+                  "Value": "'Governança e qualidade'"
                 }
               }
             },
             "navigationSection": {
               "expr": {
                 "Literal": {
-                  "Value": "'c83d56e0f1a74a629b23'"
+                  "Value": "'d7a41c93e60b2f8154aa'"
                 }
               }
             }

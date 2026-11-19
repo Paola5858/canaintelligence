@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000023",
   "position": {
-    "x": 24,
-    "y": 126,
-    "z": 3023,
-    "width": 312,
-    "height": 46,
+    "x": 1000,
+    "y": 652,
+    "z": 3043,
+    "width": 440,
+    "height": 158,
     "tabOrder": 32
   },
   "isHidden": true,
@@ -33,7 +33,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             }
@@ -44,7 +44,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'DIRETORIA · ESTRATÉGIA'"
+                  "Value": "''"
                 }
               }
             },
@@ -53,7 +53,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#173F35'"
+                      "Value": "'#25312D'"
                     }
                   }
                 }
@@ -105,7 +105,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#EEF1EA'"
+                      "Value": "'#25312D'"
                     }
                   }
                 }
@@ -114,7 +114,7 @@
             "transparency": {
               "expr": {
                 "Literal": {
-                  "Value": "0D"
+                  "Value": "58D"
                 }
               }
             }
@@ -193,14 +193,7 @@
             "tileShape": {
               "expr": {
                 "Literal": {
-                  "Value": "'rectangleRounded'"
-                }
-              }
-            },
-            "roundEdge": {
-              "expr": {
-                "Literal": {
-                  "Value": "12D"
+                  "Value": "'rectangle'"
                 }
               }
             }
@@ -222,21 +215,21 @@
             "type": {
               "expr": {
                 "Literal": {
-                  "Value": "'PageNavigation'"
+                  "Value": "'Bookmark'"
                 }
               }
             },
             "tooltip": {
               "expr": {
                 "Literal": {
-                  "Value": "'DIRETORIA · ESTRATÉGIA'"
+                  "Value": "''"
                 }
               }
             },
-            "navigationSection": {
+            "bookmark": {
               "expr": {
                 "Literal": {
-                  "Value": "'f6172b40a8c94d3ea101'"
+                  "Value": "'close_sidebar_d7a41c93e60b2f8154aa'"
                 }
               }
             }

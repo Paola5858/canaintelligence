@@ -10,7 +10,7 @@
     "tabOrder": 16
   },
   "visual": {
-    "visualType": "columnChart",
+    "visualType": "lineChart",
     "query": {
       "queryState": {
         "Category": {
@@ -23,11 +23,11 @@
                       "Entity": "Dim_Calendario"
                     }
                   },
-                  "Property": "AnoMes"
+                  "Property": "Data"
                 }
               },
-              "queryRef": "Dim_Calendario.AnoMes",
-              "nativeQueryRef": "AnoMes",
+              "queryRef": "Dim_Calendario.Data",
+              "nativeQueryRef": "Data",
               "active": true
             }
           ]
@@ -42,11 +42,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Quantidade de Registros"
+                  "Property": "Mediana do Indicador"
                 }
               },
-              "queryRef": "_Medidas.Quantidade de Registros",
-              "nativeQueryRef": "Quantidade de Registros"
+              "queryRef": "_Medidas.Mediana do Indicador",
+              "nativeQueryRef": "Mediana do Indicador"
             }
           ]
         }
@@ -67,7 +67,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Medições registradas por mês'"
+                  "Value": "'Desenvolvimento do indicador'"
                 }
               }
             },
@@ -105,7 +105,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Consulta rápida da atividade no recorte selecionado'"
+                  "Value": "'Mediana diária do indicador selecionado; consulte a unidade no cadastro'"
                 }
               }
             },

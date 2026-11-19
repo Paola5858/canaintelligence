@@ -20,14 +20,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Fato_Medicoes"
+                      "Entity": "Dim_Indicador"
                     }
                   },
-                  "Property": "Fonte"
+                  "Property": "Nome_Original"
                 }
               },
-              "queryRef": "Fato_Medicoes.Fonte",
-              "nativeQueryRef": "Fonte",
+              "queryRef": "Dim_Indicador.Nome_Original",
+              "nativeQueryRef": "Nome_Original",
               "active": true
             }
           ]
@@ -42,11 +42,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Registros com Ajuste de Escala"
+                  "Property": "Quantidade de Leituras"
                 }
               },
-              "queryRef": "_Medidas.Registros com Ajuste de Escala",
-              "nativeQueryRef": "Registros com Ajuste de Escala"
+              "queryRef": "_Medidas.Quantidade de Leituras",
+              "nativeQueryRef": "Quantidade de Leituras"
             }
           ]
         }
@@ -67,7 +67,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Onde os ajustes foram aplicados'"
+                  "Value": "'Leituras disponíveis por indicador'"
                 }
               }
             },
@@ -105,7 +105,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Distribuição por fonte; fonte indica origem do dado, não autoria individual'"
+                  "Value": "'Compare volume de registros; valores de unidades diferentes não são somados'"
                 }
               }
             },

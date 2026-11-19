@@ -10,7 +10,7 @@
     "tabOrder": 16
   },
   "visual": {
-    "visualType": "columnChart",
+    "visualType": "lineChart",
     "query": {
       "queryState": {
         "Category": {
@@ -23,11 +23,11 @@
                       "Entity": "Dim_Calendario"
                     }
                   },
-                  "Property": "AnoMes"
+                  "Property": "Data"
                 }
               },
-              "queryRef": "Dim_Calendario.AnoMes",
-              "nativeQueryRef": "AnoMes",
+              "queryRef": "Dim_Calendario.Data",
+              "nativeQueryRef": "Data",
               "active": true
             }
           ]
@@ -42,11 +42,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Registros com Ajuste de Escala"
+                  "Property": "Mediana do Indicador"
                 }
               },
-              "queryRef": "_Medidas.Registros com Ajuste de Escala",
-              "nativeQueryRef": "Registros com Ajuste de Escala"
+              "queryRef": "_Medidas.Mediana do Indicador",
+              "nativeQueryRef": "Mediana do Indicador"
             }
           ]
         }
@@ -67,7 +67,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Ajustes de escala ao longo do tempo'"
+                  "Value": "'Histórico do indicador selecionado'"
                 }
               }
             },
@@ -105,7 +105,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Localize quando as normalizações se concentram no período selecionado'"
+                  "Value": "'Mediana diária para acompanhar a evolução dentro do período filtrado'"
                 }
               }
             },

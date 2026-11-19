@@ -1,6 +1,6 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.1.0/schema.json",
-  "displayName": "Fechar menu lateral",
+  "displayName": "Fechar menu suspenso",
   "name": "close_sidebar_f6172b40a8c94d3ea101",
   "options": {
     "applyOnlyToTargetVisuals": true,
@@ -13,7 +13,12 @@
       "v0000000000000000026",
       "v0000000000000000027",
       "v0000000000000000028",
-      "v0000000000000000029"
+      "v0000000000000000029",
+      "v0000000000000000030",
+      "v0000000000000000031",
+      "v0000000000000000032",
+      "v0000000000000000033",
+      "v0000000000000000034"
     ],
     "suppressData": true
   },
@@ -34,7 +39,7 @@
           },
           "v0000000000000000022": {
             "singleVisual": {
-              "visualType": "textbox",
+              "visualType": "actionButton",
               "objects": {},
               "display": {
                 "mode": "hidden"
@@ -52,7 +57,7 @@
           },
           "v0000000000000000024": {
             "singleVisual": {
-              "visualType": "actionButton",
+              "visualType": "textbox",
               "objects": {},
               "display": {
                 "mode": "hidden"
@@ -61,7 +66,7 @@
           },
           "v0000000000000000025": {
             "singleVisual": {
-              "visualType": "actionButton",
+              "visualType": "textbox",
               "objects": {},
               "display": {
                 "mode": "hidden"
@@ -88,7 +93,7 @@
           },
           "v0000000000000000028": {
             "singleVisual": {
-              "visualType": "actionButton",
+              "visualType": "textbox",
               "objects": {},
               "display": {
                 "mode": "hidden"
@@ -96,6 +101,51 @@
             }
           },
           "v0000000000000000029": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "v0000000000000000030": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "v0000000000000000031": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "v0000000000000000032": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "v0000000000000000033": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "v0000000000000000034": {
             "singleVisual": {
               "visualType": "actionButton",
               "objects": {},

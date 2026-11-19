@@ -66,12 +66,19 @@ def field_references(value):
             yield from field_references(child)
 
 
+def query_refs(visual: dict) -> set[str]:
+    return {
+        f"{entity}.{prop}"
+        for _, entity, prop in field_references(visual.get("visual", {}).get("query", {}))
+    }
+
+
 def validate_grid(page_name: str, width: int, height: int, visuals: list[dict]) -> None:
     areas: list[tuple[str, int, int, int, int]] = []
     seen_z: set[int] = set()
     seen_tab: set[int] = set()
-    drawer_names = {f"v{number:019d}" for number in range(21, 30)}
-    panel_name = f"v{22:019d}"
+    drawer_names = {f"v{number:019d}" for number in range(21, 35)}
+    panel_name = f"v{24:019d}"
     for visual in visuals:
         name = visual["name"]
         pos = visual["position"]
@@ -83,10 +90,7 @@ def validate_grid(page_name: str, width: int, height: int, visuals: list[dict]) 
         seen_z.add(pos.get("z"))
         seen_tab.add(pos.get("tabOrder"))
         for other, ox, oy, ow, oh in areas:
-            if name in drawer_names and other in drawer_names:
-                if name == panel_name or other == panel_name:
-                    continue
-            elif name in drawer_names or other in drawer_names:
+            if name in drawer_names or other in drawer_names:
                 continue
             header = (ow >= 1400 and oy == 0 and oh <= 70) or (w >= 1400 and y == 0 and h <= 70)
             separated = header or x >= ox + ow or ox >= x + w or y >= oy + oh or oy >= y + h
@@ -120,10 +124,10 @@ for report in REPORTS:
         validate_grid(f"{report}/{page_id}", page["width"], page["height"], visuals)
 
         drawer_visuals = [visual for visual in visuals if visual["name"] in {
-            f"v{number:019d}" for number in range(21, 30)
+            f"v{number:019d}" for number in range(21, 35)
         }]
         check(f"{report}/{page_id}: drawer recolhido por padrão",
-              len(drawer_visuals) == 9 and all(visual.get("isHidden") is True for visual in drawer_visuals))
+              len(drawer_visuals) == 14 and all(visual.get("isHidden") is True for visual in drawer_visuals))
 
         open_id = f"open_sidebar_{page_id}"
         close_id = f"close_sidebar_{page_id}"
@@ -133,7 +137,12 @@ for report in REPORTS:
         trigger_link = trigger["visual"]["visualContainerObjects"]["visualLink"][0]["properties"]
         check(f"{report}/{page_id}: hambúrguer abre o drawer",
               trigger_link["type"]["expr"]["Literal"]["Value"] == "'Bookmark'"
-              and trigger_link["bookmark"]["expr"]["Literal"]["Value"] == f"'{open_id}'")
+              and trigger_link["bookmark"]["expr"]["Literal"]["Value"] == f"'{open_id}'"
+              and trigger["position"]["x"] == 1280)
+        panel_path = page_dir / "visuals" / f"v{24:019d}" / "visual.json"
+        panel = json.loads(panel_path.read_text(encoding="utf-8"))
+        check(f"{report}/{page_id}: menu é card suspenso à direita",
+              panel["position"]["x"] == 1000 and panel["position"]["width"] == 416)
         for bookmark_id, mode in ((open_id, "elevation"), (close_id, "hidden")):
             bookmark_path = bookmarks_dir / f"{bookmark_id}.bookmark.json"
             exists = bookmark_path.exists()
@@ -142,11 +151,11 @@ for report in REPORTS:
                 bookmark = json.loads(bookmark_path.read_text(encoding="utf-8"))
                 states = bookmark["explorationState"]["sections"][page_id]["visualContainers"]
                 check(f"{report}/{page_id}/{bookmark_id}: controla todos os itens",
-                      len(states) == 9 and all(
+                      len(states) == 14 and all(
                           state["singleVisual"]["display"]["mode"] == mode
                           for state in states.values()
                       ))
-        close_button_path = page_dir / "visuals" / f"v{29:019d}" / "visual.json"
+        close_button_path = page_dir / "visuals" / f"v{34:019d}" / "visual.json"
         close_button = json.loads(close_button_path.read_text(encoding="utf-8"))
         close_link = close_button["visual"]["visualContainerObjects"]["visualLink"][0]["properties"]
         check(f"{report}/{page_id}: fechar e clicar fora recolhem o menu",
@@ -157,12 +166,12 @@ for report in REPORTS:
                       )
                   )["visual"]["visualContainerObjects"]["visualLink"][0]["properties"]
                   ["bookmark"]["expr"]["Literal"]["Value"] == f"'{close_id}'"
-                  for number in (21, 29)
+                  for number in (21, 22, 23, 34)
               ) and close_link["type"]["expr"]["Literal"]["Value"] == "'Bookmark'")
 
         nav_targets = []
         active_navigation_items = 0
-        for number in range(23, 29):
+        for number in (26, 27, 29, 30, 32, 33):
             nav_path = page_dir / "visuals" / f"v{number:019d}" / "visual.json"
             nav_visual = json.loads(nav_path.read_text(encoding="utf-8"))
             nav_link = nav_visual["visual"]["visualContainerObjects"]["visualLink"][0]["properties"]
@@ -180,12 +189,51 @@ for report in REPORTS:
               nav_targets == list(ROLE_PAGE_IDS))
         check(f"{report}/{page_id}: destaca a página ativa", active_navigation_items == 1)
 
+        section_names = {
+            json.loads(
+                (page_dir / "visuals" / f"v{number:019d}" / "visual.json").read_text(
+                    encoding="utf-8"
+                )
+            )["visual"]["objects"]["general"][0]["properties"]["paragraphs"][0]
+            ["textRuns"][0]["value"]
+            for number in (25, 28, 31)
+        }
+        check(f"{report}/{page_id}: menu agrupa por público",
+              section_names == {"DIRETORIA", "GESTÃO", "FUNCIONÁRIO"})
+
         for visual in visuals:
             for kind, entity, prop in field_references(visual):
                 check(
                     f"{report}/{page_id}/{visual['name']}: {entity}.{prop} existe",
                     entity in model and prop in model[entity]["measures" if kind == "Measure" else "columns"],
                 )
+
+        expected_charts = {
+            "f6172b40a8c94d3ea101": (
+                ("Dim_Calendario.Data", "_Medidas.Mediana do Indicador"),
+                ("Fato_Medicoes.Fonte", "_Medidas.Registros Validados",
+                 "_Medidas.Registros Normalizados", "_Medidas.Registros Pendentes"),
+            ),
+            "a72b45c91d064e3b8f12": (
+                ("Fato_Medicoes.Fonte", "_Medidas.Registros Validados",
+                 "_Medidas.Registros Normalizados", "_Medidas.Registros Pendentes"),
+                ("Dim_Calendario.Data", "_Medidas.Mediana do Indicador"),
+            ),
+            "c83d56e0f1a74a629b23": (
+                ("Dim_Calendario.Data", "_Medidas.Mediana do Indicador"),
+                ("Fato_Medicoes.Status_Validacao", "_Medidas.Quantidade de Registros"),
+            ),
+            "f9c63e15a82d4b0376cc": (
+                ("Dim_Calendario.Data", "_Medidas.Mediana do Indicador"),
+                ("Dim_Indicador.Nome_Original", "_Medidas.Quantidade de Leituras"),
+            ),
+        }
+        if page_id in expected_charts:
+            for number, expected in zip((16, 17), expected_charts[page_id]):
+                path = page_dir / "visuals" / f"v{number:019d}" / "visual.json"
+                chart = json.loads(path.read_text(encoding="utf-8"))
+                check(f"{report}/{page_id}: gráfico {number} responde à métrica do público",
+                      query_refs(chart) == set(expected))
 
     for page_id in ROLE_PAGE_IDS[-2:]:
         notice_path = pages_root / page_id / "visuals" / "v0000000000000000005" / "visual.json"

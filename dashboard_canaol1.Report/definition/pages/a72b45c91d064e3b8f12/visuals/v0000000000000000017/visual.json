@@ -42,11 +42,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Registros Pendentes"
+                  "Property": "Mediana do Indicador"
                 }
               },
-              "queryRef": "_Medidas.Registros Pendentes",
-              "nativeQueryRef": "Registros Pendentes"
+              "queryRef": "_Medidas.Mediana do Indicador",
+              "nativeQueryRef": "Mediana do Indicador"
             }
           ]
         }
@@ -67,7 +67,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Quando as pendências aparecem'"
+                  "Value": "'Histórico de desenvolvimento do indicador'"
                 }
               }
             },
@@ -105,7 +105,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Contagem diária no recorte ativo; lacunas sem registro não são interpoladas'"
+                  "Value": "'Mediana diária no recorte ativo; selecione indicador e fonte para investigar mudanças'"
                 }
               }
             },

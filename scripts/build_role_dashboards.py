@@ -46,14 +46,21 @@ VISUAL_SCHEMA = (
     "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/"
     "visualContainer/1.4.0/schema.json"
 )
-DRAWER_LINKS = (
-    ("DIRETORIA · ESTRATÉGIA", "f6172b40a8c94d3ea101"),
-    ("DIRETORIA · GOVERNANÇA", "d7a41c93e60b2f8154aa"),
-    ("GERÊNCIA · ACOMPANHAMENTO", "a72b45c91d064e3b8f12"),
-    ("GERÊNCIA · VALIDAÇÃO", "e8b52d04f71c3a9265bb"),
-    ("FUNCIONÁRIO · CONSULTA", "c83d56e0f1a74a629b23"),
-    ("FUNCIONÁRIO · RASTREABILIDADE", "f9c63e15a82d4b0376cc"),
+DRAWER_SECTIONS = (
+    ("DIRETORIA", (
+        ("Visão estratégica", "f6172b40a8c94d3ea101"),
+        ("Governança e qualidade", "d7a41c93e60b2f8154aa"),
+    )),
+    ("GESTÃO", (
+        ("Frentes e desempenho", "a72b45c91d064e3b8f12"),
+        ("Pendências e ações", "e8b52d04f71c3a9265bb"),
+    )),
+    ("FUNCIONÁRIO", (
+        ("Indicadores e relatórios", "c83d56e0f1a74a629b23"),
+        ("Histórico e rastreabilidade", "f9c63e15a82d4b0376cc"),
+    )),
 )
+PAGE_IDS = tuple(target for _, links in DRAWER_SECTIONS for _, target in links)
 
 
 def visual_path(pagina: Pagina, numero: int) -> Path:
@@ -122,18 +129,23 @@ def desenhar_pagina(chave: str, relatorio: str) -> Pagina:
 
     if chave == "diretoria_estrategia":
         adicionar_grafico(
-            pagina, "columnChart", 24, 286, 850, 260,
-            [coluna("Dim_Calendario", "AnoMes")],
-            [medida("_Medidas", "Quantidade de Registros")],
-            "Volume mensal de medições",
-            "Tendência macro da coleta; use os filtros para recortar indicador ou fonte",
+            pagina, "lineChart", 24, 286, 850, 260,
+            [coluna("Dim_Calendario", "Data")],
+            [medida("_Medidas", "Mediana do Indicador")],
+            "Desempenho do indicador no período",
+            "Mediana diária do indicador selecionado; sem meta técnica, não representa aprovação",
         )
         adicionar_grafico(
             pagina, "barChart", 890, 286, 526, 260,
-            [coluna("Fato_Medicoes", "Status_Validacao")],
-            [medida("_Medidas", "Quantidade de Registros")],
-            "Composição da base por situação",
-            "Registros validados, normalizados e pendentes no período selecionado",
+            [coluna("Fato_Medicoes", "Fonte")],
+            [
+                medida("_Medidas", "Registros Validados"),
+                medida("_Medidas", "Registros Normalizados"),
+                medida("_Medidas", "Registros Pendentes"),
+            ],
+            "Situação da operação por frente",
+            "Verde: validado · amarelo: normalizado · vermelho: pendente",
+            objetos={"legend": [{"properties": {"show": lit("true")}}]},
         )
         adicionar_tabela(
             pagina, 24, 566, 1392, 198,
@@ -144,7 +156,7 @@ def desenhar_pagina(chave: str, relatorio: str) -> Pagina:
                 coluna("Pendencias_Validacao", "Status"),
             ],
             "Ações técnicas registradas",
-            "Plano cadastrado para correção; a tabela de pendências não é filtrada pela data",
+            "Plano de ação cadastrado; não há dimensão de funcionários ou gestores na base",
         )
     elif chave == "diretoria_governanca":
         adicionar_grafico(
@@ -183,16 +195,21 @@ def desenhar_pagina(chave: str, relatorio: str) -> Pagina:
         adicionar_grafico(
             pagina, "barChart", 24, 302, 416, 200,
             [coluna("Fato_Medicoes", "Fonte")],
-            [medida("_Medidas", "Registros Pendentes")],
-            "Pendências por fonte",
-            "Origem dos registros pendentes; não identifica uma pessoa responsável",
+            [
+                medida("_Medidas", "Registros Validados"),
+                medida("_Medidas", "Registros Normalizados"),
+                medida("_Medidas", "Registros Pendentes"),
+            ],
+            "Desempenho e situação por frente",
+            "Compare volume e estado de validação entre as fontes",
+            objetos={"legend": [{"properties": {"show": lit("true")}}]},
         )
         adicionar_grafico(
             pagina, "lineChart", 456, 302, 960, 200,
             [coluna("Dim_Calendario", "Data")],
-            [medida("_Medidas", "Registros Pendentes")],
-            "Quando as pendências aparecem",
-            "Contagem diária no recorte ativo; lacunas sem registro não são interpoladas",
+            [medida("_Medidas", "Mediana do Indicador")],
+            "Histórico de desenvolvimento do indicador",
+            "Mediana diária no recorte ativo; selecione indicador e fonte para investigar mudanças",
         )
         adicionar_tabela(
             pagina, 24, 528, 1392, 214,
@@ -238,11 +255,11 @@ def desenhar_pagina(chave: str, relatorio: str) -> Pagina:
     elif chave == "funcionario_consulta":
         mover_rodape_consulta(pagina)
         adicionar_grafico(
-            pagina, "columnChart", 24, 312, 684, 192,
-            [coluna("Dim_Calendario", "AnoMes")],
-            [medida("_Medidas", "Quantidade de Registros")],
-            "Medições registradas por mês",
-            "Consulta rápida da atividade no recorte selecionado",
+            pagina, "lineChart", 24, 312, 684, 192,
+            [coluna("Dim_Calendario", "Data")],
+            [medida("_Medidas", "Mediana do Indicador")],
+            "Desenvolvimento do indicador",
+            "Mediana diária do indicador selecionado; consulte a unidade no cadastro",
         )
         adicionar_grafico(
             pagina, "barChart", 732, 312, 684, 192,
@@ -267,18 +284,18 @@ def desenhar_pagina(chave: str, relatorio: str) -> Pagina:
         atualizar_aviso_funcionario(pagina)
     else:
         adicionar_grafico(
-            pagina, "columnChart", 24, 302, 440, 200,
-            [coluna("Dim_Calendario", "AnoMes")],
-            [medida("_Medidas", "Registros com Ajuste de Escala")],
-            "Ajustes de escala ao longo do tempo",
-            "Localize quando as normalizações se concentram no período selecionado",
+            pagina, "lineChart", 24, 302, 440, 200,
+            [coluna("Dim_Calendario", "Data")],
+            [medida("_Medidas", "Mediana do Indicador")],
+            "Histórico do indicador selecionado",
+            "Mediana diária para acompanhar a evolução dentro do período filtrado",
         )
         adicionar_grafico(
             pagina, "barChart", 480, 302, 936, 200,
-            [coluna("Fato_Medicoes", "Fonte")],
-            [medida("_Medidas", "Registros com Ajuste de Escala")],
-            "Onde os ajustes foram aplicados",
-            "Distribuição por fonte; fonte indica origem do dado, não autoria individual",
+            [coluna("Dim_Indicador", "Nome_Original")],
+            [medida("_Medidas", "Quantidade de Leituras")],
+            "Leituras disponíveis por indicador",
+            "Compare volume de registros; valores de unidades diferentes não são somados",
         )
         atualizar_aviso_funcionario(pagina)
 
@@ -326,7 +343,6 @@ def visual_drawer_base(
 
 
 def botao_drawer(
-    pagina: Pagina,
     numero: int,
     label: str,
     x: int,
@@ -408,9 +424,16 @@ def botao_drawer(
     return visual
 
 
-def visual_scrim(pagina: Pagina, numero: int, close_id: str) -> dict:
+def visual_scrim(
+    numero: int,
+    x: int,
+    y: int,
+    width: int,
+    height: int,
+    close_id: str,
+) -> dict:
     visual = botao_drawer(
-        pagina, numero, "", 360, 0, 1080, 810, 3021,
+        numero, "", x, y, width, height, 3020 + numero,
         "Bookmark", close_id, fundo="#25312D", cor_texto="#25312D",
     )
     visual["visual"]["objects"]["text"][0]["properties"]["show"] = lit("false")
@@ -423,7 +446,7 @@ def visual_scrim(pagina: Pagina, numero: int, close_id: str) -> dict:
 
 
 def visual_painel(numero: int) -> dict:
-    visual = visual_drawer_base(numero, "textbox", 0, 0, 360, 810, 3022)
+    visual = visual_drawer_base(numero, "textbox", 1000, 64, 416, 588, 3024)
     visual["visual"]["objects"] = {
         "general": [{"properties": {"paragraphs": [
             {
@@ -436,10 +459,18 @@ def visual_painel(numero: int) -> dict:
                 "horizontalTextAlignment": "left",
             },
             {
-                "textRuns": [{"value": "NAVEGAÇÃO POR NÍVEL", "textStyle": {
+                "textRuns": [{"value": "ESCOLHA UMA VISÃO · DADOS SEMPRE NO CONTEXTO", "textStyle": {
                     "fontSize": "9pt",
                     "fontFamily": "Aptos",
                     "fontWeight": "700",
+                    "color": "#76817B",
+                }}],
+                "horizontalTextAlignment": "left",
+            },
+            {
+                "textRuns": [{"value": "Equipe não identificada individualmente nesta base.", "textStyle": {
+                    "fontSize": "8pt",
+                    "fontFamily": "Aptos",
                     "color": "#76817B",
                 }}],
                 "horizontalTextAlignment": "left",
@@ -448,7 +479,11 @@ def visual_painel(numero: int) -> dict:
     }
     visual["visual"]["visualContainerObjects"] = {
         "background": [{"properties": {"show": lit("true"), "color": cor("#FFFFFF")}}],
-        "border": [{"properties": {"show": lit("false")}}],
+        "border": [{"properties": {
+            "show": lit("true"),
+            "color": cor("#D8DDD5"),
+            "radius": lit("12D"),
+        }}],
         "dropShadow": [{"properties": {"show": lit("true")}}],
         "padding": [{"properties": {
             "top": lit("24D"),
@@ -461,11 +496,32 @@ def visual_painel(numero: int) -> dict:
     return visual
 
 
+def texto_secao(numero: int, label: str, x: int, y: int, width: int, height: int) -> dict:
+    visual = visual_drawer_base(numero, "textbox", x, y, width, height, 3030 + numero)
+    visual["visual"]["objects"] = {
+        "general": [{"properties": {"paragraphs": [{
+            "textRuns": [{"value": label, "textStyle": {
+                "fontSize": "9pt",
+                "fontFamily": "Aptos",
+                "fontWeight": "700",
+                "color": "#76817B",
+            }}],
+            "horizontalTextAlignment": "left",
+        }]}}],
+    }
+    visual["visual"]["visualContainerObjects"] = {
+        "background": [{"properties": {"show": lit("false")}}],
+        "border": [{"properties": {"show": lit("false")}}],
+        "visualHeader": [{"properties": {"show": lit("false")}}],
+    }
+    return visual
+
+
 def adicionar_drawer(pagina: Pagina) -> None:
     page_id = pagina.pasta.name
     open_id = f"open_sidebar_{page_id}"
     close_id = f"close_sidebar_{page_id}"
-    ids = [nome_visual(numero) for numero in range(21, 30)]
+    ids = [nome_visual(numero) for numero in range(21, 35)]
 
     trigger_path = visual_path(pagina, 3)
     trigger = load_json(trigger_path)
@@ -473,26 +529,43 @@ def adicionar_drawer(pagina: Pagina) -> None:
     link["type"] = texto_lit("Bookmark")
     link["bookmark"] = texto_lit(open_id)
     link.pop("navigationSection", None)
+    trigger["position"]["x"] = 1280
     save_json(trigger_path, trigger)
+    home_path = visual_path(pagina, 4)
+    home = load_json(home_path)
+    home["position"]["x"] = 1120
+    save_json(home_path, home)
 
     visuals = [
-        visual_scrim(pagina, 21, close_id),
-        visual_painel(22),
+        visual_scrim(21, 0, 64, 1000, 746, close_id),
+        visual_scrim(22, 1000, 0, 440, 64, close_id),
+        visual_scrim(23, 1000, 652, 440, 158, close_id),
+        visual_painel(24),
     ]
-    for offset, (label, target_page) in enumerate(DRAWER_LINKS):
-        selecionado = target_page == page_id
+    numero = 25
+    y = 176
+    for secao, links in DRAWER_SECTIONS:
         visuals.append(
-            botao_drawer(
-                pagina, 23 + offset, label, 24, 126 + offset * 58, 312, 46,
-                3023 + offset, "PageNavigation", target_page,
-                fundo="#173F35" if selecionado else "#EEF1EA",
-                cor_texto="#FFFFFF" if selecionado else "#173F35",
-            )
+            texto_secao(numero, secao, 1024, y - 28, 360, 24)
         )
+        numero += 1
+        for label, target_page in links:
+            selecionado = target_page == page_id
+            visuals.append(
+                botao_drawer(
+                    numero, label, 1024, y, 360, 44, 3030 + numero,
+                    "PageNavigation", target_page,
+                    fundo="#173F35" if selecionado else "#EEF1EA",
+                    cor_texto="#FFFFFF" if selecionado else "#173F35",
+                )
+            )
+            numero += 1
+            y += 48
+        y += 14
     visuals.append(
         botao_drawer(
-            pagina, 29, "FECHAR", 284, 18, 52, 40, 3030,
-            "Bookmark", close_id, fundo="#EEF1EA", tamanho_fonte="8D",
+            34, "×", 1360, 76, 40, 40, 3040,
+            "Bookmark", close_id, fundo="#EEF1EA", tamanho_fonte="14D",
         )
     )
 
@@ -502,8 +575,8 @@ def adicionar_drawer(pagina: Pagina) -> None:
     bookmarks_folder = pagina.pasta.parent.parent / "bookmarks"
     bookmarks_folder.mkdir(parents=True, exist_ok=True)
     bookmark_states = (
-        (open_id, "Abrir menu lateral", "elevation"),
-        (close_id, "Fechar menu lateral", "hidden"),
+        (open_id, "Abrir menu suspenso", "elevation"),
+        (close_id, "Fechar menu suspenso", "hidden"),
     )
     metadata_items = []
     for bookmark_id, display_name, mode in bookmark_states:

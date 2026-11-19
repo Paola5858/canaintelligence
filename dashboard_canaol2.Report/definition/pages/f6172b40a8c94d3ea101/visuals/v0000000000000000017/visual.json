@@ -23,11 +23,11 @@
                       "Entity": "Fato_Medicoes"
                     }
                   },
-                  "Property": "Status_Validacao"
+                  "Property": "Fonte"
                 }
               },
-              "queryRef": "Fato_Medicoes.Status_Validacao",
-              "nativeQueryRef": "Status_Validacao",
+              "queryRef": "Fato_Medicoes.Fonte",
+              "nativeQueryRef": "Fonte",
               "active": true
             }
           ]
@@ -42,17 +42,60 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Quantidade de Registros"
+                  "Property": "Registros Validados"
                 }
               },
-              "queryRef": "_Medidas.Quantidade de Registros",
-              "nativeQueryRef": "Quantidade de Registros"
+              "queryRef": "_Medidas.Registros Validados",
+              "nativeQueryRef": "Registros Validados"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Registros Normalizados"
+                }
+              },
+              "queryRef": "_Medidas.Registros Normalizados",
+              "nativeQueryRef": "Registros Normalizados"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Registros Pendentes"
+                }
+              },
+              "queryRef": "_Medidas.Registros Pendentes",
+              "nativeQueryRef": "Registros Pendentes"
             }
           ]
         }
       }
     },
     "drillFilterOtherVisuals": true,
+    "objects": {
+      "legend": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "visualContainerObjects": {
       "title": [
         {
@@ -67,7 +110,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Composição da base por situação'"
+                  "Value": "'Situação da operação por frente'"
                 }
               }
             },
@@ -105,7 +148,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Registros validados, normalizados e pendentes no período selecionado'"
+                  "Value": "'Verde: validado · amarelo: normalizado · vermelho: pendente'"
                 }
               }
             },

@@ -42,6 +42,34 @@
                       "Entity": "_Medidas"
                     }
                   },
+                  "Property": "Registros Validados"
+                }
+              },
+              "queryRef": "_Medidas.Registros Validados",
+              "nativeQueryRef": "Registros Validados"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Registros Normalizados"
+                }
+              },
+              "queryRef": "_Medidas.Registros Normalizados",
+              "nativeQueryRef": "Registros Normalizados"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
                   "Property": "Registros Pendentes"
                 }
               },
@@ -53,6 +81,21 @@
       }
     },
     "drillFilterOtherVisuals": true,
+    "objects": {
+      "legend": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "visualContainerObjects": {
       "title": [
         {
@@ -67,7 +110,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Pendências por fonte'"
+                  "Value": "'Desempenho e situação por frente'"
                 }
               }
             },
@@ -105,7 +148,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Origem dos registros pendentes; não identifica uma pessoa responsável'"
+                  "Value": "'Compare volume e estado de validação entre as fontes'"
                 }
               }
             },

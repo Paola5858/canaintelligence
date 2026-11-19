@@ -132,7 +132,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Plano cadastrado para correção; a tabela de pendências não é filtrada pela data'"
+                  "Value": "'Plano de ação cadastrado; não há dimensão de funcionários ou gestores na base'"
                 }
               }
             },
