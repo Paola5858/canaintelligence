@@ -160,8 +160,17 @@ def limpar_visuais(pasta_pagina: Path) -> int:
 class Pagina:
     """Escreve visuais em definition/pages/<id>/visuals/<nome>/visual.json."""
 
-    def __init__(self, page_id: str, nome_pagina: str, indice_pagina: int = 1):
-        self.pasta = PAGINAS / page_id
+    def __init__(
+        self,
+        page_id: str,
+        nome_pagina: str,
+        indice_pagina: int = 1,
+        report_dir: str | Path | None = None,
+    ):
+        pasta_relatorio = Path(report_dir) if report_dir else Path("dashboard_cana.Report")
+        if not pasta_relatorio.is_absolute():
+            pasta_relatorio = RAIZ / pasta_relatorio
+        self.pasta = pasta_relatorio / "definition" / "pages" / page_id
         self.nome_pagina = nome_pagina
         self.indice_pagina = indice_pagina
         self.contador = 0

@@ -1,0 +1,111 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.1.0/schema.json",
+  "displayName": "Abrir menu lateral",
+  "name": "open_sidebar_f6172b40a8c94d3ea101",
+  "options": {
+    "applyOnlyToTargetVisuals": true,
+    "targetVisualNames": [
+      "v0000000000000000021",
+      "v0000000000000000022",
+      "v0000000000000000023",
+      "v0000000000000000024",
+      "v0000000000000000025",
+      "v0000000000000000026",
+      "v0000000000000000027",
+      "v0000000000000000028",
+      "v0000000000000000029"
+    ],
+    "suppressData": true
+  },
+  "explorationState": {
+    "version": "1.3",
+    "activeSection": "f6172b40a8c94d3ea101",
+    "sections": {
+      "f6172b40a8c94d3ea101": {
+        "visualContainers": {
+          "v0000000000000000021": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "elevation"
+              }
+            }
+          },
+          "v0000000000000000022": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {},
+              "display": {
+                "mode": "elevation"
+              }
+            }
+          },
+          "v0000000000000000023": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "elevation"
+              }
+            }
+          },
+          "v0000000000000000024": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "elevation"
+              }
+            }
+          },
+          "v0000000000000000025": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "elevation"
+              }
+            }
+          },
+          "v0000000000000000026": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "elevation"
+              }
+            }
+          },
+          "v0000000000000000027": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "elevation"
+              }
+            }
+          },
+          "v0000000000000000028": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "elevation"
+              }
+            }
+          },
+          "v0000000000000000029": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "elevation"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

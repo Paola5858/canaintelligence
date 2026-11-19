@@ -24,6 +24,24 @@ Todas as páginas são geradas por script, que escreve um `visual.json` por visu
 | `scripts/build_visuals_page2.py` | Evolução | Escrito no piloto, com helpers próprios |
 | [scripts/build_visuals_pages.py](scripts/build_visuals_pages.py) | Fontes, Indicadores, Qualidade, Detalhes | Usa `scripts/pbir_lib.py` e confere estouro de página e sobreposição antes de sair |
 | [scripts/build_access_views.py](scripts/build_access_views.py) | Diretoria, Gerência, Operação | Usa os campos existentes; sinaliza explicitamente a ausência de RLS e de identificador de funcionário |
+| [scripts/build_role_dashboards.py](../scripts/build_role_dashboards.py) | `dashboard_canaol1.pbip`, `dashboard_canaol2.pbip` | Substitui os gráficos herdados por visões específicas de estratégia, governança, acompanhamento, validação, consulta operacional e rastreabilidade |
+
+### Hierarquia dos PBIPs alternativos
+
+Os dois relatórios alternativos abrem na estratégia da Diretoria e ordenam as seis páginas analíticas por nível, com uma pergunta diferente por página:
+
+| Nível | Foco dos gráficos | Próxima decisão |
+| --- | --- | --- |
+| Diretoria · Estratégia | Volume mensal, composição por validação e ações técnicas registradas | Priorizar impacto e ação pendente |
+| Diretoria · Governança | Situação de validação por fonte e estado cadastral dos indicadores | Corrigir origem ou regra técnica |
+| Gerência · Acompanhamento | Pendências por fonte, evolução diária e registros que explicam o desvio | Localizar origem e início da ocorrência |
+| Gerência · Validação | Pendências por indicador, evolução diária e ação recomendada | Tratar o problema técnico identificado |
+| Funcionário · Consulta | Volume mensal, situação das medições e consulta por registro | Conferir o registro e seu status |
+| Funcionário · Rastreabilidade | Evolução dos ajustes de escala, distribuição por fonte e trilha de origem | Conferir a normalização aplicada |
+
+Os cartões de estado usam semântica universal: verde para validado, amarelo para normalizado e vermelho para pendente. Os gráficos agrupados por fonte mantêm essa ordem de séries. O botão ☰ abre um painel lateral recolhível com links para as seis visões; clicar fora ou usar Fechar recolhe o painel sem redefinir os filtros.
+
+**Limite de atribuição:** o modelo tem fonte e ID de registro, mas não tem ID de funcionário nem RLS. Portanto, “Funcionário” é uma consulta operacional, não uma visão pessoal: os relatórios não identificam responsáveis nem restringem o acesso individualmente.
 
 O verificador de grade roda a cada geração: se um visual sair da página de 1440x810 ou cobrir outro, o script falha e imprime o par. Nenhum visual das nove páginas foi gerado fora da grade.
 

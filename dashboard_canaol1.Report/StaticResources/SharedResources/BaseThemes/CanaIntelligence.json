@@ -1,18 +1,18 @@
 {
   "name": "Cana Intelligence",
   "dataColors": [
-    "#4E7966",
+    "#2E7D32",
+    "#F2C94C",
+    "#C62828",
     "#173F35",
-    "#C17A4A",
+    "#4E7966",
     "#A8B9A0",
     "#76817B",
-    "#B94D4D",
-    "#8FAF9C",
     "#25312D"
   ],
-  "good": "#4E7966",
-  "neutral": "#C17A4A",
-  "bad": "#B94D4D",
+  "good": "#2E7D32",
+  "neutral": "#F2C94C",
+  "bad": "#C62828",
   "maximum": "#173F35",
   "center": "#A8B9A0",
   "minimum": "#EEF1EA",
@@ -22,7 +22,7 @@
   "background": "#FFFFFF",
   "backgroundLight": "#EEF1EA",
   "backgroundNeutral": "#E8EDE5",
-  "tableAccent": "#4E7966",
+  "tableAccent": "#2E7D32",
   "textClasses": {
     "callout": {
       "fontFace": "Aptos Display",

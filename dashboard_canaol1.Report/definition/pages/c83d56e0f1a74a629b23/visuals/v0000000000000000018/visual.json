@@ -1,1 +1,192 @@
-{"$schema":"https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json","name":"v0000000000000000018","position":{"x":24,"y":756,"z":1018,"width":1392,"height":38,"tabOrder":18},"visual":{"visualType":"textbox","drillFilterOtherVisuals":true,"objects":{"general":[{"properties":{"paragraphs":[{"textRuns":[{"value":"Sem identificação de colaboradores ou atualização/dia operacional registrados; esta página não aplica restrição individual · sem RLS","textStyle":{"fontSize":"8.5pt","fontFamily":"Segoe UI","color":"#76817B"}}],"horizontalTextAlignment":"center"}]}}]},"visualContainerObjects":{"background":[{"properties":{"show":{"expr":{"Literal":{"Value":"true"}}},"color":{"solid":{"color":{"expr":{"Literal":{"Value":"'#FFFFFF'"}}}}},"transparency":{"expr":{"Literal":{"Value":"0D"}}}}}],"border":[{"properties":{"show":{"expr":{"Literal":{"Value":"true"}}},"color":{"solid":{"color":{"expr":{"Literal":{"Value":"'#D8DDD5'"}}}}},"radius":{"expr":{"Literal":{"Value":"8D"}}}}}],"dropShadow":[{"properties":{"show":{"expr":{"Literal":{"Value":"false"}}}}}]}}}
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
+  "name": "v0000000000000000018",
+  "position": {
+    "x": 24,
+    "y": 516,
+    "z": 1018,
+    "width": 1392,
+    "height": 226,
+    "tabOrder": 18
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fato_Medicoes"
+                    }
+                  },
+                  "Property": "Data"
+                }
+              },
+              "queryRef": "Fato_Medicoes.Data",
+              "nativeQueryRef": "Data",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fato_Medicoes"
+                    }
+                  },
+                  "Property": "Fonte"
+                }
+              },
+              "queryRef": "Fato_Medicoes.Fonte",
+              "nativeQueryRef": "Fonte",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fato_Medicoes"
+                    }
+                  },
+                  "Property": "ID_Registro"
+                }
+              },
+              "queryRef": "Fato_Medicoes.ID_Registro",
+              "nativeQueryRef": "ID_Registro",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fato_Medicoes"
+                    }
+                  },
+                  "Property": "Indicador_Codigo"
+                }
+              },
+              "queryRef": "Fato_Medicoes.Indicador_Codigo",
+              "nativeQueryRef": "Indicador_Codigo",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fato_Medicoes"
+                    }
+                  },
+                  "Property": "Valor"
+                }
+              },
+              "queryRef": "Fato_Medicoes.Valor",
+              "nativeQueryRef": "Valor",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fato_Medicoes"
+                    }
+                  },
+                  "Property": "Status_Validacao"
+                }
+              },
+              "queryRef": "Fato_Medicoes.Status_Validacao",
+              "nativeQueryRef": "Status_Validacao",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Consulta detalhada por registro'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#173F35'"
+                    }
+                  }
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'A base não contém ID de funcionário; a consulta não é individual nem restringe acesso'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#76817B'"
+                    }
+                  }
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

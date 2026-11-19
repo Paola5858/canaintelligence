@@ -17,6 +17,7 @@ SUITES = [
     ("Estrutura do relatorio", ROOT / "tests" / "test_report_structure.py"),
     ("Grade dos visuais", ROOT / "tests" / "test_report_grid.py"),
     ("Campos dos visuais", ROOT / "tests" / "test_report_fields.py"),
+    ("Dashboards hierárquicos", ROOT / "tests" / "test_role_dashboards.py"),
     ("Parser oficial do Power BI", ROOT / "tests" / "test_tmdl_parser.py"),
 ]
 

@@ -1,1 +1,135 @@
-{"$schema":"https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json","name":"v0000000000000000016","position":{"x":24,"y":286,"z":1016,"width":850,"height":260,"tabOrder":16},"visual":{"visualType":"lineChart","query":{"queryState":{"Category":{"projections":[{"field":{"Column":{"Expression":{"SourceRef":{"Entity":"Dim_Calendario"}},"Property":"Data"}},"queryRef":"Dim_Calendario.Data","nativeQueryRef":"Data","active":true}]},"Y":{"projections":[{"field":{"Measure":{"Expression":{"SourceRef":{"Entity":"_Medidas"}},"Property":"Media Aritmetica Nao Ponderada"}},"queryRef":"_Medidas.Media Aritmetica Nao Ponderada","nativeQueryRef":"Media Aritmetica Nao Ponderada"}]},"Tooltips":{"projections":[{"field":{"Measure":{"Expression":{"SourceRef":{"Entity":"_Medidas"}},"Property":"Quantidade de Registros"}},"queryRef":"_Medidas.Quantidade de Registros","nativeQueryRef":"Quantidade de Registros"}]}}},"drillFilterOtherVisuals":true,"visualContainerObjects":{"title":[{"properties":{"show":{"expr":{"Literal":{"Value":"true"}}},"text":{"expr":{"Literal":{"Value":"'Evolução do indicador selecionado'"}}},"fontColor":{"solid":{"color":{"expr":{"Literal":{"Value":"'#173F35'"}}}}},"alignment":{"expr":{"Literal":{"Value":"'left'"}}}}}],"subTitle":[{"properties":{"show":{"expr":{"Literal":{"Value":"true"}}},"text":{"expr":{"Literal":{"Value":"'Média não ponderada · n no tooltip · sem dispersão/limites homologados · Direção: Depende do contexto'"}}},"fontColor":{"solid":{"color":{"expr":{"Literal":{"Value":"'#76817B'"}}}}},"alignment":{"expr":{"Literal":{"Value":"'left'"}}}}}]}}}
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
+  "name": "v0000000000000000016",
+  "position": {
+    "x": 24,
+    "y": 286,
+    "z": 1016,
+    "width": 850,
+    "height": 260,
+    "tabOrder": 16
+  },
+  "visual": {
+    "visualType": "columnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Dim_Calendario"
+                    }
+                  },
+                  "Property": "AnoMes"
+                }
+              },
+              "queryRef": "Dim_Calendario.AnoMes",
+              "nativeQueryRef": "AnoMes",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Quantidade de Registros"
+                }
+              },
+              "queryRef": "_Medidas.Quantidade de Registros",
+              "nativeQueryRef": "Quantidade de Registros"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Volume mensal de medições'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#173F35'"
+                    }
+                  }
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Tendência macro da coleta; use os filtros para recortar indicador ou fonte'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#76817B'"
+                    }
+                  }
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

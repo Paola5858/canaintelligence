@@ -1,0 +1,41 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmarksMetadata/1.0.0/schema.json",
+  "items": [
+    {
+      "name": "open_sidebar_f6172b40a8c94d3ea101"
+    },
+    {
+      "name": "close_sidebar_f6172b40a8c94d3ea101"
+    },
+    {
+      "name": "open_sidebar_d7a41c93e60b2f8154aa"
+    },
+    {
+      "name": "close_sidebar_d7a41c93e60b2f8154aa"
+    },
+    {
+      "name": "open_sidebar_a72b45c91d064e3b8f12"
+    },
+    {
+      "name": "close_sidebar_a72b45c91d064e3b8f12"
+    },
+    {
+      "name": "open_sidebar_e8b52d04f71c3a9265bb"
+    },
+    {
+      "name": "close_sidebar_e8b52d04f71c3a9265bb"
+    },
+    {
+      "name": "open_sidebar_c83d56e0f1a74a629b23"
+    },
+    {
+      "name": "close_sidebar_c83d56e0f1a74a629b23"
+    },
+    {
+      "name": "open_sidebar_f9c63e15a82d4b0376cc"
+    },
+    {
+      "name": "close_sidebar_f9c63e15a82d4b0376cc"
+    }
+  ]
+}
