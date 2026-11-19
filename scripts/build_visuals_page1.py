@@ -1,124 +1,47 @@
-"""Gera os visuais da pagina 1 (Visao geral) na grade executiva premium.
-
-Inclui:
-- Header executivo com identidade e abas pill no topo
-- Faixa de controle com segmentações e chip de escopo ativo
-- 5 cards KPI no topo com título, subtítulo e valores de alto impacto
-- Trilho lateral com 3 cards contextuais do indicador selecionado
-- Série temporal diária ampliada com eixos limpos
-- Gráfico de barras horizontais de distribuição por fonte
-- Rodapé institucional Cana Intelligence com governança de dados
-
-Uso: python scripts/build_visuals_page1.py
-"""
-
-from __future__ import annotations
-
+"""Gera a página de decisão do gestor, preservando as páginas de investigação."""
 import sys
-
-sys.stdout.reconfigure(encoding="utf-8")
-
-from pbir_lib import (  # noqa: E402
-    Pagina,
-    coluna,
-    conferir_dentro_da_pagina,
-    medida,
-    painel_card,
-)
+from pbir_lib import Pagina, coluna, conferir_dentro_da_pagina, cor, inteiro, lit, medida, painel_card
 
 PAGINA = "5a36b06c01771dee7876"
+STATUS = {
+    "Registros Validados": "#32835D",
+    "Registros Normalizados": "#D6A719",
+    "Registros Pendentes": "#B54040",
+}
 
 
 def visao_geral() -> Pagina:
-    p = Pagina(PAGINA, "Visão geral", indice_pagina=1)
+    p = Pagina(PAGINA, "Visão geral")
     p.limpar()
-
-    # 1. Header com identidade e abas de navegação no formato pill
     p.barra_navegacao_app(indice_ativo=1)
+    p.filtro_data(x=24, w=272)
+    p.filtro("Fato_Medicoes", "Fonte", x=312, w=360)
+    p.filtro("Dim_Indicador", "Nome_Original", x=688, w=566)
+    p.limpar_filtros_button(x=1270, w=146)
 
-    # 2. Faixa de filtros com chip de escopo
-    p.filtro_data(x=24, y=72, w=300, h=80)
-    p.filtro("Fato_Medicoes", "Fonte", x=334, w=230, y=72, h=80)
-    p.filtro("Dim_Indicador", "Nome_Original", x=574, w=330, y=72, h=80)
-    p.scope_chip(
-        "RECORTE ATIVO  ·  ATR (kg/t)  ·  8 fontes  ·  19.532 linhas",
-        x=914, y=72, w=404, h=80
-    )
-    p.limpar_filtros_button()
-
-    # 3. Faixa superior de 5 KPI Cards (y = 126 a 238, h = 112)
-    kpis = [
-        ("DIAS MONITORADOS", "80,1% de cobertura contínua", "Dias com Dados"),
-        ("REGISTROS VÁLIDOS", "86,1% sem pendência técnica", "Rotulo Registros Validados"),
-        ("INDICADORES ATIVOS", "22 homologados · 1 sob revisão", "Quantidade de Indicadores"),
-        ("FONTES DE COLETA", "7 frentes + 1 laboratório", "Quantidade de Fontes"),
-        ("ÚLTIMA MEDIÇÃO", "Safra 2026/2027 atualizada", "Ultima Data com Dados"),
-    ]
-    largura = (1392 - 16 * (len(kpis) - 1)) // len(kpis)  # 265px cada
-    for i, (titulo_card, subtitulo_card, nome_medida) in enumerate(kpis):
-        p.cartao_kpi(
-            24 + i * (largura + 16), 160, largura, 96,
-            titulo_card, subtitulo_card, "_Medidas", nome_medida, valor_px=24
-        )
-
-    # 4. Trilho do Indicador Selecionado (3 cards à esquerda: x = 24, w = 290, h = 500)
-    trilho_itens = [
-        ("VOLUME DE LEITURAS", "Total no escopo selecionado", "Rotulo Leituras"),
-        ("REGRA RECOMENDADA", "Diretriz técnica Dim_Indicador", "Rotulo Regra Recomendada Curta"),
-        ("STATUS DE VALIDAÇÃO", "Conformidade na dimensão", "Status do Indicador"),
-    ]
-    h_card = 150
-    for i, (tit, sub, med) in enumerate(trilho_itens):
-        p.cartao_kpi(
-            24, 272 + i * (h_card + 12), 290, h_card,
-            tit, sub, "_Medidas", med, valor_px=20
-        )
-
-    # 5. Série Temporal Diária do Indicador (Centro: x = 324, y = 248, w = 700, h = 500)
-    p.add(
-        "lineChart", 324, 272, 700, 476,
-        {
-            "Category": {"projections": [coluna("Dim_Calendario", "Data")]},
-            "Y": {"projections": [medida("_Medidas", "Media Aritmetica Nao Ponderada")]},
-        },
-        container=painel_card(
-            "Evolução Temporal do Indicador",
-            "Média diária não ponderada; ponderação por TC bloqueada até P_TC_01"
-        ),
-    )
-
-    # 6. Distribuição por Fonte (Direita: x = 1034, y = 248, w = 382, h = 500)
-    p.add(
-        "barChart", 1034, 272, 382, 476,
-        {
-            "Category": {"projections": [coluna("Fato_Medicoes", "Fonte")]},
-            "Y": {"projections": [medida("_Medidas", "Quantidade de Registros")]},
-        },
-        container=painel_card(
-            "Distribuição por Fonte Operacional",
-            "Volume total de medições por frente e laboratório"
-        ),
-    )
-
-    # 7. Rodapé institucional
-    p.rodape_tela()
+    p.cartao_kpi(24, 168, 1392, 82, "Próxima ação", None, "_Medidas", "Orientacao de Validacao", valor_px=17)
+    p.add("columnChart", 24, 266, 832, 478, {
+        "Category": {"projections": [coluna("Dim_Calendario", "AnoMes")]},
+        "Y": {"projections": [medida("_Medidas", nome) for nome in STATUS]},
+    }, objects={
+        "dataPoint": [{"selector": {"metadata": "_Medidas." + nome},
+                       "properties": {"fill": cor(codigo)}} for nome, codigo in STATUS.items()],
+        "legend": [{"properties": {"show": lit("true")}}],
+    }, container=painel_card("Situação das medições por mês", "Número de registros por situação de validação"))
+    p.add("barChart", 872, 266, 544, 478, {
+        "Category": {"projections": [coluna("Fato_Medicoes", "Fonte")]},
+        "Y": {"projections": [medida("_Medidas", "Registros Pendentes")]},
+    }, objects={
+        "dataPoint": [{"properties": {"defaultColor": cor(STATUS["Registros Pendentes"])}}],
+        "labels": [{"properties": {"show": lit("true"), "labelDisplayUnits": inteiro(1)}}],
+    }, container=painel_card("Onde estão as pendências?", "Registros que aguardam confirmação técnica, por fonte"))
+    p.rodape_tela("O semáforo classifica os dados, não o desempenho da usina. Para conferir uma medição, abra Detalhes e selecione a fonte e o período.")
     return p
 
 
-def main() -> int:
-    pagina = visao_geral()
-    print(pagina.relatorio())
-
-    problemas = conferir_dentro_da_pagina(pagina)
-    if problemas:
-        print("\nPROBLEMAS DE GRADE")
-        for item in problemas:
-            print("  - " + item)
-        return 1
-
-    print("\n[OK] Pagina 1 (Visao geral) gerada com sucesso na grade executiva premium.")
-    return 0
-
-
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.stdout.reconfigure(encoding="utf-8")
+    pagina = visao_geral()
+    problemas = conferir_dentro_da_pagina(pagina)
+    print("\n".join(problemas) if problemas else pagina.relatorio())
+    sys.exit(bool(problemas))

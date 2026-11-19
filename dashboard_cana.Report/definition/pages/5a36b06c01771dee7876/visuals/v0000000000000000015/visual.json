@@ -1,19 +1,38 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.4.0/schema.json",
   "name": "v0000000000000000015",
   "position": {
-    "x": 305.0322580645161,
-    "y": 159.48387096774192,
-    "z": 14000,
-    "height": 113.03225806451613,
-    "width": 264.77419354838707,
-    "tabOrder": 14000
+    "x": 872,
+    "y": 266,
+    "z": 1015,
+    "width": 544,
+    "height": 478,
+    "tabOrder": 15
   },
   "visual": {
-    "visualType": "card",
+    "visualType": "barChart",
     "query": {
       "queryState": {
-        "Values": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fato_Medicoes"
+                    }
+                  },
+                  "Property": "Fonte"
+                }
+              },
+              "queryRef": "Fato_Medicoes.Fonte",
+              "nativeQueryRef": "Fonte",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
           "projections": [
             {
               "field": {
@@ -23,40 +42,27 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Rotulo Registros Validados"
+                  "Property": "Registros Pendentes"
                 }
               },
-              "queryRef": "_Medidas.Rotulo Registros Validados",
-              "nativeQueryRef": "Rotulo Registros Validados"
+              "queryRef": "_Medidas.Registros Pendentes",
+              "nativeQueryRef": "Registros Pendentes"
             }
           ]
         }
       }
     },
+    "drillFilterOtherVisuals": true,
     "objects": {
-      "labels": [
+      "dataPoint": [
         {
           "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "24D"
-                }
-              }
-            },
-            "fontFamily": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Aptos Display'"
-                }
-              }
-            },
-            "color": {
+            "defaultColor": {
               "solid": {
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#173F35'"
+                      "Value": "'#B54040'"
                     }
                   }
                 }
@@ -65,13 +71,20 @@
           }
         }
       ],
-      "categoryLabels": [
+      "labels": [
         {
           "properties": {
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
                 }
               }
             }
@@ -93,7 +106,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'REGISTROS VÁLIDOS'"
+                  "Value": "'Onde estão as pendências?'"
                 }
               }
             },
@@ -131,7 +144,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'86,1% sem pendência técnica'"
+                  "Value": "'Registros que aguardam confirmação técnica, por fonte'"
                 }
               }
             },
@@ -156,7 +169,6 @@
           }
         }
       ]
-    },
-    "drillFilterOtherVisuals": true
+    }
   }
 }

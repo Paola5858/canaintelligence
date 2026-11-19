@@ -50,6 +50,21 @@ table _Medidas
 		displayFolder: 00 | Base e qualidade
 		lineageTag: 38a56914-c64b-407c-9267-bd755e60b36e
 
+	/// Decisao no recorte atual. Pendencia requer confirmacao, nao indica falha operacional.
+	measure 'Orientacao de Validacao' =
+			VAR Total = [Quantidade de Registros]
+			VAR Pendentes = CALCULATE ( [Quantidade de Registros], KEEPFILTERS ( Fato_Medicoes[Status_Validacao] = "Pendente" ) )
+			VAR Normalizados = CALCULATE ( [Quantidade de Registros], KEEPFILTERS ( Fato_Medicoes[Status_Validacao] = "Normalizado" ) )
+			VAR Validados = CALCULATE ( [Quantidade de Registros], KEEPFILTERS ( Fato_Medicoes[Status_Validacao] = "Validado" ) )
+			RETURN SWITCH ( TRUE (),
+			    ISBLANK ( Total ), "Sem medições. Amplie o período ou limpe os filtros.",
+			    Pendentes > 0, "Registros pendentes: " & FORMAT ( Pendentes, "#,##0" ) & ". Confirme a regra técnica com a fonte antes de usar essas medições.",
+			    Normalizados + Validados <> Total, "Há registros sem classificação conhecida. Confira a origem em Detalhes.",
+			    Normalizados > 0, "Sem pendências. Registros normalizados: " & FORMAT ( Normalizados, "#,##0" ) & ". Use os valores tratados.",
+			    "Todos os registros estão validados. Não há pendências de validação neste recorte." )
+		displayFolder: 00 | Base e qualidade
+		lineageTag: c438bc42-e77b-48ae-ab84-c2034be3346e
+
 	measure 'Percentual de Registros Pendentes' = DIVIDE ( [Registros Pendentes], [Quantidade de Registros] )
 		formatString: 0.00%
 		displayFolder: 00 | Base e qualidade
