@@ -142,6 +142,7 @@ O que continua manual no Desktop, depois de gerar:
 | Sintoma | Causa provável | Ação |
 | --- | --- | --- |
 | Desktop não abre o projeto | Erro de sintaxe no TMDL | Rodar a suite de estrutura e ler o primeiro erro |
+| Atualizar falha em todas as consultas de Excel com "Não foi possível localizar uma parte do caminho" | O projeto foi movido de pasta (inclusive mudança de conta ou pasta do OneDrive) e o parâmetro `CaminhoDaBase` continua no caminho antigo. Um valor único derruba as seis consultas de uma vez | Ajustar `CaminhoDaBase` em `dashboard_cana.SemanticModel/definition/expressions.tmdl` para o caminho atual do arquivo. Nenhuma consulta precisa ser renomeada |
 | Consulta falha com coluna não encontrada | Planilha trocada com cabeçalho diferente | Conferir os nomes das colunas na aba |
 | Consulta falha com item não encontrado | Tabela estruturada removida no Excel | Recriar a tabela nomeada com o nome esperado |
 | Cartão mostra número gigante | Alguém somou `Valor` sem medida | Usar medida do catálogo, nunca arrastar `Valor` com soma |
