@@ -12,17 +12,17 @@ Fonte única de dados: `data/Base_Usina_PowerBI_Final_v4.xlsx`. Todas as contage
 | Evidência de abertura no Power BI Desktop | 29/10/2026 (duas sessões verificadas) |
 | Modelo semântico em TMDL | Implementado, 8 tabelas e 72 medidas |
 | Relacionamentos | 2, ambos de um para muitos e filtro simples |
-| Páginas do relatório | 6 criadas na grade executiva premium (89 visuais). Abas no formato pill em todas as páginas, faixa de controle com chip de escopo, cards KPI com título e subtítulo contextuais |
+| Páginas do relatório | 9 páginas (207 visuais): as 6 existentes e 3 experiências visuais (Diretoria, Gerência e Operação). As novas páginas não implementam segurança por perfil |
 | Tema visual | Implementado em `CanaIntelligence.json`, ajustado para UI premium (fundo marfim esverdeado `#EEF1EA`, painéis brancos, raio 12, sombra suave e paleta de 8 cores) |
 | Desenho do canvas | Grade executiva de 1440x810 px com alinhamento rigoroso, margens consistentes e hierarquia visual de alto contraste |
-| Testes de dados | 47 verificações, todas aprovadas |
+| Testes de dados | Não executados nesta cópia: planilha de origem ausente (baseline anterior: 47 aprovadas) |
 | Testes de estrutura do modelo | 32 verificações, todas aprovadas |
-| Testes de estrutura do relatório | 44 verificações, todas aprovadas |
-| Testes de grade dos visuais | 454 verificações, 6 páginas, 89 visuais, todas aprovadas |
-| Testes de campos dos visuais | 184 verificações, todas aprovadas |
-| Total de verificações automatizadas | 762, todas aprovadas (30/10/2026) |
+| Testes de estrutura do relatório | 62 verificações aprovadas |
+| Testes de grade dos visuais | 1.047 verificações, 9 páginas, 207 visuais |
+| Testes de campos dos visuais | 290 verificações aprovadas |
+| Segurança e granularidade | Sem RLS e sem identificador de funcionário no modelo; páginas por público são apenas organização visual |
 
-As páginas e os visuais declarativos existem. O que ainda depende do Desktop é o acabamento fino e a configuração manual de recursos que a versão atual não aceita no PBIR, como agrupamento dinâmico em faixas e a ação do botão Voltar.
+As três experiências-base foram geradas no PBIR e estão na ordem de páginas do relatório. A abertura e a renderização ainda precisam ser conferidas no Power BI Desktop; os elementos auxiliares do protótipo (linhagem, exportação personalizada e alternância de granularidade) também permanecem pendentes. O arquivo de dados não está presente nesta cópia do workspace, então a suite de contrato de dados é ignorada.
 
 ## Estrutura
 
@@ -37,11 +37,11 @@ As páginas e os visuais declarativos existem. O que ainda depende do Desktop é
 │       └── tables/                      6 tabelas em TMDL
 ├── dashboard_cana.Report/
 │   ├── definition/report.json           tema base e tema personalizado
-│   ├── definition/pages/                6 páginas
+│   ├── definition/pages/                9 páginas
 │   └── StaticResources/.../BaseThemes/  CanaIntelligence.json
 ├── data/                                planilha de origem (não versionada)
 ├── design/references/                   referências visuais enviadas
-├── design/canvas/                       desenho das 6 páginas aprovado
+├── .kombai/canvas/                      propostas visuais, incluindo as 3 experiências por público
 ├── docs/                                documentação do projeto
 ├── skills/                              regras locais de visual e layout
 ├── scripts/data_audit.py                inventário da planilha
@@ -69,9 +69,9 @@ Seis suites:
 - `tests/test_data_contract.py`: confere a planilha contra as regras do modelo (contagens, chaves, escalas, duplicidades, pendência de TC).
 - `tests/test_model_structure.py`: confere o TMDL (relacionamentos resolvem, medidas referenciadas existem, formatos percentuais corretos, caminho centralizado).
 - `tests/test_report_structure.py`: confere a cadeia de abertura do PBIP, a ligação entre páginas e a declaração do tema.
-- `tests/test_report_grid.py`: confere a grade dos 95 visuais nas seis páginas (limite da página, sobreposição, `z` e `tabOrder` únicos, página vazia).
+- `tests/test_report_grid.py`: confere limites, sobreposição, `z` e `tabOrder` dos visuais nas nove páginas.
 - `tests/test_report_fields.py`: confere que toda medida e toda coluna citadas nos visuais existem no TMDL e que o `queryRef` bate com o campo.
-- `tests/test_tmdl_parser.py`: deserializa o modelo com o parser TMDL oficial que vem com o Power BI Desktop. É o único teste que prova que o projeto realmente abre.
+- `tests/test_tmdl_parser.py`: deserializa o modelo semântico com o parser TMDL oficial; não substitui a abertura do relatório no Power BI Desktop.
 
 Para rodar só o validador do modelo:
 

@@ -36,7 +36,7 @@ if pbip_path.exists():
     pbip = load(pbip_path)
     caminhos = [artefato.get("report", {}).get("path") for artefato in pbip.get("artifacts", [])]
     check("pbip aponta para a pasta do relatorio", "dashboard_cana.Report" in caminhos, str(caminhos))
-    check("pbip declara schema", "$schema" in pbip)
+    check("pbip declara versão", pbip.get("version") == "1.0", str(pbip.get("version")))
 
 pbir = load(REPORT / "definition.pbir")
 dataset = pbir.get("datasetReference", {})
@@ -50,7 +50,7 @@ check("definition.pbism existe", (MODEL / "definition.pbism").exists())
 # 2. Paginas ---------------------------------------------------------------
 meta = load(PAGES / "pages.json")
 ordem = meta.get("pageOrder", [])
-check("pages.json declara seis paginas", len(ordem) == 6, f"{len(ordem)} paginas")
+check("pages.json declara nove paginas", len(ordem) == 9, f"{len(ordem)} paginas")
 check("Pagina ativa existe na ordem", meta.get("activePageName") in ordem, str(meta.get("activePageName")))
 
 pastas = {p.name for p in PAGES.iterdir() if p.is_dir()}
@@ -87,12 +87,20 @@ for page_id in ordem:
             pagina = props.get("navigationSection", {}).get("expr", {}).get("Literal", {}).get("Value")
             if str(tipo).strip("'") == "PageNavigation" and pagina:
                 links.append(str(pagina).strip("'"))
-    check(f"{page_id}: navbar tem seis destinos reais",
-          len(links) == len(ordem) and set(links) == set(ordem),
+    destinos_esperados = (
+        set(ordem)
+        if page_id in {"f6172b40a8c94d3ea101", "a72b45c91d064e3b8f12", "c83d56e0f1a74a629b23"}
+        else set(ordem[:6])
+    )
+    check(f"{page_id}: navbar tem os destinos esperados",
+          len(links) == len(destinos_esperados) and set(links) == destinos_esperados,
           f"{len(links)} links: {links}")
 
 check("Nomes das paginas na ordem certa",
-      nomes == ["Visão geral", "Evolução", "Fontes", "Indicadores", "Qualidade", "Detalhes"],
+      nomes == [
+          "Visão geral", "Evolução", "Fontes", "Indicadores", "Qualidade", "Detalhes",
+          "Diretoria", "Gerência", "Operação",
+      ],
       str(nomes))
 
 # 3. Tema ------------------------------------------------------------------

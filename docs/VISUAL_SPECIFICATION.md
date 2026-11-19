@@ -1,6 +1,6 @@
 # Especificação dos visuais
 
-Inventário de cada visual das seis páginas, com a pergunta que ele responde, os campos, as medidas, a posição em pixels e a regra de cor.
+Inventário dos visuais das seis páginas analíticas originais e das três experiências por público, com seus campos, medidas e limites conhecidos.
 
 ## Estado da implementação
 
@@ -12,6 +12,9 @@ Inventário de cada visual das seis páginas, com a pergunta que ele responde, o
 | Indicadores | Redesenhada | Contrato, estatísticas, série e distribuição relativa em 14 faixas calculadas pelo modelo |
 | Qualidade | Redesenhada | **Implementada em JSON**: trilho de resumo, dois gráficos e tabela de pendências |
 | Detalhes | Redesenhada | **Implementada em JSON**: trilho de auditoria, contexto e tabela. Falta o botão Voltar |
+| Diretoria | Novo canvas N1 | Implementada em PBIR: KPIs executivos, evolução do indicador, volume por fonte e situação dos indicadores |
+| Gerência | Novo canvas N2 | Implementada em PBIR: KPIs de qualidade, evolução diária e registros para investigação |
+| Operação | Novo canvas N3 | Implementada em PBIR: indicadores operacionais e tabela com valor original, valor tratado e auditoria da carga |
 
 Todas as páginas são geradas por script, que escreve um `visual.json` por visual em `definition/pages/<pagina>/visuals/<id>/`. O schema usado é `visualContainer/1.4.0` e ele é aceito pelo Desktop.
 
@@ -20,8 +23,17 @@ Todas as páginas são geradas por script, que escreve um `visual.json` por visu
 | `scripts/build_visuals_page1.py` | Visão geral | Migrada para a biblioteca e para a grade nova. Limpa a pasta `visuals` antes de gerar, para não deixar arquivo órfão |
 | `scripts/build_visuals_page2.py` | Evolução | Escrito no piloto, com helpers próprios |
 | [scripts/build_visuals_pages.py](scripts/build_visuals_pages.py) | Fontes, Indicadores, Qualidade, Detalhes | Usa `scripts/pbir_lib.py` e confere estouro de página e sobreposição antes de sair |
+| [scripts/build_access_views.py](scripts/build_access_views.py) | Diretoria, Gerência, Operação | Usa os campos existentes; sinaliza explicitamente a ausência de RLS e de identificador de funcionário |
 
-O verificador de grade roda a cada geração: se um visual sair da página de 1440x810 ou cobrir outro, o script falha e imprime o par. Nenhum visual das páginas 3 a 6 foi gerado fora da grade.
+O verificador de grade roda a cada geração: se um visual sair da página de 1440x810 ou cobrir outro, o script falha e imprime o par. Nenhum visual das nove páginas foi gerado fora da grade.
+
+### Experiências por público e limites de acesso
+
+- **Diretoria:** resumo de cobertura, leituras, fontes e pendências; evolução do indicador selecionado e tabela de indicadores com unidade e status.
+- **Gerência:** acompanhamento de registros por fonte, evolução diária e tabela para investigar registros, valores e status.
+- **Operação:** consulta linha a linha de data, fonte, identificador do registro, indicador, valor original, valor normalizado, ajuste, status e linha de origem.
+- A navegação organiza conteúdo, mas **não impõe autorização**. O modelo não contém RLS nem um identificador de funcionário. Portanto, não há isolamento efetivo por perfil nem análise individual de funcionários; a visão gerencial disponível é por fonte e registro.
+- Esta primeira integração ainda não reproduz todos os elementos auxiliares do protótipo: breadcrumb hierárquico dinâmico, alternância diária/consolidado, dispersão diária com `n`, folha de linhagem ATR e diálogo próprio de exportação. Esses itens exigem implementação e validação adicional no Desktop.
 
 O que está funcionando com dado real, confirmado na sessão do app:
 
@@ -35,7 +47,7 @@ O que está funcionando com dado real, confirmado na sessão do app:
 
 O canvas tem dois conjuntos de telas, e eles não são a mesma coisa:
 
-- **Conjunto V2**, seis páginas, é o desenho de referência deste documento. Cada página analítica abre com um trilho de 300px que traz unidade, agregação, leituras e status do indicador. A ideia é impedir leitura errada de escala: PC e ArCana estão em percentual direto, UMIDADE_LAB em fração.
+- **Conjunto V2**, seis páginas, é o desenho de referência das páginas analíticas originais. Cada página abre com um trilho de 300px que traz unidade, agregação, leituras e status do indicador. As três novas experiências por público seguem o escopo dos protótipos N1, N2 e N3, sem substituir as seis.
 - **Variante V3**, apenas a Visão geral, inverte a ordem e coloca a cobertura por fonte antes da série, sem trilho, com faixa de contexto horizontal. Serve para comparar arquitetura, não para implementar.
 
 As telas antigas (marcadas `01` a `06`) continuam no canvas como histórico do desenho anterior: abas com sublinhado, painéis de raio 18px e faixa de KPI sem cartão.
@@ -69,7 +81,7 @@ Página de 1440 x 810 px. Todas as posições abaixo usam esse sistema.
 └──────────────────────────────────────────────────────────────┘
 ```
 
-## Regras que valem nas seis páginas
+## Regras das seis páginas analíticas originais
 
 - Header com marca e barra de navegação no formato pill em 24,16 até 1416 (h=48), destacando visualmente a aba ativa.
 - Faixa de controle em y=72 com segmentações em estilo dropdown sobre contêiner com bordas arredondadas e chip contextual de escopo ativo à direita.
@@ -99,7 +111,7 @@ Pergunta da página: qual é a cobertura da base e como o indicador selecionado 
 | # | Visual | Tipo nativo | Posição (x,y,w,h) | Campos | Medidas |
 | --- | --- | --- | --- | --- | --- |
 | 1.1 | Cabeçalho | Caixa de texto | 24,24,1392,48 | Marca, título "Visão geral", safra e carga do modelo | Nenhuma |
-| 1.2 | Navegação | Navegador de páginas | 24,80,1392,44 | 6 páginas | Nenhuma |
+| 1.2 | Navegação | Botões de navegação | Páginas originais: 6 destinos; experiências por público: 9 destinos | 6 páginas originais + 3 experiências | Nenhuma |
 | 1.3 | Período | Segmentação de dados (intervalo) | 24,152,320,40 | `Dim_Calendario[Data]` | Nenhuma |
 | 1.4 | Fonte | Segmentação de dados (lista) | 360,152,200,44 | `Fato_Medicoes[Fonte]` | Nenhuma |
 | 1.5 | Indicador | Segmentação de dados (lista) | 576,152,320,44 | `Dim_Indicador[Nome_Original]` | Nenhuma |

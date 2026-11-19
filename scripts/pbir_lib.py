@@ -202,7 +202,11 @@ class Pagina:
 
     # -------------------------------------------------------------- componentes premium
 
-    def barra_navegacao_app(self, indice_ativo: int | None = None):
+    def barra_navegacao_app(
+        self,
+        indice_ativo: int | None = None,
+        incluir_visoes: bool = False,
+    ):
         """Cabeçalho e navegação real do relatório.
 
         A versão anterior desenhava cinco abas como texto dentro de uma caixa.
@@ -262,8 +266,15 @@ class Pagina:
             (5, "Qualidade", "d4f71a2e30c526dd8843"),
             (6, "Detalhes", "e50b2b3f41d637ee9954"),
         ]
+        if incluir_visoes:
+            paginas_info.extend([
+                (7, "Diretoria", "f6172b40a8c94d3ea101"),
+                (8, "Gerência", "a72b45c91d064e3b8f12"),
+                (9, "Operação", "c83d56e0f1a74a629b23"),
+            ])
 
-        x0, y0, w, gap, h = 504, 10, 146, 4, 44
+        x0, y0, gap, h = 504, 10, 4, 44
+        w = 96 if incluir_visoes else 146
         for num, nome, page_id in paginas_info:
             ativo = num == idx
             texto_cor = "#FFFFFF" if ativo else "#365247"

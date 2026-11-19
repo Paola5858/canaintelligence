@@ -13,8 +13,10 @@ Como abrir, atualizar, validar e dar manutenção no projeto.
 1. Confirme que a planilha está em `data/` com o nome exato.
 2. Abra `dashboard_cana.pbip` no Power BI Desktop.
 3. O Desktop mostra o modelo e o relatório como itens separados. Se aparecer aviso sobre caminho de arquivo, siga a seção de atualização de caminho.
-4. Verifique se as seis páginas aparecem nesta ordem: Visão geral, Evolução, Fontes, Indicadores, Qualidade, Detalhes.
+4. Verifique se as nove páginas aparecem nesta ordem: Visão geral, Evolução, Fontes, Indicadores, Qualidade, Detalhes, Diretoria, Gerência, Operação. As seis páginas originais mantêm a navegação própria; use as abas de página do Desktop para abrir as três novas experiências.
 5. Abra a exibição de modelo e confirme os dois relacionamentos: `Dim_Calendario[Data]` para `Fato_Medicoes[Data]` e `Dim_Indicador[Codigo]` para `Fato_Medicoes[Indicador_Codigo]`.
+
+As páginas Diretoria, Gerência e Operação são experiências de navegação, não perfis de segurança. O modelo não tem RLS nem identificador de funcionário; não use abas ocultas ou filtros visuais para restringir dados.
 
 Se o Desktop recusar o arquivo, não adivinhe. Rode o validador, que usa o mesmo parser do Power BI:
 
@@ -46,7 +48,16 @@ Depois de alterar, rode `python tests/test_model_structure.py`. Ele falha se alg
 
 ## Montar os visuais
 
-As páginas existem vazias. A ordem de montagem recomendada segue a dependência entre visuais.
+Os visuais PBIR são gerados por scripts. Para regenerar as páginas e manter a navegação de nove destinos:
+
+```powershell
+python scripts/build_visuals_page1.py
+python scripts/build_visuals_page2.py
+python scripts/build_visuals_pages.py
+python scripts/build_access_views.py
+```
+
+Depois, abra cada página no Desktop e valide a renderização, os filtros e os dados.
 
 Por página:
 
@@ -71,7 +82,9 @@ Execute depois de montar os visuais.
 
 | Item | Como verificar |
 | --- | --- |
-| As 6 páginas existem e navegam | Clicar em cada aba do navegador |
+| As 9 páginas existem e navegam | Clicar em cada aba do navegador |
+| As páginas por público não são tratadas como segurança | Confirmar que não há RLS e que os avisos estão visíveis |
+| A visão operacional mostra dados normalizados sem inventar identidade de funcionário | Conferir que a tabela usa os campos existentes do modelo |
 | Nenhum visual cortado ou sobreposto | Olhar cada página com a resolução final |
 | Filtro de período funciona | Mudar o intervalo e ver os cartões reagirem |
 | Slicer de Fonte funciona | Filtrar FRENTE 11 e conferir que laboratório desaparece |

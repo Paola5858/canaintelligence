@@ -1,21 +1,23 @@
 # Plano de teste e resultados
 
-Data de referência dos resultados: 30/10/2026 (última rodada completa).
+Data de referência do baseline anterior: 30/10/2026. A última execução após adicionar as páginas por público consta abaixo.
 
 ## Resumo
 
 | Suite | Verificações | Aprovadas | Falhas | Executada em |
 | --- | --- | --- | --- | --- |
-| `tests/test_data_contract.py` | 47 | 47 | 0 | 30/10/2026 |
-| `tests/test_model_structure.py` | 32 | 32 | 0 | 30/10/2026 |
-| `tests/test_report_structure.py` | 44 | 44 | 0 | 30/10/2026 |
-| `tests/test_report_grid.py` | 454 | 454 | 0 | 30/10/2026 |
-| `tests/test_report_fields.py` | 184 | 184 | 0 | 30/10/2026 |
-| `tests/test_tmdl_parser.py` (parser oficial do Power BI) | 1 | 1 | 0 | 30/10/2026 |
-| **Total automatizado** | **762** | **762** | **0** | 30/10/2026 |
+| `tests/test_data_contract.py` | 47 | — | — | Não executada: planilha ausente |
+| `tests/test_model_structure.py` | 32 | 32 | 0 | 19/11/2026 |
+| `tests/test_report_structure.py` | 62 | 62 | 0 | 19/11/2026 |
+| `tests/test_report_grid.py` | 1.047 | 1.047 | 0 | 19/11/2026 |
+| `tests/test_report_fields.py` | 290 | 290 | 0 | 19/11/2026 |
+| `tests/test_tmdl_parser.py` (parser oficial do Power BI) | 1 | 1 | 0 | 19/11/2026 |
+| **Total executado** | **1.432** | **1.432** | **0** | 19/11/2026; contrato de dados ignorado por falta da planilha |
 | Abertura do relatório no Power BI Desktop | 2 | 2 | 0 | 29/10/2026 (antes e depois da migração da grade) |
 | Execução de DAX | 0 | 0 | 0 | **Não** (gabarito disponível em §7) |
-| Renderização de visuais | 6/6 páginas | — | — | 30/10/2026 (grade executiva premium implementada) |
+| Renderização de visuais | 6 páginas originais abertas anteriormente; 3 novas pendentes | — | — | As páginas por público ainda precisam ser abertas no Desktop |
+
+A validação estrutural confere a versão do manifesto `.pbip`; o schema foi removido deliberadamente no commit `7c5a0e6`. A suite de contrato de dados não executa porque `data/Base_Usina_PowerBI_Final_v4.xlsx` não está disponível nesta cópia.
 
 ```powershell
 python tests/run_tests.py
