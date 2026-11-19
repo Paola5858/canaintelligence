@@ -1,0 +1,67 @@
+table Pendencias_Validacao
+	lineageTag: a2d6c950-8b6f-4d24-9fa5-01b0c7000001
+
+	column ID_Pendencia
+		dataType: string
+		lineageTag: a2d6c950-8b6f-4d24-9fa5-01b0c7000002
+		summarizeBy: none
+		sourceColumn: ID_Pendencia
+
+		annotation SummarizationSetBy = Automatic
+
+	column Indicador
+		dataType: string
+		lineageTag: a2d6c950-8b6f-4d24-9fa5-01b0c7000003
+		summarizeBy: none
+		sourceColumn: Indicador
+
+		annotation SummarizationSetBy = Automatic
+
+	column Problema
+		dataType: string
+		lineageTag: a2d6c950-8b6f-4d24-9fa5-01b0c7000004
+		summarizeBy: none
+		sourceColumn: Problema
+
+		annotation SummarizationSetBy = Automatic
+
+	column Acao_Recomendada
+		dataType: string
+		lineageTag: a2d6c950-8b6f-4d24-9fa5-01b0c7000005
+		summarizeBy: none
+		sourceColumn: Acao_Recomendada
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Situacao da pendencia na origem, incluindo quando ja foi resolvida na fato e segue aberta no legado.
+	column Status
+		dataType: string
+		lineageTag: a2d6c950-8b6f-4d24-9fa5-01b0c7000006
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Pendencias_Validacao = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook ( File.Contents ( CaminhoDaBase ), null, true ),
+				    TabelaFonte = Fonte{[Item = "tbl_Pendencias_Validacao", Kind = "Table"]}[Data],
+				    TiposAtribuidos = Table.TransformColumnTypes (
+				        TabelaFonte,
+				        {
+				            { "ID_Pendencia", type text },
+				            { "Indicador", type text },
+				            { "Problema", type text },
+				            { "Acao_Recomendada", type text },
+				            { "Status", type text }
+				        },
+				        "pt-BR"
+				    ),
+				    LinhasValidas = Table.SelectRows ( TiposAtribuidos, each [ID_Pendencia] <> null )
+				in
+				    LinhasValidas
+
+	annotation PBI_ResultType = Table
+

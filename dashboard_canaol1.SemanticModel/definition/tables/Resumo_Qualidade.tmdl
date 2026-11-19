@@ -1,0 +1,88 @@
+table Resumo_Qualidade
+	isHidden
+	lineageTag: b8e3da60-9c70-4e35-a0b6-01b0c8000001
+
+	column Registros_Entrada
+		dataType: int64
+		formatString: #,##0
+		lineageTag: b8e3da60-9c70-4e35-a0b6-01b0c8000002
+		summarizeBy: none
+		sourceColumn: Registros_Entrada
+
+		annotation SummarizationSetBy = Automatic
+
+	column Registros_Saida
+		dataType: int64
+		formatString: #,##0
+		lineageTag: b8e3da60-9c70-4e35-a0b6-01b0c8000003
+		summarizeBy: none
+		sourceColumn: Registros_Saida
+
+		annotation SummarizationSetBy = Automatic
+
+	column Min_Date
+		dataType: string
+		lineageTag: b8e3da60-9c70-4e35-a0b6-01b0c8000004
+		summarizeBy: none
+		sourceColumn: Min_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Max_Date
+		dataType: string
+		lineageTag: b8e3da60-9c70-4e35-a0b6-01b0c8000005
+		summarizeBy: none
+		sourceColumn: Max_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Transformacoes_PC_ArCana
+		dataType: int64
+		formatString: #,##0
+		lineageTag: b8e3da60-8b6f-4d24-9fa5-01b0c7000007
+		summarizeBy: none
+		sourceColumn: Transformacoes_PC_ArCana
+
+		annotation SummarizationSetBy = Automatic
+
+	column Duplicidades_Preservadas
+		dataType: int64
+		formatString: #,##0
+		lineageTag: b8e3da60-9c70-4e35-a0b6-01b0c8000006
+		summarizeBy: none
+		sourceColumn: Duplicidades_Preservadas
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status_Base
+		dataType: string
+		lineageTag: b8e3da60-9c70-4e35-a0b6-01b0c8000007
+		summarizeBy: none
+		sourceColumn: Status_Base
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Resumo_Qualidade = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook ( File.Contents ( CaminhoDaBase ), null, true ),
+				    TabelaFonte = Fonte{[Item = "tbl_Resumo_Qualidade", Kind = "Table"]}[Data],
+				    TiposAtribuidos = Table.TransformColumnTypes (
+				        TabelaFonte,
+				        {
+				            { "Registros_Entrada", Int64.Type },
+				            { "Registros_Saida", Int64.Type },
+				            { "Min_Date", type text },
+				            { "Max_Date", type text },
+				            { "Transformacoes_PC_ArCana", Int64.Type },
+				            { "Duplicidades_Preservadas", Int64.Type },
+				            { "Status_Base", type text }
+				        },
+				        "pt-BR"
+				    )
+				in
+				    TiposAtribuidos
+
+	annotation PBI_ResultType = Table
+

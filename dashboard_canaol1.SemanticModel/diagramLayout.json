@@ -1,0 +1,127 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 579.33331298828125,
+        "y": 0
+      },
+
+      "nodes": [
+        {
+          "location": {
+            "x": 876.38305001469359,
+            "y": 0
+          },
+          "nodeIndex": "_Medidas",
+          "nodeLineageTag": "c3a58b30-6e4d-4b02-8d83-01b0c4000001",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 1131.3830500146937,
+            "y": 1
+          },
+          "nodeIndex": "Auditoria_Dados",
+          "nodeLineageTag": "e7b1f240-7a5e-4c13-9e94-01b0c6000001",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 618.38305001469359,
+            "y": -40.422348979922305
+          },
+          "nodeIndex": "Dim_Calendario",
+          "nodeLineageTag": "5c1d9a70-3c1e-4a6f-9a7f-01b0c1000001",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": -12.4372382003248
+          },
+          "nodeIndex": "Dim_Indicador",
+          "nodeLineageTag": "7b2e4c10-4d2a-4f80-8b61-01b0c2000001",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 334.20156119318511,
+            "y": -9.5776510200776386
+          },
+          "nodeIndex": "Fato_Medicoes",
+          "nodeLineageTag": "9d4f7e20-5b3c-4a91-9c72-01b0c3000001",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 1420.3830500146937,
+            "y": 75
+          },
+          "nodeIndex": "Pendencias_Validacao",
+          "nodeLineageTag": "a2d6c950-8b6f-4d24-9fa5-01b0c7000001",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 1704.3830500146937,
+            "y": 51
+          },
+          "nodeIndex": "Resumo_Qualidade",
+          "nodeLineageTag": "b8e3da60-9c70-4e35-a0b6-01b0c8000001",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 1965.3830500146937,
+            "y": 61.711174489961138
+          },
+          "nodeIndex": "Dim_Faixa_Valor",
+          "nodeLineageTag": "7f0b7c2e-22ad-4b9b-9c9a-1f0c00000001",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 8
+        }
+      ],
+      "name": "Todas as tabelas",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Todas as tabelas",
+  "defaultDiagram": "Todas as tabelas"
+}

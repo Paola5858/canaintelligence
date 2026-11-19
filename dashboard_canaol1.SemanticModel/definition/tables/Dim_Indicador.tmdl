@@ -1,0 +1,130 @@
+table Dim_Indicador
+	lineageTag: 7b2e4c10-4d2a-4f80-8b61-01b0c2000001
+
+	/// Chave do indicador. Relaciona com Fato_Medicoes[Indicador_Codigo].
+	column Codigo
+		dataType: string
+		isKey
+		lineageTag: 7b2e4c10-4d2a-4f80-8b61-01b0c2000002
+		summarizeBy: none
+		sourceColumn: Codigo
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Nome como aparece na origem, sem padronizacao.
+	column Nome_Original
+		dataType: string
+		lineageTag: 7b2e4c10-4d2a-4f80-8b61-01b0c2000003
+		summarizeBy: none
+		sourceColumn: Nome_Original
+
+		annotation SummarizationSetBy = Automatic
+
+	column Nome_Padronizado
+		dataType: string
+		lineageTag: 7b2e4c10-4d2a-4f80-8b61-01b0c2000004
+		summarizeBy: none
+		sourceColumn: Nome_Padronizado
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Unidade da origem. "Desconhecida" indica pendencia tecnica, nao ausencia de dado.
+	column Unidade_Confirmada
+		dataType: string
+		lineageTag: 7b2e4c10-4d2a-4f80-8b61-01b0c2000005
+		summarizeBy: none
+		sourceColumn: Unidade_Confirmada
+
+		annotation SummarizationSetBy = Automatic
+
+	column Descricao_Confirmada
+		dataType: string
+		lineageTag: 7b2e4c10-4d2a-4f80-8b61-01b0c2000006
+		summarizeBy: none
+		sourceColumn: Descricao_Confirmada
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Agregacao recomendada pela fonte. Média Ponderada por TC esta bloqueada porque TC nao tem unidade confirmada.
+	column Tipo_Agregacao_Recomendada
+		dataType: string
+		lineageTag: 7b2e4c10-4d2a-4f80-8b61-01b0c2000007
+		summarizeBy: none
+		sourceColumn: Tipo_Agregacao_Recomendada
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status_Validacao
+		dataType: string
+		lineageTag: 7b2e4c10-4d2a-4f80-8b61-01b0c2000008
+		summarizeBy: none
+		sourceColumn: Status_Validacao
+
+		annotation SummarizationSetBy = Automatic
+
+	column Observacoes_Tecnicas
+		dataType: string
+		lineageTag: 7b2e4c10-4d2a-4f80-8b61-01b0c2000009
+		summarizeBy: none
+		sourceColumn: Observacoes_Tecnicas
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Separacao entre indicadores de qualidade da cana (medidos nas frentes) e de analise laboratorial.
+	column Categoria
+		dataType: string
+		lineageTag: 7b2e4c10-4d2a-4f80-8b61-01b0c2000010
+		summarizeBy: none
+		sourceColumn: Categoria
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordem
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 7b2e4c10-4d2a-4f80-8b61-01b0c2000011
+		summarizeBy: none
+		sourceColumn: Ordem
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Indicador = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook ( File.Contents ( CaminhoDaBase ), null, true ),
+				    TabelaFonte = Fonte{[Item = "tbl_Dim_Indicador", Kind = "Table"]}[Data],
+				    TiposAtribuidos = Table.TransformColumnTypes (
+				        TabelaFonte,
+				        {
+				            { "Codigo", type text },
+				            { "Nome_Original", type text },
+				            { "Nome_Padronizado", type text },
+				            { "Unidade_Confirmada", type text },
+				            { "Descricao_Confirmada", type text },
+				            { "Tipo_Agregacao_Recomendada", type text },
+				            { "Status_Validacao", type text },
+				            { "Observacoes_Tecnicas", type text }
+				        },
+				        "pt-BR"
+				    ),
+				    CategoriaAdicionada = Table.AddColumn (
+				        TiposAtribuidos,
+				        "Categoria",
+				        each
+				            if List.Contains (
+				                { "ATR", "AR", "PC", "POL", "FIBRA", "BRIX", "PUREZA", "IMP_MIN", "IMP_VEG", "UMIDADE_CANA", "TC" },
+				                [Codigo]
+				            )
+				            then "Qualidade da cana"
+				            else "Análise laboratorial",
+				        type text
+				    ),
+				    OrdemAdicionada = Table.AddIndexColumn ( CategoriaAdicionada, "Ordem", 1, 1, Int64.Type ),
+				    LinhasValidas = Table.SelectRows ( OrdemAdicionada, each [Codigo] <> null )
+				in
+				    LinhasValidas
+
+	annotation PBI_ResultType = Table
+

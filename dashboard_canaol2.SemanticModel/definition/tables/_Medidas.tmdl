@@ -1,0 +1,560 @@
+table _Medidas
+	lineageTag: c3a58b30-6e4d-4b02-8d83-01b0c4000001
+
+	/// Total de medicoes carregadas da fato. Uma linha equivale a uma medicao.
+	measure 'Quantidade de Registros' = COUNTROWS ( Fato_Medicoes )
+		formatString: #,##0
+		displayFolder: 00 | Base e qualidade
+		lineageTag: 92ffcf38-231e-443e-83d1-e1b957798e2c
+
+	/// Quantidade de codigos de indicador presentes na dimensao. Nao use para inferir qualidade industrial.
+	measure 'Quantidade de Indicadores' = DISTINCTCOUNT ( Dim_Indicador[Codigo] )
+		formatString: #,##0
+		displayFolder: 00 | Base e qualidade
+		lineageTag: 3e593dfa-bc56-420f-a6fd-1f0640bd884d
+
+	measure 'Quantidade de Fontes' = DISTINCTCOUNT ( Fato_Medicoes[Fonte] )
+		formatString: #,##0
+		displayFolder: 00 | Base e qualidade
+		lineageTag: 5455e7e9-5ee9-4496-8fa8-6e40bfbd7e73
+
+	/// Dias que possuem pelo menos uma medicao no contexto de filtro.
+	measure 'Dias com Dados' = DISTINCTCOUNT ( Fato_Medicoes[Data] )
+		formatString: #,##0
+		displayFolder: 00 | Base e qualidade
+		lineageTag: 683fc5bc-7646-4082-bfca-048d2bc12802
+
+	measure 'Primeira Data com Dados' = MIN ( Fato_Medicoes[Data] )
+		formatString: dd/mm/yyyy
+		displayFolder: 00 | Base e qualidade
+		lineageTag: 6eb18537-f7ac-4ffa-bcd4-72c42b988063
+
+	measure 'Ultima Data com Dados' = MAX ( Fato_Medicoes[Data] )
+		formatString: dd/mm/yyyy
+		displayFolder: 00 | Base e qualidade
+		lineageTag: 99017765-8933-4797-9781-776facfdebcf
+
+	/// Medicoes com regra tecnica nao confirmada na origem. Pendencia nao e erro comprovado.
+	measure 'Registros Pendentes' = CALCULATE ( COUNTROWS ( Fato_Medicoes ), Fato_Medicoes[Status_Validacao] = "Pendente" )
+		formatString: #,##0
+		displayFolder: 00 | Base e qualidade
+		lineageTag: 2d4d4312-45ff-4e1f-a805-b648d42c665e
+
+	measure 'Registros Normalizados' = CALCULATE ( COUNTROWS ( Fato_Medicoes ), Fato_Medicoes[Status_Validacao] = "Normalizado" )
+		formatString: #,##0
+		displayFolder: 00 | Base e qualidade
+		lineageTag: 2b72d80b-65e5-4dff-ba16-9e39072ac742
+
+	measure 'Registros Validados' = CALCULATE ( COUNTROWS ( Fato_Medicoes ), Fato_Medicoes[Status_Validacao] = "Validado" )
+		formatString: #,##0
+		displayFolder: 00 | Base e qualidade
+		lineageTag: 38a56914-c64b-407c-9267-bd755e60b36e
+
+	/// Decisao no recorte atual. Pendencia requer confirmacao, nao indica falha operacional.
+	measure 'Orientacao de Validacao' =
+			VAR Total = [Quantidade de Registros]
+			VAR Pendentes = CALCULATE ( [Quantidade de Registros], KEEPFILTERS ( Fato_Medicoes[Status_Validacao] = "Pendente" ) )
+			VAR Normalizados = CALCULATE ( [Quantidade de Registros], KEEPFILTERS ( Fato_Medicoes[Status_Validacao] = "Normalizado" ) )
+			VAR Validados = CALCULATE ( [Quantidade de Registros], KEEPFILTERS ( Fato_Medicoes[Status_Validacao] = "Validado" ) )
+			RETURN SWITCH ( TRUE (),
+			    ISBLANK ( Total ), "Sem medições. Amplie o período ou limpe os filtros.",
+			    Pendentes > 0, "Registros pendentes: " & FORMAT ( Pendentes, "#,##0" ) & ". Confirme a regra técnica com a fonte antes de usar essas medições.",
+			    Normalizados + Validados <> Total, "Há registros sem classificação conhecida. Confira a origem em Detalhes.",
+			    Normalizados > 0, "Sem pendências. Registros normalizados: " & FORMAT ( Normalizados, "#,##0" ) & ". Use os valores tratados.",
+			    "Todos os registros estão validados. Não há pendências de validação neste recorte." )
+		displayFolder: 00 | Base e qualidade
+		lineageTag: c438bc42-e77b-48ae-ab84-c2034be3346e
+
+	measure 'Percentual de Registros Pendentes' = DIVIDE ( [Registros Pendentes], [Quantidade de Registros] )
+		formatString: 0.00%
+		displayFolder: 00 | Base e qualidade
+		lineageTag: 072c3658-0651-46b5-985c-7de0f0979ac2
+
+	measure 'Indicadores Validados' = CALCULATE ( DISTINCTCOUNT ( Dim_Indicador[Codigo] ), Dim_Indicador[Status_Validacao] = "Validado" )
+		formatString: #,##0
+		displayFolder: 00 | Base e qualidade
+		lineageTag: bafd25be-a5f4-4ffb-9a81-d88b35c0092f
+
+	measure 'Indicadores Pendentes' = CALCULATE ( DISTINCTCOUNT ( Dim_Indicador[Codigo] ), Dim_Indicador[Status_Validacao] = "Pendente" )
+		formatString: #,##0
+		displayFolder: 00 | Base e qualidade
+		lineageTag: a8ac8038-5a5b-4bfc-a27a-fc025305c8c4
+
+	/// Medicoes que passaram por divisao por 1.000 ou 10.000 na origem, hoje restritas a PC e ArCana.
+	measure 'Registros com Ajuste de Escala' = CALCULATE ( COUNTROWS ( Fato_Medicoes ), Fato_Medicoes[Ajuste_Aplicado] <> "Nenhum" )
+		formatString: #,##0
+		displayFolder: 00 | Base e qualidade
+		lineageTag: d586ac42-270a-4e17-9993-2d8c0718e9d3
+
+	/// Registros identicos mantidos de proposito. Nao foram removidos por falta de evidencia de erro.
+	measure 'Copias Exatas Preservadas' = CALCULATE ( COUNTROWS ( Fato_Medicoes ), Fato_Medicoes[Duplicidade_Exata] <> "Nao" )
+		formatString: #,##0
+		displayFolder: 00 | Base e qualidade
+		lineageTag: 7c7afbd2-cd84-48c5-8224-eb1138dd2021
+
+	/// Dias corridos entre a primeira e a ultima medicao. Base para medir lacuna de calendario.
+	measure 'Dias no Calendario da Janela' = CALCULATE ( COUNTROWS ( Dim_Calendario ), DATESBETWEEN ( Dim_Calendario[Data], [Primeira Data com Dados], [Ultima Data com Dados] ) )
+		formatString: #,##0
+		displayFolder: 00 | Base e qualidade
+		lineageTag: a2d75b43-2771-4c03-81b2-b32a29fa0373
+
+	measure 'Dias sem Medicao' = [Dias no Calendario da Janela] - [Dias com Dados]
+		formatString: #,##0
+		displayFolder: 00 | Base e qualidade
+		lineageTag: 764c6787-64a1-4975-b4c9-1652b9e66103
+
+	/// Proporcao de dias da janela que possuem alguma medicao.
+	measure 'Cobertura de Calendario' = DIVIDE ( [Dias com Dados], [Dias no Calendario da Janela] )
+		formatString: 0.0%
+		displayFolder: 00 | Base e qualidade
+		lineageTag: 24cc7b5c-742d-4383-8744-3bbdd18ed3e1
+
+	measure 'Quantidade de Leituras' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			RETURN CALCULATE ( COUNTROWS ( Fato_Medicoes ), Dim_Indicador[Codigo] = Codigo )
+		formatString: #,##0
+		displayFolder: 01 | Indicadores
+		lineageTag: c4157388-4a09-48b2-958f-81f22e0d82ba
+
+	/// Media aritmetica somente quando ha um unico indicador selecionado e a fonte recomenda media aritmetica. Caso contrario retorna vazio, e nao zero.
+	measure 'Valor Medio do Indicador' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			VAR Agregacao = CALCULATE ( SELECTEDVALUE ( Dim_Indicador[Tipo_Agregacao_Recomendada] ), Dim_Indicador[Codigo] = Codigo )
+			RETURN IF ( Agregacao = "Média Aritmética", CALCULATE ( AVERAGE ( Fato_Medicoes[Valor] ), Dim_Indicador[Codigo] = Codigo ), BLANK () )
+		formatString: 0.00
+		displayFolder: 01 | Indicadores
+		lineageTag: cc6381a7-8e16-4ebc-85d1-37d53ccc8724
+
+	/// Media aritmetica de um unico indicador, inclusive para os que a fonte recomenda ponderar por TC. Nomeada explicitamente como nao ponderada porque a ponderacao esta bloqueada.
+	measure 'Media Aritmetica Nao Ponderada' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			RETURN CALCULATE ( AVERAGE ( Fato_Medicoes[Valor] ), Dim_Indicador[Codigo] = Codigo )
+		formatString: 0.00
+		displayFolder: 01 | Indicadores
+		lineageTag: 3671b9d7-777c-4de3-9288-c7e14b18bf03
+
+	/// Mediana de um unico indicador. Valida para qualquer unidade, inclusive pH.
+	measure 'Mediana do Indicador' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			RETURN CALCULATE ( MEDIAN ( Fato_Medicoes[Valor] ), Dim_Indicador[Codigo] = Codigo )
+		formatString: 0.00
+		displayFolder: 01 | Indicadores
+		lineageTag: 21b8eae2-cba6-4d88-962a-bb865a6bf04d
+
+	measure 'Minimo Observado' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			RETURN CALCULATE ( MIN ( Fato_Medicoes[Valor] ), Dim_Indicador[Codigo] = Codigo )
+		formatString: 0.00
+		displayFolder: 01 | Indicadores
+		lineageTag: d4098ca3-242b-4252-80fc-b5174be063f2
+
+	measure 'Maximo Observado' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			RETURN CALCULATE ( MAX ( Fato_Medicoes[Valor] ), Dim_Indicador[Codigo] = Codigo )
+		formatString: 0.00
+		displayFolder: 01 | Indicadores
+		lineageTag: 7103be7c-fc7a-4259-94c3-9b2700fec666
+
+	measure 'Amplitude Observada' = [Maximo Observado] - [Minimo Observado]
+		formatString: 0.00
+		displayFolder: 01 | Indicadores
+		lineageTag: 5cafc3e3-29c6-4ae0-9bb1-cad6dbfacac5
+
+	measure 'Leitura da Ultima Data' =
+			VAR DataUltima = CALCULATE ( MAX ( Fato_Medicoes[Data] ) )
+			RETURN
+			    CALCULATE ( AVERAGE ( Fato_Medicoes[Valor] ), Fato_Medicoes[Data] = DataUltima )
+		formatString: 0.00
+		displayFolder: 01 | Indicadores
+		lineageTag: 421db21d-545e-49aa-b135-b23bbda37d94
+
+	measure 'Leitura da Primeira Data' =
+			VAR DataPrimeira = CALCULATE ( MIN ( Fato_Medicoes[Data] ) )
+			RETURN
+			    CALCULATE ( AVERAGE ( Fato_Medicoes[Valor] ), Fato_Medicoes[Data] = DataPrimeira )
+		formatString: 0.00
+		displayFolder: 01 | Indicadores
+		lineageTag: 2a8a1e62-e891-455c-8f3a-54c33ad2953b
+
+	/// Pol da Cana em escala percentual direta. 11,71 significa 11,71%, sem multiplicar por 100. Ponderacao por TC indisponivel.
+	measure 'PC Medio' = CALCULATE ( [Media Aritmetica Nao Ponderada], Dim_Indicador[Codigo] = "PC" )
+		formatString: 0.00"%"
+		displayFolder: 01 | Indicadores
+		lineageTag: 4e574e3f-2575-4d07-9f09-250ed4b8a6f5
+
+	/// Acucares Redutores da Cana em escala percentual direta. Ponderacao por TC indisponivel.
+	measure 'ArCana Medio' = CALCULATE ( [Media Aritmetica Nao Ponderada], Dim_Indicador[Codigo] = "AR" )
+		formatString: 0.00"%"
+		displayFolder: 01 | Indicadores
+		lineageTag: 670ca865-13d5-4bbf-a9cb-56b5ab983065
+
+	measure 'Pureza Media' = CALCULATE ( [Media Aritmetica Nao Ponderada], Dim_Indicador[Codigo] = "PUREZA" )
+		formatString: 0.00"%"
+		displayFolder: 01 | Indicadores
+		lineageTag: 1f305298-eb05-499f-952f-f75e77a992a5
+
+	measure 'Brix Medio' = CALCULATE ( [Media Aritmetica Nao Ponderada], Dim_Indicador[Codigo] = "BRIX" )
+		formatString: 0.00"%"
+		displayFolder: 01 | Indicadores
+		lineageTag: 2762b3c3-69d9-4dfa-a0c7-b1ef1293c568
+
+	measure 'Pol Medio' = CALCULATE ( [Media Aritmetica Nao Ponderada], Dim_Indicador[Codigo] = "POL" )
+		formatString: 0.00"%"
+		displayFolder: 01 | Indicadores
+		lineageTag: 7b6f07ca-0b73-4f82-b680-2f5ccc2dd263
+
+	measure 'Fibra Media' = CALCULATE ( [Media Aritmetica Nao Ponderada], Dim_Indicador[Codigo] = "FIBRA" )
+		formatString: 0.00"%"
+		displayFolder: 01 | Indicadores
+		lineageTag: a067a670-4d35-4d52-9abb-d42c244f8ff2
+
+	/// Umidade da cana em escala percentual direta. Nao combinar com UMIDADE_LAB, que e fracao decimal.
+	measure 'Umidade Cana Media' = CALCULATE ( [Media Aritmetica Nao Ponderada], Dim_Indicador[Codigo] = "UMIDADE_CANA" )
+		formatString: 0.00"%"
+		displayFolder: 01 | Indicadores
+		lineageTag: 53e889a5-0e56-4b4c-8139-75e1c567102b
+
+	measure 'Impureza Mineral Media' = CALCULATE ( [Media Aritmetica Nao Ponderada], Dim_Indicador[Codigo] = "IMP_MIN" )
+		formatString: 0.00"%"
+		displayFolder: 01 | Indicadores
+		lineageTag: 26b68436-2a39-47df-8d81-0c4d03eebbb7
+
+	measure 'Impureza Vegetal Medio' = CALCULATE ( [Media Aritmetica Nao Ponderada], Dim_Indicador[Codigo] = "IMP_VEG" )
+		formatString: 0.00"%"
+		displayFolder: 01 | Indicadores
+		lineageTag: 46ddffc8-8a66-4a93-8a1a-663d4f3f1c64
+
+	/// Acucar Total Recuperavel em kg por tonelada. Ponderacao por TC indisponivel.
+	measure 'ATR Medio' = CALCULATE ( [Media Aritmetica Nao Ponderada], Dim_Indicador[Codigo] = "ATR" )
+		formatString: 0.00" kg/t"
+		displayFolder: 01 | Indicadores
+		lineageTag: 8867532b-4bc5-4549-9c15-55fe2e7a471f
+
+	measure 'Acidez Total Media' = CALCULATE ( [Valor Medio do Indicador], Dim_Indicador[Codigo] = "ACIDEZ" )
+		formatString: 0.00" mg/L"
+		displayFolder: 01 | Indicadores
+		lineageTag: 92d3dff6-d863-42ba-8044-8e0633d3ca08
+
+	/// pH e escala logaritmica. A mediana e exibida porque a media logaritmica nao foi homologada para esta base.
+	measure 'pH Mediana' = CALCULATE ( [Mediana do Indicador], Dim_Indicador[Codigo] = "PH" )
+		formatString: 0.00
+		displayFolder: 01 | Indicadores
+		lineageTag: 85343623-133f-40ed-9652-b82a074a1e7a
+
+	/// Armazenada como fracao decimal entre 0 e 1. O formato percentual padrao exibe 0,09 como 9%, sem alterar o valor.
+	measure 'Umidade Laboratorio Media' = CALCULATE ( [Valor Medio do Indicador], Dim_Indicador[Codigo] = "UMIDADE_LAB" )
+		formatString: 0.0%
+		displayFolder: 01 | Indicadores
+		lineageTag: 5609a4cd-582e-45f3-817d-aa487a519d44
+
+	measure 'Dias no Periodo Selecionado' =
+			VAR Inicio = MIN ( Dim_Calendario[Data] )
+			VAR Fim = MAX ( Dim_Calendario[Data] )
+			RETURN
+			    IF ( ISBLANK ( Inicio ) || ISBLANK ( Fim ), BLANK (), DATEDIFF ( Inicio, Fim, DAY ) + 1 )
+		formatString: #,##0
+		displayFolder: 02 | Tempo
+		lineageTag: fb06557a-3c79-4ed0-98a3-159354d2d054
+
+	/// Mesma duracao em dias imediatamente antes do periodo selecionado. Retorna vazio quando nao ha periodo comparavel.
+	measure 'Media do Periodo Anterior' =
+			VAR QtdDias = [Dias no Periodo Selecionado]
+			VAR Atual = [Media Aritmetica Nao Ponderada]
+			RETURN
+			    IF (
+			        ISBLANK ( QtdDias ) || ISBLANK ( Atual ),
+			        BLANK (),
+				CALCULATE ( [Media Aritmetica Nao Ponderada], DATEADD ( Dim_Calendario[Data], - QtdDias, DAY ) )
+			    )
+		formatString: 0.00
+		displayFolder: 03 | Comparações
+		lineageTag: 1d1c7324-9425-4c37-8fda-81827fb01740
+
+	measure 'Variacao Absoluta vs Periodo Anterior' =
+			VAR Anterior = [Media do Periodo Anterior]
+			RETURN
+			    IF ( ISBLANK ( Anterior ), BLANK (), [Valor Medio do Indicador] - Anterior )
+		formatString: 0.00
+		displayFolder: 03 | Comparações
+		lineageTag: 64849524-4054-404b-a536-b2deae9c7a8b
+
+	/// Retorna vazio quando nao existe periodo anterior ou quando a base de comparacao e zero.
+	measure 'Variacao Percentual vs Periodo Anterior' =
+			VAR Anterior = [Media do Periodo Anterior]
+			RETURN
+			    IF ( ISBLANK ( Anterior ) || Anterior = 0, BLANK (), DIVIDE ( [Valor Medio do Indicador] - Anterior, Anterior ) )
+		formatString: 0.00%
+		displayFolder: 03 | Comparações
+		lineageTag: 378eb30b-84ce-4ae5-b82d-c36ca31fb791
+
+	/// Media das leituras dos ultimos 7 dias do contexto. Nao e previsao.
+	measure 'Media Movel 7 Dias' =
+			VAR DataFim = MAX ( Dim_Calendario[Data] )
+			RETURN
+				    VAR Codigo = [Codigo do Indicador no Contexto]
+				    RETURN CALCULATE ( AVERAGE ( Fato_Medicoes[Valor] ), DATESINPERIOD ( Dim_Calendario[Data], DataFim, -7, DAY ), Dim_Indicador[Codigo] = Codigo )
+		formatString: 0.00
+		displayFolder: 02 | Tempo
+		lineageTag: f9596cad-9c97-460d-b8d0-5c4ff3bf8776
+
+	measure 'Frentes com Dado do Indicador' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			RETURN CALCULATE ( DISTINCTCOUNT ( Fato_Medicoes[Fonte] ), Fato_Medicoes[Grupo_Fonte] = "Frente de colheita", Dim_Indicador[Codigo] = Codigo )
+		formatString: #,##0
+		displayFolder: 04 | Fontes
+		lineageTag: e28e5457-3d86-45d9-bee9-cfd42d397870
+
+	measure 'Dias com Dado da Fonte' = DISTINCTCOUNT ( Fato_Medicoes[Data] )
+		formatString: #,##0
+		displayFolder: 04 | Fontes
+		lineageTag: 526230af-52a2-48da-8075-6abbf0db7ac8
+
+	measure 'Titulo Dinamico do Indicador' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			VAR Nome = CALCULATE ( SELECTEDVALUE ( Dim_Indicador[Nome_Original] ), Dim_Indicador[Codigo] = Codigo )
+			VAR Unidade = CALCULATE ( SELECTEDVALUE ( Dim_Indicador[Unidade_Confirmada] ), Dim_Indicador[Codigo] = Codigo )
+			RETURN
+			    IF ( ISBLANK ( Nome ), "Selecione um indicador", Nome & " (" & Unidade & ")" )
+		displayFolder: 05 | Formatação e UX
+		lineageTag: de7366ab-869c-48fd-a33c-b69a0d0e9ec1
+
+	measure 'Mensagem Sem Dados' = IF ( COUNTROWS ( Fato_Medicoes ) = 0, "Sem medições no período", BLANK () )
+		displayFolder: 05 | Formatação e UX
+		lineageTag: e62fb489-6f4c-475d-b16d-2f094bae04e3
+
+	/// Traduz a agregacao recomendada pela fonte para um rotulo que nao promete o que o modelo nao entrega.
+	measure 'Rotulo Agregacao Recomendada' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			VAR Agregacao = CALCULATE ( SELECTEDVALUE ( Dim_Indicador[Tipo_Agregacao_Recomendada] ), Dim_Indicador[Codigo] = Codigo )
+			RETURN
+			    SWITCH (
+			        Agregacao,
+			        "Média Ponderada por TC", "Ponderação por TC não disponível",
+			        "Pendente de validação", "Agregação pendente de definição",
+			        Agregacao
+			    )
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 29c75797-fd88-454a-98c5-3588c60dee74
+
+	/// Usado para impedir que o indicador TC seja lido como tonelagem ou qualquer grandeza validada.
+	measure 'Aviso Unidade Desconhecida' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			RETURN IF ( CALCULATE ( SELECTEDVALUE ( Dim_Indicador[Unidade_Confirmada] ), Dim_Indicador[Codigo] = Codigo ) = "Desconhecida", "Unidade não confirmada", BLANK () )
+		displayFolder: 05 | Formatação e UX
+		lineageTag: b0e93da4-c67f-4639-94c3-f041cfcc68c0
+
+	measure 'Status do Indicador' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			RETURN CALCULATE ( SELECTEDVALUE ( Dim_Indicador[Status_Validacao] ), Dim_Indicador[Codigo] = Codigo )
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 2eca9b28-159f-4162-a4bb-3b58743db7ca
+
+	/// Regra aplicada ao registro selecionado, consultada em Auditoria_Dados por ID_Registro.
+	measure 'Regra de Transformacao do Registro' = COALESCE ( LOOKUPVALUE ( Auditoria_Dados[Regra_Transformacao], Auditoria_Dados[ID_Registro], SELECTEDVALUE ( Fato_Medicoes[ID_Registro] ) ), "Selecione um registro" )
+		displayFolder: 06 | Rastreabilidade
+		lineageTag: 26e316c8-ce74-419e-982c-39d59589ef36
+
+	measure 'Fator Aplicado do Registro' = LOOKUPVALUE ( Auditoria_Dados[Fator_Aplicado], Auditoria_Dados[ID_Registro], SELECTEDVALUE ( Fato_Medicoes[ID_Registro] ) )
+		formatString: #,##0
+		displayFolder: 06 | Rastreabilidade
+		lineageTag: 0bbe1b05-9c71-4f36-8099-d89cec74853a
+
+	measure 'Valor Original do Registro' = LOOKUPVALUE ( Auditoria_Dados[Valor_Original], Auditoria_Dados[ID_Registro], SELECTEDVALUE ( Fato_Medicoes[ID_Registro] ) )
+		formatString: #,##0
+		displayFolder: 06 | Rastreabilidade
+		lineageTag: 38cfbe73-941d-4064-b1ab-c715687f4a2d
+
+	measure 'Status Anterior do Registro' = COALESCE ( LOOKUPVALUE ( Auditoria_Dados[Status_Anterior], Auditoria_Dados[ID_Registro], SELECTEDVALUE ( Fato_Medicoes[ID_Registro] ) ), "Selecione um registro" )
+		displayFolder: 06 | Rastreabilidade
+		lineageTag: 86405bd7-28f8-464e-8142-de77cec88e63
+
+	/// Texto sem abreviacao para cartao. O Desktop ignora displayUnits vindo do arquivo e escreve 19.532 como "20 Mil". Nao usar em grafico.
+	measure 'Rotulo Registros' = FORMAT ( [Quantidade de Registros], "#,##0" )
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 5f1a0b11-1c2d-4e3f-9a00-ca1a00000001
+
+	/// Texto sem abreviacao para cartao. Ver Rotulo Registros.
+	measure 'Rotulo Registros Validados' = FORMAT ( [Registros Validados], "#,##0" )
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 5f1a0b11-1c2d-4e3f-9a00-ca1a00000002
+
+	/// Texto sem abreviacao para cartao. Ver Rotulo Registros.
+	measure 'Rotulo Leituras' = FORMAT ( [Quantidade de Leituras], "#,##0" )
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 5f1a0b11-1c2d-4e3f-9a00-ca1a00000003
+
+	/// Texto sem abreviacao para cartao. Ver Rotulo Registros.
+	measure 'Rotulo Ajustes de Escala' = FORMAT ( [Registros com Ajuste de Escala], "#,##0" )
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 5f1a0b11-1c2d-4e3f-9a00-ca1a00000004
+
+	/// Exibe o valor original pré-ajuste do registro selecionado ou o total auditado quando nada estiver filtrado.
+	measure 'Rotulo Valor Original' =
+			VAR RegistroSelecionado = SELECTEDVALUE ( Fato_Medicoes[ID_Registro] )
+			VAR ValorOrig = [Valor Original do Registro]
+			RETURN
+				IF (
+					ISBLANK ( RegistroSelecionado ),
+					FORMAT ( [Registros com Ajuste de Escala], "#,##0" ),
+					IF ( ISBLANK ( ValorOrig ), "Sem ajuste", FORMAT ( ValorOrig, "#,##0.00" ) )
+				)
+		displayFolder: 06 | Rastreabilidade
+		lineageTag: 5f1a0b11-1c2d-4e3f-9a00-ca1a00000005
+
+	/// Exibe o fator aplicado ao registro selecionado ou o resumo dos fatores vigentes quando nada estiver filtrado.
+	measure 'Rotulo Fator Aplicado' =
+			VAR RegistroSelecionado = SELECTEDVALUE ( Fato_Medicoes[ID_Registro] )
+			VAR Fator = [Fator Aplicado do Registro]
+			RETURN
+				IF (
+					ISBLANK ( RegistroSelecionado ),
+					"÷ 100 / 1.000",
+					IF ( ISBLANK ( Fator ), "1× (Sem fator)", "÷ " & FORMAT ( Fator, "#,##0" ) )
+				)
+		displayFolder: 06 | Rastreabilidade
+		lineageTag: 5f1a0b11-1c2d-4e3f-9a00-ca1a00000006
+
+	/// Numero de leituras do indicador no contexto. Sempre valido, independente da unidade.
+	/// Indicador exploratorio padrao quando o slicer abre em Todos.
+	measure 'Codigo do Indicador no Contexto' = SELECTEDVALUE ( Dim_Indicador[Codigo], "ATR" )
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 5f1a0b11-1c2d-4e3f-9a00-ca1a00000007
+
+	/// Texto elegante para o cartão comparativo quando não há período anterior
+	measure 'Rotulo Media do Periodo Anterior' =
+			IF (
+				ISBLANK ( [Media do Periodo Anterior] ),
+				"—",
+				FORMAT ( [Media do Periodo Anterior], "#,##0.00" )
+			)
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 5f1a0b11-1c2d-4e3f-9a00-ca1a00000008
+
+	/// Variação percentual formatada elegantemente sem truncamento
+	measure 'Rotulo Variacao Percentual' =
+			VAR V = [Variacao Percentual vs Periodo Anterior]
+			RETURN
+				IF (
+					ISBLANK ( V ),
+					"—",
+					FORMAT ( V, "+0.0%;-0.0%;0.0%" )
+				)
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 5f1a0b11-1c2d-4e3f-9a00-ca1a00000009
+
+	/// Conta leituras em 14 faixas relativas a escala do indicador. A tabela de faixas e desconectada de proposito.
+	measure 'Quantidade de Leituras por Faixa' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			VAR Ordem = SELECTEDVALUE ( Dim_Faixa_Valor[Faixa_Ordem] )
+			VAR Minimo = CALCULATE ( MIN ( Fato_Medicoes[Valor] ), Dim_Indicador[Codigo] = Codigo )
+			VAR Maximo = CALCULATE ( MAX ( Fato_Medicoes[Valor] ), Dim_Indicador[Codigo] = Codigo )
+			VAR Largura = DIVIDE ( Maximo - Minimo, 14 )
+			VAR Inicio = Minimo + ( Ordem - 1 ) * Largura
+			VAR Fim = IF ( Ordem = 14, Maximo + 0.0000001, Minimo + Ordem * Largura )
+			RETURN
+				IF (
+					NOT ISBLANK ( Ordem ) && Largura > 0,
+					CALCULATE (
+						COUNTROWS ( Fato_Medicoes ),
+						Dim_Indicador[Codigo] = Codigo,
+						Fato_Medicoes[Valor] >= Inicio,
+						Fato_Medicoes[Valor] < Fim
+					)
+				)
+		displayFolder: 01 | Indicadores
+		lineageTag: 5f1a0b11-1c2d-4e3f-9a1a00000010
+
+	/// Pendencias cujo tratamento analitico foi aplicado, mas a correcao no sistema legado continua aberta.
+	measure 'Pendencias Abertas na Origem' = COUNTROWS ( FILTER ( Pendencias_Validacao, CONTAINSSTRING ( Pendencias_Validacao[Status], "Aberta" ) ) )
+		formatString: #,##0
+		displayFolder: 00 | Base e qualidade
+		lineageTag: 2d4d4312-45ff-4e1f-a805-b648d42c6660
+
+	/// Pendencias tratadas na fato ou documentadas para exibicao, sem declarar correcao no legado.
+	measure 'Pendencias Tratadas na Analitica' = COUNTROWS ( FILTER ( Pendencias_Validacao, CONTAINSSTRING ( Pendencias_Validacao[Status], "Resolvida na Fato" ) || CONTAINSSTRING ( Pendencias_Validacao[Status], "Documentada" ) ) )
+		formatString: #,##0
+		displayFolder: 00 | Base e qualidade
+		lineageTag: 2d4d4312-45ff-4e1f-a805-b648d42c6661
+
+	/// Regra recomendada pela dimensao, separada do calculo efetivamente exibido na tela.
+	measure 'Rotulo Regra Recomendada' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			VAR Regra = CALCULATE ( SELECTEDVALUE ( Dim_Indicador[Tipo_Agregacao_Recomendada] ), Dim_Indicador[Codigo] = Codigo )
+			RETURN COALESCE ( Regra, "Regra nao definida" )
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 29c75797-fd88-454a-98c5-3588c60dee75
+
+	/// Versão concisa para cartões. Palavra única para nunca truncar na UI.
+	measure 'Rotulo Regra Recomendada Curta' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			VAR Regra = CALCULATE ( SELECTEDVALUE ( Dim_Indicador[Tipo_Agregacao_Recomendada] ), Dim_Indicador[Codigo] = Codigo )
+			RETURN
+				SWITCH (
+					TRUE (),
+					Codigo = "TC", "Pendente",
+					CONTAINSSTRING ( Regra, "Ponderada" ), "Ponderada",
+					CONTAINSSTRING ( Regra, "Logarítmica" ) || CONTAINSSTRING ( Regra, "Logaritmica" ), "Logarítmica",
+					CONTAINSSTRING ( Regra, "Aritmética" ) || CONTAINSSTRING ( Regra, "Aritmetica" ), "Aritmética",
+					COALESCE ( Regra, "Pendente" )
+				)
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 29c75797-fd88-454a-98c5-3588c60dee78
+
+	/// Calculo usado nesta versao. Nao e uma homologacao da regra recomendada.
+	measure 'Rotulo Agregacao Utilizada' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			RETURN IF ( Codigo = "TC", "Nenhum calculo agregado: TC pendente", "Media aritmetica nao ponderada (exploratoria)" )
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 29c75797-fd88-454a-98c5-3588c60dee76
+
+	/// Aviso curto para impedir que a media exploratoria seja lida como ponderacao homologada.
+	measure 'Aviso Agregacao Utilizada' =
+			VAR Codigo = [Codigo do Indicador no Contexto]
+			VAR Regra = CALCULATE ( SELECTEDVALUE ( Dim_Indicador[Tipo_Agregacao_Recomendada] ), Dim_Indicador[Codigo] = Codigo )
+			RETURN
+				SWITCH (
+					TRUE (),
+					Codigo = "TC", "TC bloqueado: unidade e regra tecnica pendentes (P_TC_01)",
+					CONTAINSSTRING ( Regra, "Ponderada" ), "Ponderacao por TC indisponivel: media aritmetica exploratoria",
+					CONTAINSSTRING ( Regra, "Logaritmica" ), "Media aritmetica exibida apenas como aproximacao exploratoria",
+					BLANK ()
+				)
+		displayFolder: 05 | Formatação e UX
+		lineageTag: 29c75797-fd88-454a-98c5-3588c60dee77
+
+	/// Exibe a regra do registro selecionado ou o resumo das regras homologadas quando nada estiver filtrado.
+	measure 'Rotulo Regra Aplicada' =
+			VAR RegistroSelecionado = SELECTEDVALUE ( Fato_Medicoes[ID_Registro] )
+			VAR Regra = [Regra de Transformacao do Registro]
+			RETURN
+				IF (
+					ISBLANK ( RegistroSelecionado ),
+					"2 Regras Ativas",
+					SWITCH (
+						TRUE (),
+						CONTAINSSTRING ( Regra, "1000" ) || CONTAINSSTRING ( Regra, "1.000" ), "Divisão por 1.000",
+						CONTAINSSTRING ( Regra, "100" ), "Divisão por 100",
+						Regra = "Sem auditoria" || ISBLANK ( Regra ), "Sem ajuste",
+						"Regra registrada"
+					)
+				)
+		displayFolder: 06 | Rastreabilidade
+		lineageTag: 5f1a0b11-1c2d-4e3f-9a1a00000011
+
+	column Placeholder
+		dataType: string
+		isHidden
+		lineageTag: c3a58b30-6e4d-4b02-8d83-01b0c4000002
+		summarizeBy: none
+		sourceColumn: Placeholder
+
+	partition _Medidas = m
+		mode: import
+		source =
+				let
+				    Fonte = #table ( type table [ Placeholder = text ], {} )
+				in
+				    Fonte
+
+	annotation PBI_ResultType = Table
+

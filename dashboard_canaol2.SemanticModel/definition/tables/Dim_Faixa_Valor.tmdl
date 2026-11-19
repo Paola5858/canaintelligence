@@ -1,0 +1,37 @@
+table Dim_Faixa_Valor
+	lineageTag: 7f0b7c2e-22ad-4b9b-9c9a-1f0c00000001
+
+	column Faixa_Ordem
+		dataType: int64
+		isKey
+		formatString: 0
+		lineageTag: 7f0b7c2e-22ad-4b9b-9c9a-1f0c00000002
+		summarizeBy: none
+		sourceColumn: Faixa_Ordem
+
+	column Faixa_Label
+		dataType: string
+		lineageTag: 7f0b7c2e-22ad-4b9b-9c9a-1f0c00000003
+		summarizeBy: none
+		sourceColumn: Faixa_Label
+		sortByColumn: Faixa_Ordem
+
+	partition Dim_Faixa_Valor = m
+		mode: import
+		source =
+				let
+					Fonte = #table (
+						type table [ Faixa_Ordem = Int64.Type, Faixa_Label = text ],
+						{
+							{ 1, "Faixa 01" }, { 2, "Faixa 02" }, { 3, "Faixa 03" },
+							{ 4, "Faixa 04" }, { 5, "Faixa 05" }, { 6, "Faixa 06" },
+							{ 7, "Faixa 07" }, { 8, "Faixa 08" }, { 9, "Faixa 09" },
+							{ 10, "Faixa 10" }, { 11, "Faixa 11" }, { 12, "Faixa 12" },
+							{ 13, "Faixa 13" }, { 14, "Faixa 14" }
+						}
+					)
+				in
+					Fonte
+
+	annotation PBI_ResultType = Table
+
